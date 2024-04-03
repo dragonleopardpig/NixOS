@@ -33,9 +33,9 @@
 (use-package heaven-and-hell
   :ensure t
   :config
-  (setq heaven-and-hell-theme-type 'dark)
+  (setq heaven-and-hell-theme-type 'light)
   (setq heaven-and-hell-themes
-        '((light . (dichromacy leuven))
+        '((light . (doom-acario-light dichromacy leuven))
           (dark . (doom-oceanic-next doom-plain-dark misterioso doom-badger leuven-dark))
 	  ))
   (setq heaven-and-hell-load-theme-no-confirm t)
@@ -44,7 +44,6 @@
          ("<f6>" . heaven-and-hell-toggle-theme)))
 
 ;; ;; Overwrite below in heaven-and-hell.el
-
 ;; (defun heaven-and-hell-clean-load-themes (theme-or-themes)
 ;;   "Load themes if they're not loaded yet and enable them cleanly.
 ;; Cleanly means that it disables all custom themes before enabling new ones.
@@ -74,7 +73,8 @@
 ;; 		    :overline nil
 ;; 		    :foreground "chartreuse"
 ;; 		    :background "#232627"
-;; 		    :italic "#008ED1"
+;; 		    :italic t
+;; 		    :bold t
 ;; 		    :extend t))))
 ;; 	     '(org-block-end-line
 ;; 	       ((t (
@@ -82,7 +82,8 @@
 ;; 		    :overline nil
 ;; 		    :foreground "chartreuse"
 ;; 		    :background "#232627"
-;; 		    :italic "#008ED1"
+;; 		    :italic t
+;; 		    :bold t
 ;; 		    :extend t))))
 ;; 	     '(org-level-1 ((nil )))))
 ;; 	(progn
@@ -102,16 +103,20 @@
 ;; 		  :underline nil
 ;; 		  :overline nil
 ;; 		  :foreground "indian red"
-;; 		  :italic "#008ED1"
+;; 		  :background "white"
+;; 		  :italic t
+;; 		  :bold t
 ;; 		  :extend t))))
 ;; 	   '(org-block-end-line
 ;; 	     ((t (
 ;; 		  :underline nil
 ;; 		  :overline nil
 ;; 		  :foreground "indian red"
-;; 		  :italic "#008ED1"
+;; 		  :background "white"
+;; 		  :italic t
+;; 		  :bold t
 ;; 		  :extend t))))
-;; 	   '(org-level-1 ((t (:foreground "maroon")))))))
+;; 	   '(org-level-1 ((t (:foreground "indian red")))))))
 ;;       ;; ##################################
 ;;       (dolist (theme themes)
 ;;         ;; (when heaven-and-hell-load-theme-no-confirm
@@ -120,20 +125,13 @@
 ;;       (custom-set-variables `(custom-enabled-themes (quote ,themes)))
 ;;       ;; ** ChuPL
 ;;       (if (eq heaven-and-hell-theme-type 'dark)
-;; 	  (set-background-color "#232627"))
+;; 	  (progn (setq heaven-and-hell-theme-type 'dark)
+;; 		 (set-background-color "#232627"))
+;; 	(progn (setq heaven-and-hell-theme-type 'light)
+;; 	       (set-background-color "white")))
 ;;       (org-mode-restart)
 ;;       (outline-show-children)
 ;;       (outline-show-entry)
 ;;       ;; *********
 ;;       )))
-;; ;;;###autoload
-;; (defun heaven-and-hell-toggle-theme ()
-;;   "If `heaven-and-hell-theme-type' is `light' - load dark theme/s.
-;; And vise-versa."
-;;   (interactive)
-;;   (if (eq heaven-and-hell-theme-type 'light)
-;;       (progn (setq heaven-and-hell-theme-type 'dark)
-;; 	     (set-background-color "#232627"))
-;;     (setq heaven-and-hell-theme-type 'light))
-;;   (heaven-and-hell-clean-load-themes (heaven-and-hell-themes-switch-to))
-;;   )
+
