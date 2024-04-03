@@ -21,4 +21,4 @@ Then I came to realize, I was not the only one thinking along those lines. Few L
 
 (Did we mention it should be as fast as C?)
 
-from: [[https://www.datasciencecentral.com/julia-and-the-reincarnation-of-lisp/]]
+from: [datascience](https://www.datasciencecentral.com/julia-and-the-reincarnation-of-lisp/)
