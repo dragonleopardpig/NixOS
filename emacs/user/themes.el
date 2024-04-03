@@ -35,7 +35,7 @@
   :config
   (setq heaven-and-hell-theme-type 'light)
   (setq heaven-and-hell-themes
-        '((light . (doom-acario-light dichromacy leuven))
+        '((light . (dichromacy doom-acario-light doom-plain leuven))
           (dark . (doom-oceanic-next doom-plain-dark misterioso doom-badger leuven-dark))
 	  ))
   (setq heaven-and-hell-load-theme-no-confirm t)
