@@ -76,7 +76,8 @@
 	org-superstar
 	ob-nix
 	latex-preview-pane
-	org-modern))
+	org-modern
+	slime))
 (package-install-selected-packages)
 
 ;; ;; ** Load Custom Directory
