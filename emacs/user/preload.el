@@ -77,7 +77,8 @@
 	ob-nix
 	latex-preview-pane
 	org-modern
-	slime))
+	slime
+	nix-mode))
 (package-install-selected-packages)
 
 ;; ;; ** Load Custom Directory
