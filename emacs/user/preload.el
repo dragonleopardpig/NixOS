@@ -42,6 +42,13 @@
 ;; (require 'pyvenv)
 ;; (pyvenv-activate "~/Project/venv/")
 
+(when (>= emacs-major-version 24)
+  (progn
+    ;; load emacs 24's package system.
+    (require 'package)
+    ;; Add MELPA repository.
+    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
+  (when (< emacs-major-version 27) (package-initialize)))
 
 
 ;; * Auto Install My Packages
@@ -64,13 +71,18 @@
 	web-mode
 	emmet-mode
 	company-web
-	ox-rst))
+	ox-rst
+	alert
+	org-superstar
+	ob-nix
+	latex-preview-pane
+	org-modern))
 (package-install-selected-packages)
 
-;; ** Load Custom Directory
-(defun load-directory (dir)
-  (let ((load-it (lambda (f)
-		   (load-file (concat (file-name-as-directory dir) f)))
-		 ))
-    (mapc load-it (directory-files dir nil "\\.el$"))))
-(load-directory "~/scimax/user/custom/")
+;; ;; ** Load Custom Directory
+;; (defun load-directory (dir)
+;;   (let ((load-it (lambda (f)
+;; 		   (load-file (concat (file-name-as-directory dir) f)))
+;; 		 ))
+;;     (mapc load-it (directory-files dir nil "\\.el$"))))
+;; (load-directory "~/scimax/user/custom/")

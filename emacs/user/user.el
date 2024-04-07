@@ -37,7 +37,7 @@
 (setq org-default-notes-file (concat org-directory "/tasks.org"))
 
 ;; Org Alert
-(require 'alert)
+;; (require 'alert)
 (use-package org-alert
   :ensure t)
 (setq alert-default-style 'libnotify)
