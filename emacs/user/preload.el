@@ -44,3 +44,33 @@
 
 
 
+;; * Auto Install My Packages
+(setq package-selected-packages
+      '(material-theme
+        neotree
+        all-the-icons
+        rainbow-delimiters
+        smartparens
+        yaml-mode
+        dockerfile-mode
+        toml-mode
+        dumb-jump
+        json-mode
+	prettier-js
+	js2-refactor
+	company-auctex
+	rjsx-mode
+	tide
+	web-mode
+	emmet-mode
+	company-web
+	ox-rst))
+(package-install-selected-packages)
+
+;; ** Load Custom Directory
+(defun load-directory (dir)
+  (let ((load-it (lambda (f)
+		   (load-file (concat (file-name-as-directory dir) f)))
+		 ))
+    (mapc load-it (directory-files dir nil "\\.el$"))))
+(load-directory "~/scimax/user/custom/")
