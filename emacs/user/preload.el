@@ -1,7 +1,7 @@
+;; * For SCIMAX starterkit, install scimax first.
 (setq warning-minimum-level :emergency)
-;; (setq scimax-theme nil)
 
-;; Prevent undo tree files from polluting your git repo
+;; * Prevent undo tree files from polluting your git repo
 (setq undo-tree-history-directory-alist '(("." . "~/tmp/emacs/undo")))
 ;; Put backup files neatly away
 (let ((backup-dir "~/tmp/emacs/backups")
@@ -22,26 +22,11 @@
       kept-old-versions 2)   ; and some old ones, too
 
 
-;; Treat all thmes as safe
+;; * Treat all thmes as safe
 (setq custom-safe-themes t) 
-(setq scimax-theme 'leuven-dark)
+(setq scimax-theme nil)
 
-;; (use-package pyvenv
-;;   :ensure t
-;;   :config
-;;   (pyvenv-mode t)
-
-;;   ;; Set correct Python interpreter
-;;   (setq pyvenv-post-activate-hooks
-;;         (list (lambda ()
-;;                 (setq python-shell-interpreter (concat pyvenv-virtual-env "bin/python3")))))
-;;   (setq pyvenv-post-deactivate-hooks
-;;         (list (lambda ()
-;;                 (setq python-shell-interpreter "python3")))))
-
-;; (require 'pyvenv)
-;; (pyvenv-activate "~/Project/venv/")
-
+;; * Load MELPA
 (when (>= emacs-major-version 24)
   (progn
     ;; load emacs 24's package system.
@@ -57,7 +42,6 @@
         neotree
         all-the-icons
         rainbow-delimiters
-        smartparens
         yaml-mode
         dockerfile-mode
         toml-mode
@@ -88,3 +72,4 @@
 ;; 		 ))
 ;;     (mapc load-it (directory-files dir nil "\\.el$"))))
 ;; (load-directory "~/scimax/user/custom/")
+

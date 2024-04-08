@@ -35,9 +35,8 @@
   :config
   (setq heaven-and-hell-theme-type 'light)
   (setq heaven-and-hell-themes
-        '((light . (dichromacy doom-acario-light doom-plain leuven))
-          (dark . (doom-oceanic-next doom-plain-dark misterioso doom-badger leuven-dark))
-	  ))
+        '((light . (doom-acario-light dichromacy doom-plain leuven))
+          (dark . (doom-oceanic-next doom-plain-dark misterioso doom-badger leuven-dark))))
   (setq heaven-and-hell-load-theme-no-confirm t)
   :hook (after-init . heaven-and-hell-init-hook)
   :bind (("C-c <f6>" . heaven-and-hell-load-default-theme)
