@@ -4,7 +4,6 @@
 
 ;; * Set Faces, etc...
 (set-face-attribute 'default nil :height 130)
-(setq org-startup-folded t)
 (global-visual-line-mode t)
 (global-display-fill-column-indicator-mode t)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
@@ -27,6 +26,9 @@
                         (agenda . 5)
                         (registers . 5)))
 (setq dashboard-set-navigator t)
+
+;; * Org Mode Startup
+(setq org-startup-folded t)
 
 ;; * Org Crypt
 (require 'org-crypt)
@@ -130,7 +132,7 @@ buffer's text scale."
           :scale (+ 1.0 (* 0.25 text-scale-mode-amount))))))
 (add-hook 'text-scale-mode-hook #'my/text-scale-adjust-latex-previews)
 
-;; * ETC
+;; * etc
 ;; (setq nb-notebook-directory "~/mountdir/Projects")
 ;; (org-babel-load-file "~/mountdir/emacs/scimax/scimax-notebook.org")
 (setq org-image-actual-width 100)
@@ -140,7 +142,83 @@ buffer's text scale."
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 
-;; Doom long file name error
+
+
+;; * Copy-and-Paste issue for org-src-block
+(defun my-flush-lines ()
+  "Calls flush-lines with a given regexp or ^$"
+  (let ((regexp "^$"))
+    (flush-lines regexp nil nil t)))
+
+(defun myreplace ()
+  "Beautify org src blk after copy and paste from PDF"
+  (interactive)
+  (org-babel-mark-block)
+  (replace-regexp-in-region "’" "'")
+  (indent-for-tab-command)
+  (my-flush-lines))
+
+(global-set-key (kbd "<f4>") 'myreplace)
+
+
+;; * Remove line after :results
+(defun my-remove-line (_a _b)
+  (save-excursion 
+    (previous-line)
+    (beginning-of-line)
+    (when (looking-at-p "\n")
+      (kill-line))))
+
+(advice-add 'org-babel--insert-results-keyword :before #'my-remove-line)
+
+;; **************************************************
+
+;; * Replace function in scimax-ob.el
+;; ;; * create/modify blocks
+
+;; (defun scimax-ob-insert-src-block (&optional below)
+;;   "Insert a src block above the current point.
+;; With prefix arg BELOW, insert it below the current point.
+
+;; If point is in a block, copy the header to the new block"
+;;   (interactive "P")
+;;   (if (org-in-src-block-p)
+;;       (let* ((src (org-element-context))
+;; 	     (start (org-element-property :begin src))
+;; 	     (end (org-element-property :end src))
+;; 	     (lang (org-element-property :language src))
+;; 	     (switches (or (org-element-property :switches src) ""))
+;; 	     (parameters (or (org-element-property :parameters src) ""))
+;; 	     location)
+;; 	(if below
+;; 	    (progn
+;; 	      (goto-char start)
+;; 	      (setq location (org-babel-where-is-src-block-result nil nil))
+;; 	      (if (not  location)
+;; 		  (goto-char end)
+;; 		(goto-char location)
+;; 		(goto-char (org-element-property :end (org-element-context))))
+;; 	      (insert (format "\n#+BEGIN_SRC %s %s %s
+
+;; #+END_SRC\n" lang switches parameters))
+;; 	      (forward-line -2))
+;; 	  ;; after current block
+;; 	  (goto-char (org-element-property :begin (org-element-context)))
+;; 	  (insert (format "\n#+BEGIN_SRC %s %s %s
+
+;; #+END_SRC\n" lang switches parameters))
+;; 	  (forward-line -2)))
+
+;;     ;; Not in a src block, just insert a block
+;;     (beginning-of-line)
+;;     (insert (format "\n#+BEGIN_SRC %s
+;; #+END_SRC\n" (completing-read "Language: " (mapcar 'car org-babel-load-languages))))
+;;     (forward-line -1)))
+;;
+;; ****************************************************
+
+
+;; * Doom long file name error
 ;; (defun doom-make-hashed-auto-save-file-name-a (fn)
 ;;   "Compress the auto-save file name so paths don't get too long."
 ;;   (let ((buffer-file-name
@@ -195,8 +273,6 @@ buffer's text scale."
 ;; (require 'pyvenv)
 ;; (pyvenv-activate "~/Project/venv/")
 
-
-
 ;; Web-Mode
 ;; (require 'web-mode)
 ;; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
@@ -214,9 +290,6 @@ buffer's text scale."
 ;; (setq web-mode-css-indent-offset 2)
 ;; (setq web-mode-enable-auto-pairing t)
 
-
-
-
 ;; (setq org-emphasis-alist
 ;;       '(("*" (bold :foreground "Orange" ))
 ;; 	("/" italic)
@@ -224,7 +297,6 @@ buffer's text scale."
 ;; 	("=" (:background "maroon" :foreground "white"))
 ;; 	("~" (:background "deep sky blue" :foreground "MidnightBlue"))
 ;; 	("+" (:strike-through t))))
-
 
 ;; (setq mac-right-command-modifier 'hyper)
 ;; (setq mac-right-option-modifier 'super)
