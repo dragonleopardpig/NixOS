@@ -1,4 +1,3 @@
-#+PROPERTY: header-args:lisp :results output :session
 * Practical Common Lisp
 ** Intro
 #+BEGIN_SRC lisp :results raw drawer
@@ -2302,7 +2301,7 @@ the front."
 : CONTRAST
 
 ** SDRAW
-#+BEGIN_SRC lisp
+#+BEGIN_SRC lisp :results output
 ;; M-x slime-load-file source/sdraw.lisp
 (sdraw '(alpha (bravo) charlie))
 #+END_SRC
@@ -2316,8 +2315,62 @@ the front."
 :           v
 :          BRAVO
 
+** Trees
+*** SUBST
+- SUBST :: function substitutes one item for another everywhere it appears in a list.
+#+BEGIN_SRC lisp
+(subst 'fred 'bill
+       '(bill jones sent me an itemized
+	 bill for the tires))
+#+END_SRC
+#+RESULTS:
+| FRED | JONES | SENT | ME | AN | ITEMIZED | FRED | FOR | THE | TIRES |
 
 #+BEGIN_SRC lisp  
-
+(subst 'bill 'fred '(keep off the grass))
 #+END_SRC
+#+RESULTS:
+| KEEP | OFF | THE | GRASS |
 
+#+BEGIN_SRC lisp  
+(subst 'on 'off '(keep off the grass))
+#+END_SRC
+#+RESULTS:
+| KEEP | ON | THE | GRASS |
+
+#+BEGIN_SRC lisp  
+(subst 'the 'a
+       '((a hatter) (a hare) and (a dormouse)))
+#+END_SRC
+#+RESULTS:
+| (THE HATTER) | (THE HARE) | AND | (THE DORMOUSE) |
+
+*** SUBLIS
+#+BEGIN_SRC lisp  
+(sublis '((roses . violets)
+	  (red . blue))
+	'(roses are red))
+#+END_SRC
+#+RESULTS:
+| VIOLETS | ARE | BLUE |
+
+#+BEGIN_SRC lisp  
+(setf dotted-words
+      '((one . un)
+	(two . deux)
+	(three . trois)
+	(four . quatre)
+	(five . cinq)))
+#+END_SRC
+#+RESULTS:
+: ((ONE . UN) (TWO . DEUX) (THREE . TROIS) (FOUR . QUATRE) (FIVE . CINQ))
+
+#+BEGIN_SRC lisp  
+(sublis dotted-words '(three one four one five))
+#+END_SRC
+#+RESULTS:
+| TROIS | UN | QUATRE | UN | CINQ |
+
+#+BEGIN_SRC lisp 
+()
+#+END_SRC

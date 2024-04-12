@@ -62,14 +62,11 @@
 	latex-preview-pane
 	org-modern
 	slime
-	nix-mode))
+	nix-mode
+	racket-mode
+	geiser-mit))
 (package-install-selected-packages)
 
-;; ;; ** Load Custom Directory
-;; (defun load-directory (dir)
-;;   (let ((load-it (lambda (f)
-;; 		   (load-file (concat (file-name-as-directory dir) f)))
-;; 		 ))
-;;     (mapc load-it (directory-files dir nil "\\.el$"))))
-;; (load-directory "~/scimax/user/custom/")
-
+;; ** Load Custom Directory Recursively
+(let ((default-directory "~/emacs/user/custom/"))
+  (normal-top-level-add-subdirs-to-load-path))

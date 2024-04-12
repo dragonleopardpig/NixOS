@@ -102,6 +102,7 @@
    (latex . t)
    (lisp . t)
    (nix . t)
+   (racket . t)
    ))
 
 ;; * Latex and preview pane
@@ -170,6 +171,24 @@ buffer's text scale."
       (kill-line))))
 
 (advice-add 'org-babel--insert-results-keyword :before #'my-remove-line)
+
+;; * Racket org babel
+(use-package ob-racket
+  :after org
+  :config
+  (add-hook 'ob-racket-pre-runtime-library-load-hook
+	    #'ob-racket-raco-make-runtime-library)
+  :straight (ob-racket
+	     :type git :host github :repo "hasu/emacs-ob-racket"
+	     :files ("*.el" "*.rkt")))
+
+;; * Company Mode
+(add-hook 'after-init-hook 'global-company-mode)
+
+;; * Magit
+(keymap-global-set "C-x g" 'magit-status)
+(keymap-global-set "C-x M-g" 'magit-dispatch)
+(keymap-global-set "C-c M-g" 'magit-file-dispatch)
 
 ;; **************************************************
 
