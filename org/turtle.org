@@ -1,0 +1,34 @@
+#+PROPERTY: header-args:python :session :results output
+
+#+BEGIN_SRC python
+import turtle
+turtle.width(5)
+rainbow = ["red", "orange", "yellow", "green", "blue", "indigo", "violet",
+           "cyan", "magenta", "black"]
+#+END_SRC
+#+RESULTS:
+
+#+BEGIN_SRC python  
+def concentricCircle(start, end, step):
+    counter = 0
+    for i in range(start, end, step):
+        turtle.color(rainbow[counter])
+        turtle.circle(start + counter * step)
+        counter = counter + 1
+        turtle.up()
+        turtle.right(90)
+        turtle.forward(step)
+        turtle.down()
+        turtle.left(90)
+#+END_SRC
+#+RESULTS:
+
+
+#+BEGIN_SRC python  
+concentricCircle(30, 230, 20)
+#+END_SRC
+#+RESULTS:
+
+#+BEGIN_SRC python  
+
+#+END_SRC
