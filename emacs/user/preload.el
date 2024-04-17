@@ -64,7 +64,8 @@
 	slime
 	nix-mode
 	racket-mode
-	geiser-mit))
+	geiser-mit
+	))
 (package-install-selected-packages)
 
 ;; ** Load Custom Directory Recursively

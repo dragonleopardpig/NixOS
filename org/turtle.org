@@ -1,15 +1,54 @@
-#+PROPERTY: header-args:python :session :results output
+#+PROPERTY: header-args:python :session
 
+* Initial
 #+BEGIN_SRC python
 import turtle
+
 turtle.width(5)
-rainbow = ["red", "orange", "yellow", "green", "blue", "indigo", "violet",
-           "cyan", "magenta", "black"]
+turtle.speed(10)
+rainbow = ["red",
+           "orange",
+           "yellow",
+           "green",
+           "blue",
+           "indigo",
+           "violet",
+           "cyan",
+           "magenta",
+           "black",
+           ]
+#+END_SRC
+
+#+RESULTS:
+: None
+
+* While Loop
+#+BEGIN_SRC python  
+def concentricCircle1(start, end, step):
+    counter = 0
+    while counter < len(rainbow):
+        turtle.color(str(rainbow[counter]))
+        turtle.circle(start + counter * step)
+        counter = counter + 1
+        turtle.up()
+        turtle.right(90)
+        turtle.forward(step)
+        turtle.down()
+        turtle.left(90)
 #+END_SRC
 #+RESULTS:
+: None
+
 
 #+BEGIN_SRC python  
-def concentricCircle(start, end, step):
+concentricCircle1(30, 230, 20)
+#+END_SRC
+#+RESULTS:
+: None
+
+* For Loop
+#+BEGIN_SRC python  
+def concentricCircle2(start, end, step):
     counter = 0
     for i in range(start, end, step):
         turtle.color(rainbow[counter])
@@ -21,14 +60,14 @@ def concentricCircle(start, end, step):
         turtle.down()
         turtle.left(90)
 #+END_SRC
-#+RESULTS:
 
+#+RESULTS:
+: None
 
 #+BEGIN_SRC python  
-concentricCircle(30, 230, 20)
+concentricCircle2(30, 230, 20)
 #+END_SRC
+
 #+RESULTS:
+: None
 
-#+BEGIN_SRC python  
-
-#+END_SRC
