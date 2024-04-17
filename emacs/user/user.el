@@ -102,7 +102,7 @@
    (latex . t)
    (lisp . t)
    (nix . t)
-   (racket . t)
+   ;; (racket . t)
    ))
 
 ;; * Latex and preview pane

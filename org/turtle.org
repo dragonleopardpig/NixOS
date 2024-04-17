@@ -6,18 +6,14 @@ import turtle
 
 turtle.width(5)
 turtle.speed(10)
-rainbow = ["red",
-           "orange",
-           "yellow",
-           "green",
-           "blue",
-           "indigo",
-           "violet",
-           "cyan",
-           "magenta",
-           "black",
+rainbow = ["DarkViolet",
+           "Salmon",
+           "Chocolate",
+           "OliveDrab",
+           "LawnGreen",
+           "DarkCyan",
            ]
-#+END_SRC
+#+End_SRC
 
 #+RESULTS:
 : None
