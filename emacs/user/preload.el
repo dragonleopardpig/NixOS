@@ -69,5 +69,5 @@
 (package-install-selected-packages)
 
 ;; ** Load Custom Directory Recursively
-(let ((default-directory "~/emacs/user/custom/"))
+(let ((default-directory "~/NixOS/emacs/user/custom/"))
   (normal-top-level-add-subdirs-to-load-path))

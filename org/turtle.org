@@ -1,76 +1,73 @@
 #+PROPERTY: header-args:python :session
 
-* Concentric Circles
-#+BEGIN_SRC python :session
+* Initial
+#+BEGIN_SRC python
 import turtle
-
-turtle.home()
-turtle.clear()
 
 turtle.width(5)
 turtle.speed(10)
 rainbow = ["red",
-           "blue"
-           ]
-
-def concentricCircle(radius, step):
-    counter = 0
-    while counter < len(rainbow):
-        turtle.color(rainbow[counter])
-        # Draw Circle
-        turtle.circle(radius + counter * step)
-        # Reposition
-        turtle.up()
-        turtle.right(90)
-        turtle.forward(step)
-        turtle.down()
-        turtle.left(90)
-        # Reset counter
-        counter = counter + 1
-
-concentricCircle(radius=20, step=10)
-#+END_SRC
-#+RESULTS:
-: None
-
-* Concentric Square
-#+BEGIN_SRC python :session
-import turtle
-
-turtle.home()
-turtle.clear()
-
-turtle.width(5)
-turtle.speed(10)
-rainbow = ["red",
-           "blue",
+           "orange",
+           "yellow",
            "green",
-           "magenta"
+           "blue",
+           "indigo",
+           "violet",
+           "cyan",
+           "magenta",
+           "black",
            ]
+#+END_SRC
 
-def concentricSquare(length, step):
+#+RESULTS:
+: None
+
+* While Loop
+#+BEGIN_SRC python  
+def concentricCircle1(start, end, step):
     counter = 0
     while counter < len(rainbow):
-        turtle.color(rainbow[counter])
-        # Draw square
-        turtle.forward(length + 2* counter * step)
-        turtle.left(90)
-        turtle.forward(length + 2* counter * step)
-        turtle.left(90)
-        turtle.forward(length + 2* counter * step)
-        turtle.left(90)
-        turtle.forward(length + 2* counter * step)
-        # Reposition
+        turtle.color(str(rainbow[counter]))
+        turtle.circle(start + counter * step)
+        counter = counter + 1
         turtle.up()
-        turtle.forward(step)
         turtle.right(90)
         turtle.forward(step)
         turtle.down()
-        turtle.left(180)
-        # Reset counter
-        counter = counter + 1
-
-concentricSquare(length=20, step=10)
+        turtle.left(90)
 #+END_SRC
 #+RESULTS:
 : None
+
+
+#+BEGIN_SRC python  
+concentricCircle1(30, 230, 20)
+#+END_SRC
+#+RESULTS:
+: None
+
+* For Loop
+#+BEGIN_SRC python  
+def concentricCircle2(start, end, step):
+    counter = 0
+    for i in range(start, end, step):
+        turtle.color(rainbow[counter])
+        turtle.circle(start + counter * step)
+        counter = counter + 1
+        turtle.up()
+        turtle.right(90)
+        turtle.forward(step)
+        turtle.down()
+        turtle.left(90)
+#+END_SRC
+
+#+RESULTS:
+: None
+
+#+BEGIN_SRC python  
+concentricCircle2(30, 230, 20)
+#+END_SRC
+
+#+RESULTS:
+: None
+
