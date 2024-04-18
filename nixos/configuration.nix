@@ -158,8 +158,12 @@
       sympy 
       pandas
       jupyter-book
+      tkinter
     ]))
     jupyter-all
+    julia
+    racket
+    meld
   ];
   
   # Some programs need SUID wrappers, can be configured further or are
