@@ -10,7 +10,10 @@ turtle.reset()
 turtle.width(5)
 turtle.speed(10)
 rainbow = ["red",
-           "blue"
+           "blue",
+           "Tomato",
+           "LawnGreen",
+           "#1e90ff"
            ]
 
 def concentricCircle(radius, step):
@@ -41,11 +44,25 @@ turtle.clear()
 turtle.reset()
 
 turtle.width(5)
-turtle.speed(2)
+turtle.speed(10)
 rainbow = ["red",
            "blue",
            "green",
-           "magenta"
+           "magenta",
+           "OliveDrab",
+           "LawnGreen",
+           "DodgerBlue",
+           "SkyBlue",
+           "SteelBlue",
+           "Chocolate",
+           "ForestGreen",
+           "Aquamarine",
+           "DarkSeaGreen",
+           "PowderBlue",
+           "Red2",
+           "Red1",
+           "Gainsboro",
+           "Azure2",
            ]
 
 def concentricSquare(length, step):
@@ -70,7 +87,7 @@ def concentricSquare(length, step):
         # Reset counter
         counter = counter + 1
 
-concentricSquare(length=20, step=10)
+concentricSquare(length=10, step=10)
 #+END_SRC
 #+RESULTS:
 : None
@@ -82,22 +99,26 @@ import turtle
 turtle.home()
 turtle.clear()
 
-turtle.width(5)
-turtle.speed(10)
-
-turtle.color("red")
+def setup():
+    turtle.width(5)
+    turtle.speed(10)
+    turtle.color("red")
 
 screen = turtle.Screen()
+setup()
 
 def point(i, j):
-  turtle.goto(i, j)
-  turtle.write(str(i) + "," + str(j))
+    setup()
+    turtle.goto(i, j)
+    turtle.write(str(i) + "," + str(j))
 
-def my():
-    turtle.clearscreen()
+def clear_turtle(x, y):
+    turtle.clear()
+    turtle.reset()
+    setup()
 
-screen.onclick(my, btn=2)
-Screen.onclick(point, btn=3)
+screen.onclick(clear_turtle, btn=2)
+screen.onclick(point, btn=3)
 screen.onclick(turtle.ondrag(turtle.goto), btn=1)
 screen.listen()
 screen.mainloop()
