@@ -4,8 +4,8 @@
 #+BEGIN_SRC python :session
 import turtle
 
-turtle.home()
 turtle.clear()
+turtle.reset()
 
 turtle.width(5)
 turtle.speed(10)
@@ -37,11 +37,11 @@ concentricCircle(radius=20, step=10)
 #+BEGIN_SRC python :session
 import turtle
 
-turtle.home()
 turtle.clear()
+turtle.reset()
 
 turtle.width(5)
-turtle.speed(10)
+turtle.speed(2)
 rainbow = ["red",
            "blue",
            "green",
@@ -71,6 +71,36 @@ def concentricSquare(length, step):
         counter = counter + 1
 
 concentricSquare(length=20, step=10)
+#+END_SRC
+#+RESULTS:
+: None
+
+* On-Click
+#+BEGIN_SRC python :session
+import turtle
+
+turtle.home()
+turtle.clear()
+
+turtle.width(5)
+turtle.speed(10)
+
+turtle.color("red")
+
+screen = turtle.Screen()
+
+def point(i, j):
+  turtle.goto(i, j)
+  turtle.write(str(i) + "," + str(j))
+
+def my():
+    turtle.clearscreen()
+
+screen.onclick(my, btn=2)
+Screen.onclick(point, btn=3)
+screen.onclick(turtle.ondrag(turtle.goto), btn=1)
+screen.listen()
+screen.mainloop()
 #+END_SRC
 #+RESULTS:
 : None
