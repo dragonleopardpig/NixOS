@@ -64,10 +64,9 @@
 	slime
 	nix-mode
 	racket-mode
-	geiser-mit
-	))
+	geiser-mit))
 (package-install-selected-packages)
 
 ;; ** Load Custom Directory Recursively
-(let ((default-directory "~/NixOS/emacs/user/custom/"))
+(let ((default-directory "~/emacs/user/custom/"))
   (normal-top-level-add-subdirs-to-load-path))

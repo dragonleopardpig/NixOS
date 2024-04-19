@@ -60,7 +60,7 @@
 ;; 		    ("sh" (:background "#2C001E" :extend t))
 ;; 		    ("jupyter-python" (:background "#001f26" :extend t))
 ;; 		    ("ipython" (:background "HotPink4" :extend t))
-;; 		    ("python" (:background "PaleVioletRed4" :extend t))
+;; 		    ("python" (:background "#1d2100" :extend t))
 ;; 		    ("sqlite" (:background "#a24224" :extend t))
 ;; 		    ("haskell" (:background "#4200a2" :extend t))
 ;; 		    ("nix" (:background "maroon" :extend t))

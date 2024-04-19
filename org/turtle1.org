@@ -7,7 +7,7 @@ import turtle
 turtle.clear()
 turtle.reset()
 
-turtle.width(5)
+turtle.width(10)
 turtle.speed(10)
 rainbow = ["red",
            "blue",
@@ -43,7 +43,7 @@ import turtle
 turtle.clear()
 turtle.reset()
 
-turtle.width(5)
+turtle.width(10)
 turtle.speed(10)
 rainbow = ["red",
            "blue",
@@ -124,4 +124,3 @@ screen.listen()
 screen.mainloop()
 #+END_SRC
 #+RESULTS:
-: None
