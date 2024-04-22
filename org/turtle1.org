@@ -1,20 +1,21 @@
 #+PROPERTY: header-args:python :session
 
 * Concentric Circles
-#+BEGIN_SRC python :session
+#+BEGIN_SRC python
 import turtle
 
 turtle.clear()
 turtle.reset()
 
-turtle.width(10)
+turtle.width(5)
 turtle.speed(10)
-rainbow = ["red",
-           "blue",
-           "Tomato",
-           "LawnGreen",
-           "#1e90ff"
-           ]
+rainbow = [
+    "red",
+    "blue",
+    "Tomato",
+    "LawnGreen",
+    "#1e90ff",
+]
 
 def concentricCircle(radius, step):
     counter = 0
@@ -26,8 +27,8 @@ def concentricCircle(radius, step):
         turtle.up()
         turtle.right(90)
         turtle.forward(step)
-        turtle.down()
         turtle.left(90)
+        turtle.down()
         # Reset counter
         counter = counter + 1
 
@@ -37,33 +38,34 @@ concentricCircle(radius=20, step=10)
 : None
 
 * Concentric Square
-#+BEGIN_SRC python :session
+#+BEGIN_SRC python
 import turtle
 
 turtle.clear()
 turtle.reset()
 
-turtle.width(10)
+turtle.width(5)
 turtle.speed(10)
-rainbow = ["red",
-           "blue",
-           "green",
-           "magenta",
-           "OliveDrab",
-           "LawnGreen",
-           "DodgerBlue",
-           "SkyBlue",
-           "SteelBlue",
-           "Chocolate",
-           "ForestGreen",
-           "Aquamarine",
-           "DarkSeaGreen",
-           "PowderBlue",
-           "Red2",
-           "Red1",
-           "Gainsboro",
-           "Azure2",
-           ]
+rainbow = [
+    "red",
+    "blue",
+    "green",
+    "magenta",
+    "OliveDrab",
+    "LawnGreen",
+    "DodgerBlue",
+    "SkyBlue",
+    "SteelBlue",
+    "Chocolate",
+    "ForestGreen",
+    "Aquamarine",
+    "DarkSeaGreen",
+    "PowderBlue",
+    "Red2",
+    "Red1",
+    "Gainsboro",
+    "Azure2",
+]
 
 def concentricSquare(length, step):
     counter = 0
@@ -82,8 +84,8 @@ def concentricSquare(length, step):
         turtle.forward(step)
         turtle.right(90)
         turtle.forward(step)
-        turtle.down()
         turtle.left(180)
+        turtle.down()
         # Reset counter
         counter = counter + 1
 
@@ -92,15 +94,57 @@ concentricSquare(length=10, step=10)
 #+RESULTS:
 : None
 
+* Concentric Triangle
+#+BEGIN_SRC python
+import turtle
+
+turtle.clear()
+turtle.reset()
+
+turtle.width(5)
+turtle.speed(10)
+rainbow = [
+    "red",
+    "blue",
+    "green",
+    "magenta",
+]
+
+def concentricTriangle(length, step):
+    counter = 0
+    while counter < len(rainbow):
+        turtle.color(rainbow[counter])
+        # Draw square
+        turtle.forward(length + 4*counter * step)
+        turtle.left(120)
+        turtle.forward(length + 4*counter * step)
+        turtle.left(120)
+        turtle.forward(length + 4*counter * step)
+        # Reposition
+        turtle.up()
+        turtle.left(30)
+        turtle.forward(step)
+        turtle.right(90)
+        turtle.forward(2*step)
+        turtle.left(180)
+        turtle.down()
+        # Reset counter
+        counter = counter + 1
+
+concentricTriangle(length=50, step=10)
+#+END_SRC
+#+RESULTS:
+: None
+
 * On-Click
-#+BEGIN_SRC python :session
+#+BEGIN_SRC python
 import turtle
 
 turtle.home()
 turtle.clear()
 
 def setup():
-    turtle.width(5)
+    turtle.width(10)
     turtle.speed(10)
     turtle.color("red")
 
@@ -124,3 +168,4 @@ screen.listen()
 screen.mainloop()
 #+END_SRC
 #+RESULTS:
+: None
