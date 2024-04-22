@@ -72,13 +72,14 @@ def concentricSquare(length, step):
     while counter < len(rainbow):
         turtle.color(rainbow[counter])
         # Draw square
-        turtle.forward(length + 2* counter * step)
+        side = length + 2 * counter * step
+        turtle.forward(side)
         turtle.left(90)
-        turtle.forward(length + 2* counter * step)
+        turtle.forward(side)
         turtle.left(90)
-        turtle.forward(length + 2* counter * step)
+        turtle.forward(side)
         turtle.left(90)
-        turtle.forward(length + 2* counter * step)
+        turtle.forward(side)
         # Reposition
         turtle.up()
         turtle.forward(step)
@@ -97,6 +98,7 @@ concentricSquare(length=10, step=10)
 * Concentric Triangle
 #+BEGIN_SRC python
 import turtle
+import math
 
 turtle.clear()
 turtle.reset()
@@ -108,30 +110,46 @@ rainbow = [
     "blue",
     "green",
     "magenta",
+    "OliveDrab",
+    "LawnGreen",
+    "DodgerBlue",
+    "SkyBlue",
+    "SteelBlue",
+    "Chocolate",
+    "ForestGreen",
+    "Aquamarine",
+    "DarkSeaGreen",
+    "PowderBlue",
+    "Red2",
+    "Red1",
+    "Gainsboro",
+    "Azure2",
 ]
 
 def concentricTriangle(length, step):
     counter = 0
     while counter < len(rainbow):
         turtle.color(rainbow[counter])
-        # Draw square
-        turtle.forward(length + 4*counter * step)
+        # Draw triangle
+        delta = step*math.tan(math.radians(30))
+        side = length + 2*counter*(step + delta)
+        turtle.forward(side)
         turtle.left(120)
-        turtle.forward(length + 4*counter * step)
+        turtle.forward(side)
         turtle.left(120)
-        turtle.forward(length + 4*counter * step)
+        turtle.forward(side)
         # Reposition
         turtle.up()
         turtle.left(30)
         turtle.forward(step)
         turtle.right(90)
-        turtle.forward(2*step)
+        turtle.forward(step + delta)
         turtle.left(180)
         turtle.down()
         # Reset counter
         counter = counter + 1
-
-concentricTriangle(length=50, step=10)
+        
+concentricTriangle(length=20, step=10)
 #+END_SRC
 #+RESULTS:
 : None
