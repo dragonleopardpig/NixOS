@@ -103,7 +103,7 @@ import math
 turtle.clear()
 turtle.reset()
 
-turtle.width(5)
+turtle.width(3)
 turtle.speed(10)
 rainbow = [
     "red",
@@ -112,18 +112,6 @@ rainbow = [
     "magenta",
     "OliveDrab",
     "LawnGreen",
-    "DodgerBlue",
-    "SkyBlue",
-    "SteelBlue",
-    "Chocolate",
-    "ForestGreen",
-    "Aquamarine",
-    "DarkSeaGreen",
-    "PowderBlue",
-    "Red2",
-    "Red1",
-    "Gainsboro",
-    "Azure2",
 ]
 
 def concentricTriangle(length, step):
@@ -148,8 +136,67 @@ def concentricTriangle(length, step):
         turtle.down()
         # Reset counter
         counter = counter + 1
-        
-concentricTriangle(length=20, step=10)
+
+concentricTriangle(length=100, step=20)
+#+END_SRC
+#+RESULTS:
+: None
+
+* Concentric Rectangle
+#+BEGIN_SRC python
+import turtle
+
+turtle.clear()
+turtle.reset()
+
+turtle.width(5)
+turtle.speed(10)
+rainbow = [
+    "red",
+    "blue",
+    "green",
+    "magenta",
+    "OliveDrab",
+    "LawnGreen",
+    "DodgerBlue",
+    "SkyBlue",
+    "SteelBlue",
+    "Chocolate",
+    "ForestGreen",
+    "Aquamarine",
+    "DarkSeaGreen",
+    "PowderBlue",
+    "Red2",
+    "Red1",
+    "Gainsboro",
+    "Azure2",
+]
+
+def concentricSquare(length1, length2, step):
+    counter = 0
+    while counter < len(rainbow):
+        turtle.color(rainbow[counter])
+        # Draw square
+        side1 = length1 + 2 * counter * step
+        side2 = length2 + 2 * counter * step
+        turtle.forward(side1)
+        turtle.left(90)
+        turtle.forward(side2)
+        turtle.left(90)
+        turtle.forward(side1)
+        turtle.left(90)
+        turtle.forward(side2)
+        # Reposition
+        turtle.up()
+        turtle.forward(step)
+        turtle.right(90)
+        turtle.forward(step)
+        turtle.left(180)
+        turtle.down()
+        # Reset counter
+        counter = counter + 1
+
+concentricSquare(length1=50, length2=30, step=10)
 #+END_SRC
 #+RESULTS:
 : None
