@@ -256,16 +256,16 @@ pen=turtle.Turtle()
 
 pen.speed(0) # so it moves with fastest speed
 pen.penup() #pen goes up as we don't want to draw on line.
-pen.goto(-200,200) #this is x and y position from center of the screen
+pen.goto(-200,300) #this is x and y position from center of the screen
 pen.pendown() # pen placed down again
 
 for i in range(1,11): # this will run from 1 to 10 
 	pen.write(i,font=('Arial',10)) #writing the race track number before each line
 	pen.setheading(-90) #this will point pen in downward direction
-	pen.forward(250) #draw a line of 250 pixels length.
+	pen.forward(500) #draw a line of 250 pixels length.
 	if i==10: # this if condition will be true only if the iterating variable is 10 
 		pen.write(" FINISH",font=('Arial',14))
-	pen.back(250) #goes back
+	pen.back(500) #goes back
 	pen.penup() #pen goes up as we don't want to draw on line
 	pen.setheading(0) #pen points in right direction
 	pen.forward(50)  #space of 50 pixes between each line
@@ -282,10 +282,14 @@ def createTurtlePlayer(color, startx, starty):
 	player.pendown() #pen placed down
 	return player #returns the turtle player object.
 
-p1=createTurtlePlayer('red',-210,150) #red colored turtle at x position before 1st Line and y position 150
-p2=createTurtlePlayer('blue',-210,100) #blue colored turtle at x position before 1st Line and y position 100
-p3=createTurtlePlayer('orange',-210,50) #orange colored turtle at x position before 1st Line and y position 50
-p4=createTurtlePlayer('green',-210,0) #green colored turtle at x position before 1st Line and y position 0
+p1=createTurtlePlayer('red',-210,250) #red colored turtle at x position before 1st Line and y position 150
+p2=createTurtlePlayer('blue',-210,200) #blue colored turtle at x position before 1st Line and y position 100
+p3=createTurtlePlayer('orange',-210,150) #orange colored turtle at x position before 1st Line and y position 50
+p4=createTurtlePlayer('green',-210,100) #green colored turtle at x position before 1st Line and y position 0
+p5=createTurtlePlayer('yellow',-210,50) #red colored turtle at x position before 1st Line and y position 150
+p6=createTurtlePlayer('indigo',-210,0) #blue colored turtle at x position before 1st Line and y position 100
+p7=createTurtlePlayer('cyan',-210,-50) #orange colored turtle at x position before 1st Line and y position 50
+p8=createTurtlePlayer('pink',-210,-100) #green colored turtle at x position before 1st Line and y position 0
 
 while True:
 	p1.forward(random.randint(5,10))
@@ -304,7 +308,22 @@ while True:
 	if p4.pos()[0]>=finishLineX:
 		p4.write('   I won the race!!',font=('Arial',20))
 		break
-
+	p5.forward(random.randint(5,10))
+	if p5.pos()[0]>=finishLineX:
+		p5.write('   I won the race!!',font=('Arial',20))
+		break
+	p6.forward(random.randint(5,10))
+	if p6.pos()[0]>=finishLineX:
+		p6.write('   I won the race!!',font=('Arial',20))
+		break
+	p7.forward(random.randint(5,10))
+	if p7.pos()[0]>=finishLineX:
+		p7.write('   I won the race!!',font=('Arial',20))
+		break
+	p8.forward(random.randint(5,10))
+	if p8.pos()[0]>=finishLineX:
+		p8.write('   I won the race!!',font=('Arial',20))
+		break
 # turtle.done()
 #+END_SRC
 #+RESULTS:
