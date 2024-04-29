@@ -2374,3 +2374,865 @@ the front."
 #+BEGIN_SRC lisp 
 ()
 #+END_SRC
+
+* LAND OF LISP
+** Guess My Number
+#+BEGIN_SRC lisp
+(defparameter *small* 1)
+#+END_SRC
+#+RESULTS:
+: *SMALL*
+
+#+BEGIN_SRC lisp  
+(defparameter *big* 100)
+#+END_SRC
+#+RESULTS:
+: *BIG*
+
+#+BEGIN_SRC lisp  
+(defparameter *foo* 5)
+*foo*
+#+END_SRC
+#+RESULTS:
+: 5
+
+#+BEGIN_SRC lisp  
+(defparameter *foo* 6)
+*foo*
+#+END_SRC
+#+RESULTS:
+: 6
+
+#+BEGIN_SRC lisp  
+(defvar *foo* 5)
+*foo*
+#+END_SRC
+#+RESULTS:
+: 6
+
+#+BEGIN_SRC lisp  
+(defvar *foo* 6)
+*foo*
+#+END_SRC
+#+RESULTS:
+: 6
+
+#+BEGIN_SRC lisp  
+(defun guess-my-number ()
+  (ash (+ *small* *big*) -1))
+#+END_SRC
+#+RESULTS:
+: GUESS-MY-NUMBER
+
+#+BEGIN_SRC lisp  
+(ash 11 1)
+#+END_SRC
+#+RESULTS:
+: 22
+
+#+BEGIN_SRC lisp  
+(ash 11 -1)
+#+END_SRC
+#+RESULTS:
+: 5
+
+#+BEGIN_SRC lisp  
+(guess-my-number)
+#+END_SRC
+#+RESULTS:
+: 50
+
+#+BEGIN_SRC lisp  
+(defun smaller ()
+  (setf *big* (1- (guess-my-number)))
+  (guess-my-number))
+#+END_SRC
+#+RESULTS:
+: SMALLER
+
+#+BEGIN_SRC lisp  
+(defun bigger ()
+  (setf *small* (1+ (guess-my-number)))
+  (guess-my-number))
+#+END_SRC
+#+RESULTS:
+: BIGGER
+
+#+BEGIN_SRC lisp  
+(bigger)
+#+END_SRC
+#+RESULTS:
+: 75
+
+#+BEGIN_SRC lisp  
+(smaller)
+#+END_SRC
+#+RESULTS:
+: 62
+
+#+BEGIN_SRC lisp  
+(smaller)
+#+END_SRC
+#+RESULTS:
+: 56
+
+#+BEGIN_SRC lisp  
+(defun start-over ()
+  (defparameter *small* 1)
+  (defparameter *big* 100)
+  (guess-my-number))
+#+END_SRC
+#+RESULTS:
+: START-OVER
+
+#+BEGIN_SRC lisp  
+(let ((a 5)
+      (b 6))
+  (+ a b))
+#+END_SRC
+#+RESULTS:
+: 11
+
+#+BEGIN_SRC lisp  
+(flet ((f (n)
+	 (+ n 10)))
+  (f 5))
+#+END_SRC
+#+RESULTS:
+: 15
+
+#+BEGIN_SRC lisp  
+(flet ((f (n)
+	 (+ n 10))
+       (g (n)
+	 (- n 3)))
+  (g (f 5)))
+#+END_SRC
+#+RESULTS:
+: 12
+
+#+BEGIN_SRC lisp  
+(labels ((a (n)
+	   (+ n 5))
+	 (b (n)
+	   (+ (a n) 6)))
+  (b 10))
+#+END_SRC
+#+RESULTS:
+: 21
+
+** Symbols
+#+BEGIN_SRC lisp  
+(eq 'fooo 'FoOo)
+#+END_SRC
+#+RESULTS:
+: T
+
+** Numbers
+#+BEGIN_SRC lisp  
+(+ 1 1.0)
+#+END_SRC
+#+RESULTS:
+: 2.0
+
+#+BEGIN_SRC lisp  
+(expt 53 53)
+#+END_SRC
+#+RESULTS:
+: 24356848165022712132477606520104725518533453128685640844505130879576720609150223301256150373
+
+#+BEGIN_SRC lisp  
+(/ 4 6)
+#+END_SRC
+#+RESULTS:
+: 2/3
+
+#+BEGIN_SRC lisp  
+(/ 4.0 6)
+#+END_SRC
+#+RESULTS:
+: 0.6666667
+
+** String
+#+BEGIN_SRC lisp  
+(princ "Tutti Frutti")
+#+END_SRC
+#+RESULTS:
+: Tutti Frutti
+
+#+BEGIN_SRC lisp  
+(princ "He yelled \"Stop that thief!\" from the busy street.")
+#+END_SRC
+#+RESULTS:
+: He yelled "Stop that thief!" from the busy street.
+
+** Code Mode
+#+BEGIN_SRC lisp  
+(expt 2 3)
+#+END_SRC
+#+RESULTS:
+: 8
+
+** Data Mode
+#+BEGIN_SRC lisp  
+'(expt 2 3)
+#+END_SRC
+#+RESULTS:
+| EXPT | 2 | 3 |
+
+** CONS
+#+BEGIN_SRC lisp  
+(cons 'chicken 'cat)
+#+END_SRC
+#+RESULTS:
+: (CHICKEN . CAT)
+
+#+BEGIN_SRC lisp  
+(cons 'chicken 'nil)
+#+END_SRC
+#+RESULTS:
+| CHICKEN |
+
+#+BEGIN_SRC lisp  
+(cons 'chicken ())
+#+END_SRC
+#+RESULTS:
+| CHICKEN |
+
+#+BEGIN_SRC lisp  
+(cons 'pork '(beef chicken))
+#+END_SRC
+#+RESULTS:
+| PORK | BEEF | CHICKEN |
+
+#+BEGIN_SRC lisp  
+(cons 'beef (cons 'chicken ()))
+#+END_SRC
+#+RESULTS:
+| BEEF | CHICKEN |
+
+#+BEGIN_SRC lisp  
+(cons 'pork (cons 'beef (cons 'chicken ())))
+#+END_SRC
+#+RESULTS:
+| PORK | BEEF | CHICKEN |
+
+** CAR and CDR
+#+BEGIN_SRC lisp  
+(car '(pork beef chicken))
+#+END_SRC
+#+RESULTS:
+: PORK
+
+#+BEGIN_SRC lisp  
+(cdr '(pork beef chicken))
+#+END_SRC
+#+RESULTS:
+| BEEF | CHICKEN |
+
+#+BEGIN_SRC lisp  
+(car (cdr '(pork beef chicken)))
+#+END_SRC
+#+RESULTS:
+: BEEF
+
+#+BEGIN_SRC lisp  
+(cadr '(pork beef chicken))
+#+END_SRC
+#+RESULTS:
+: BEEF
+
+** LIST
+#+BEGIN_SRC lisp  
+(list 'pork 'beef 'chicken)
+#+END_SRC
+#+RESULTS:
+| PORK | BEEF | CHICKEN |
+
+** Nested List
+- car :: getting the thing out of the first slot of a cell
+- cdr :: grab the value out of the second slot, or the remainder of a list
+- cddr :: cdr -> cdr
+- cdar :: car -> cdr
+- caddr :: cdr -> cdr -> car
+- cddar :: car -> cdr - cdr
+- cadadr :: cdr -> car -> cdr -> car
+
+#+BEGIN_SRC lisp  
+'(cat (duck bat) ant)
+#+END_SRC
+#+RESULTS:
+| CAT | (DUCK BAT) | ANT |
+
+#+BEGIN_SRC lisp  
+(car '((peas carrots tomatoes) (pork beef chicken)))
+#+END_SRC
+#+RESULTS:
+| PEAS | CARROTS | TOMATOES |
+
+#+BEGIN_SRC lisp  
+(cdr '(peas carrots tomatoes))
+#+END_SRC
+#+RESULTS:
+| CARROTS | TOMATOES |
+
+#+BEGIN_SRC lisp  
+(cdr (car '((peas carrots tomatoes) (pork beef chicken))))
+#+END_SRC
+#+RESULTS:
+| CARROTS | TOMATOES |
+
+#+BEGIN_SRC lisp  
+(cdar '((peas carrots tomatoes) (pork beef chicken)))
+#+END_SRC
+#+RESULTS:
+| CARROTS | TOMATOES |
+
+#+BEGIN_SRC lisp  
+(cons (cons 'peas (cons 'carrots (cons 'tomatoes ())))
+      (cons (cons 'pork (cons 'beef (cons 'chicken ()))) ()))
+#+END_SRC
+#+RESULTS:
+| PEAS | CARROTS | TOMATOES |
+| PORK | BEEF    | CHICKEN  |
+
+#+BEGIN_SRC lisp  
+(cddr '((peas carrots tomatoes) (pork beef chicken) duck))
+#+END_SRC
+#+RESULTS:
+| DUCK |
+
+#+BEGIN_SRC lisp  
+(caddr '((peas carrots tomatoes) (pork beef chicken) duck))
+#+END_SRC
+#+RESULTS:
+: DUCK
+
+#+BEGIN_SRC lisp  
+(cddar '((peas carrots tomatoes) (pork beef chicken) duck))
+#+END_SRC
+#+RESULTS:
+| TOMATOES |
+
+#+BEGIN_SRC lisp  
+(cadadr '((peas carrots tomatoes) (pork beef chicken) duck))
+#+END_SRC
+#+RESULTS:
+: BEEF
+
+** Empty Equals False
+#+BEGIN_SRC lisp  
+(if '()
+    'i-am-true
+    'i-am-false)
+#+END_SRC
+#+RESULTS:
+: I-AM-FALSE
+
+#+BEGIN_SRC lisp  
+(if '(1)
+    'i-am-true
+    'i-am-false)
+#+END_SRC
+#+RESULTS:
+: I-AM-TRUE
+
+#+BEGIN_SRC lisp  
+(defun my-length (list)
+  (if list
+      (1+ (my-length (cdr list)))
+      0))
+#+END_SRC
+#+RESULTS:
+: MY-LENGTH
+
+#+BEGIN_SRC lisp  
+(my-length '(list with four symbols))
+#+END_SRC
+#+RESULTS:
+: 4
+
+#+BEGIN_SRC lisp  
+(my-length ())
+#+END_SRC
+#+RESULTS:
+: 0
+
+#+BEGIN_SRC lisp  
+(eq '() nil)
+#+END_SRC
+#+RESULTS:
+: T
+
+#+BEGIN_SRC lisp  
+(eq '() ())
+#+END_SRC
+#+RESULTS:
+: T
+
+#+BEGIN_SRC lisp  
+(eq '() 'nil)
+#+END_SRC
+#+RESULTS:
+: T
+
+** If
+#+BEGIN_SRC lisp  
+(if (= (+ 1 2) 3)
+    'yup
+    'nope)
+#+END_SRC
+#+RESULTS:
+: YUP
+
+#+BEGIN_SRC lisp  
+(if (= (+ 1 2) 4)
+    'yup
+    'nope)
+#+END_SRC
+#+RESULTS:
+: NOPE
+
+#+BEGIN_SRC lisp  
+(if '(1)
+    'the-list-has-stuff-in-it
+    'the-list-is-empty)
+#+END_SRC
+#+RESULTS:
+: THE-LIST-HAS-STUFF-IN-IT
+
+#+BEGIN_SRC lisp  
+(if '()
+    'the-list-has-stuff-in-it
+    'the-list-is-empty)
+#+END_SRC
+#+RESULTS:
+: THE-LIST-IS-EMPTY
+
+#+BEGIN_SRC lisp  
+(if (oddp 5)
+    'odd-number
+    'even-number)
+#+END_SRC
+#+RESULTS:
+: ODD-NUMBER
+
+#+BEGIN_SRC lisp  
+(if (oddp 5)
+    'odd-number
+    (/ 1 0))
+#+END_SRC
+#+RESULTS:
+: ODD-NUMBER
+
+** PRGN
+#+BEGIN_SRC lisp  
+(defvar *number-was-odd* nil)
+#+END_SRC
+#+RESULTS:
+: *NUMBER-WAS-ODD*
+
+#+BEGIN_SRC lisp  
+(if (oddp 5)
+    (progn (setf *number-was-odd* t)
+	   'odd-number)
+    'even-number)
+#+END_SRC
+#+RESULTS:
+: ODD-NUMBER
+
+#+BEGIN_SRC lisp  
+*number-was-odd*
+#+END_SRC
+#+RESULTS:
+: T
+
+** WHEN
+#+BEGIN_SRC lisp  
+(defvar *number-is-odd* nil)
+#+END_SRC
+#+RESULTS:
+: *NUMBER-IS-ODD*
+
+#+BEGIN_SRC lisp  
+(when (oddp 5)
+  (setf *number-is-odd* t)
+  'odd-number)
+#+END_SRC
+#+RESULTS:
+: ODD-NUMBER
+
+#+BEGIN_SRC lisp  
+*number-is-odd*
+#+END_SRC
+#+RESULTS:
+: T
+
+** UNLESS
+#+BEGIN_SRC lisp  
+(unless (oddp 4)
+  (setf *number-is-odd* nil)
+  'even-number)
+#+END_SRC
+#+RESULTS:
+: EVEN-NUMBER
+
+#+BEGIN_SRC lisp  
+*number-is-odd*
+#+END_SRC
+#+RESULTS:
+: NIL
+
+** COND
+#+BEGIN_SRC lisp  
+(defvar *arch-enemy* nil)
+#+END_SRC
+#+RESULTS:
+: *ARCH-ENEMY*
+
+#+BEGIN_SRC lisp  
+(defun pudding-eater (person)
+  (cond ((eq person 'henry) (setf *arch-enemy* 'stupid-lisp-alien)
+	 '(curse you lisp alien – you ate my pudding))
+	((eq person 'johnny) (setf *arch-enemy* 'useless-old-johnny)
+	 '(i hope you choked on my pudding johnny))
+	(t
+	 '(why you eat my pudding stranger ?))))
+#+END_SRC
+#+RESULTS:
+: PUDDING-EATER
+
+#+BEGIN_SRC lisp  
+(pudding-eater 'johnny)
+#+END_SRC
+#+RESULTS:
+| I | HOPE | YOU | CHOKED | ON | MY | PUDDING | JOHNNY |
+
+#+BEGIN_SRC lisp  
+*arch-enemy*
+#+END_SRC
+#+RESULTS:
+: USELESS-OLD-JOHNNY
+
+#+BEGIN_SRC lisp  
+(pudding-eater 'george-clooney)
+#+END_SRC
+#+RESULTS:
+: (WHY YOU EAT MY PUDDING STRANGER ?)
+
+** CASE
+#+BEGIN_SRC lisp  
+(defun pudding-eater (person)
+  (case person
+    ((henry)
+     (setf *arch-enemy* 'stupid-lisp-alien)
+     '(curse you lisp alien – you ate my pudding))
+    ((johnny) (setf *arch-enemy* 'useless-old-johnny)
+     '(i hope you choked on my pudding johnny))
+    (otherwise '(why you eat my pudding stranger ?))))
+#+END_SRC
+#+RESULTS:
+: PUDDING-EATER
+
+** AND
+#+BEGIN_SRC lisp  
+(and (oddp 5) (oddp 7) (oddp 9))
+#+END_SRC
+#+RESULTS:
+: T
+
+** OR
+#+BEGIN_SRC lisp  
+(or (oddp 4) (oddp 7) (oddp 8))
+#+END_SRC
+#+RESULTS:
+: T
+
+** Using Functions That Return More than Just the Truth
+#+BEGIN_SRC lisp  
+(defparameter *is-it-even* nil)
+#+END_SRC
+#+RESULTS:
+: *IS-IT-EVEN*
+
+#+BEGIN_SRC lisp  
+(or (oddp 4) (setf *is-it-even* t))
+#+END_SRC
+#+RESULTS:
+: T
+
+#+BEGIN_SRC lisp  
+*is-it-even*
+#+END_SRC
+#+RESULTS:
+: T
+
+#+BEGIN_SRC lisp  
+(defparameter *is-it-even* nil)
+#+END_SRC
+#+RESULTS:
+: *IS-IT-EVEN*
+
+#+BEGIN_SRC lisp  
+(or (oddp 5) (setf *is-it-even* t))
+#+END_SRC
+#+RESULTS:
+: T
+
+#+BEGIN_SRC lisp  
+*is-it-even*
+#+END_SRC
+#+RESULTS:
+: NIL
+
+#+BEGIN_SRC lisp  
+(if (member 1 '(3 4 1 5))
+    'one-is-in-the-list
+    'one-is-not-in-the-list)
+#+END_SRC
+#+RESULTS:
+: ONE-IS-IN-THE-LIST
+
+#+BEGIN_SRC lisp  
+(member 1 '(3 4 1 5))
+#+END_SRC
+#+RESULTS:
+| 1 | 5 |
+
+#+BEGIN_SRC lisp  
+(if (member nil '(3 4 nil 5))
+    'nil-is-in-the-list
+    'nil-is-not-in-the-list)
+#+END_SRC
+#+RESULTS:
+: NIL-IS-IN-THE-LIST
+
+** FIND-IF
+#+BEGIN_SRC lisp  
+(find-if #'oddp '(2 4 5 6))
+#+END_SRC
+#+RESULTS:
+: 5
+
+#+BEGIN_SRC lisp  
+(if (find-if #'oddp '(2 4 5 6))
+    'there-is-an-odd-number
+    'there-is-no-odd-number)
+#+END_SRC
+#+RESULTS:
+: THERE-IS-AN-ODD-NUMBER
+
+#+BEGIN_SRC lisp  
+(find-if #'null '(2 4 nil 6))
+#+END_SRC
+#+RESULTS:
+: NIL
+
+** EQ
+#+BEGIN_SRC lisp  
+(defparameter *fruit* 'apple)
+#+END_SRC
+#+RESULTS:
+: *FRUIT*
+
+#+BEGIN_SRC lisp  
+(cond ((eq *fruit* 'apple) 'its-an-apple)
+      ((eq *fruit* 'orange) 'its-an-orange))
+#+END_SRC
+#+RESULTS:
+: ITS-AN-APPLE
+
+** EQUAL
+#+BEGIN_SRC lisp  
+;;comparing symbols
+(equal 'apple 'apple)
+#+END_SRC
+#+RESULTS:
+: T
+
+#+BEGIN_SRC lisp  
+;;comparing lists
+(equal (list 1 2 3) (list 1 2 3))
+#+END_SRC
+#+RESULTS:
+: T
+
+#+BEGIN_SRC lisp  
+;;Identical lists created in different ways still compare as the same
+(equal '(1 2 3) (cons 1 (cons 2 (cons 3 ()))))
+#+END_SRC
+#+RESULTS:
+: T
+
+#+BEGIN_SRC lisp  
+;;comparing integers
+(equal 5 5)
+#+END_SRC
+#+RESULTS:
+: T
+
+#+BEGIN_SRC lisp  
+;;comparing floating point numbers
+(equal 2.5 2.5)
+#+END_SRC
+#+RESULTS:
+: T
+
+#+BEGIN_SRC lisp  
+;;comparing strings
+(equal "foo" "foo")
+#+END_SRC
+#+RESULTS:
+: T
+
+#+BEGIN_SRC lisp  
+;;comparing characters
+(equal #\a #\a)
+#+END_SRC
+#+RESULTS:
+: T
+
+** EQL
+#+BEGIN_SRC lisp  
+;;comparing symbols
+(eql 'foo 'foo)
+#+END_SRC
+#+RESULTS:
+: T
+
+#+BEGIN_SRC lisp  
+;;comparing numbers
+(eql 3.4 3.4)
+#+END_SRC
+#+RESULTS:
+: T
+
+#+BEGIN_SRC lisp  
+;;comparing characters
+(eql #\a #\a)
+#+END_SRC
+#+RESULTS:
+: T
+
+** EQUALP
+#+BEGIN_SRC lisp  
+;;comparing strings with different CAPS
+(equalp "Bob Smith" "bob smith")
+#+END_SRC
+#+RESULTS:
+: T
+
+#+BEGIN_SRC lisp  
+;;comparing integers against floating point numbers
+(equalp 0 0.0)
+#+END_SRC
+#+RESULTS:
+: T
+
+** The Wizard's Adventure Game
+#+BEGIN_SRC lisp  
+(defparameter *nodes* '(
+	(living-room (you are in the living-room. a wizard is snoring loudly on the couch.))
+	(garden (you are in a beautiful garden. there is a well in front of you.))
+	(attic (you are in the attic. there is a giant welding torch in the corner.))))
+#+END_SRC
+#+RESULTS:
+: *NODES*
+
+#+BEGIN_SRC lisp  
+(assoc 'garden *nodes*)
+#+END_SRC
+#+RESULTS:
+| GARDEN | (YOU ARE IN A BEAUTIFUL GARDEN. THERE IS A WELL IN FRONT OF YOU.) |
+
+#+BEGIN_SRC lisp  
+(defun describe-location (location nodes)
+   (cadr (assoc location nodes)))
+#+END_SRC
+#+RESULTS:
+: DESCRIBE-LOCATION
+
+#+BEGIN_SRC lisp  
+(describe-location 'living-room *nodes*)
+#+END_SRC
+#+RESULTS:
+| YOU | ARE | IN | THE | LIVING-ROOM. | A | WIZARD | IS | SNORING | LOUDLY | ON | THE | COUCH. |
+
+#+BEGIN_SRC lisp  
+(defparameter *edges* '((living-room (garden west door)
+                         (attic upstairs ladder))
+                        (garden (living-room east door))
+                        (attic (living-room downstairs ladder))))
+#+END_SRC
+#+RESULTS:
+: *EDGES*
+
+#+BEGIN_SRC lisp  
+(defun describe-path (edge)
+  `(there is a ,(caddr edge) going ,(cadr edge) from here.))
+#+END_SRC
+#+RESULTS:
+: DESCRIBE-PATH
+
+#+BEGIN_SRC lisp  
+(describe-path '(garden west door))
+#+END_SRC
+#+RESULTS:
+| THERE | IS | A | DOOR | GOING | WEST | FROM | HERE. |
+
+#+BEGIN_SRC lisp  
+(defun describe-paths (location edges)
+  (apply #'append (mapcar #'describe-path (cdr (assoc location edges)))))
+#+END_SRC
+#+RESULTS:
+: DESCRIBE-PATHS
+
+#+BEGIN_SRC lisp  
+(describe-paths 'living-room *edges*)
+#+END_SRC
+#+RESULTS:
+| THERE | IS | A | DOOR | GOING | WEST | FROM | HERE. | THERE | IS | A | LADDER | GOING | UPSTAIRS | FROM | HERE. |
+
+#+BEGIN_SRC lisp  
+(cdr (assoc 'living-room *edges*))
+#+END_SRC
+#+RESULTS:
+| GARDEN | WEST     | DOOR   |
+| ATTIC  | UPSTAIRS | LADDER |
+
+#+BEGIN_SRC lisp  
+(mapcar #'describe-path '((GARDEN WEST DOOR) (ATTIC UPSTAIRS LADDER)))
+#+END_SRC
+#+RESULTS:
+| THERE | IS | A | DOOR   | GOING | WEST     | FROM | HERE. |
+| THERE | IS | A | LADDER | GOING | UPSTAIRS | FROM | HERE. |
+
+** MAPCAR
+#+BEGIN_SRC lisp  
+(mapcar #'sqrt '(1 2 3 4 5))
+#+END_SRC
+#+RESULTS:
+| 1.0 | 1.4142135 | 1.7320508 | 2.0 | 2.236068 |
+
+#+BEGIN_SRC lisp  
+(mapcar #'car '((foo bar) (baz qux)))
+#+END_SRC
+#+RESULTS:
+| FOO | BAZ |
+
+#+BEGIN_SRC lisp  
+(mapcar (function car) '((foo bar) (baz qux)))
+#+END_SRC
+#+RESULTS:
+| FOO | BAZ |
+
+#+BEGIN_SRC lisp  
+(let ((car "Honda Civic"))
+  (mapcar #'car '((foo bar) (baz qux))))
+#+END_SRC
+#+RESULTS:
+| FOO | BAZ |
+
+#+BEGIN_SRC lisp  
+
+#+END_SRC
