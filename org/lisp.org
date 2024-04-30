@@ -3233,6 +3233,51 @@ the front."
 #+RESULTS:
 | FOO | BAZ |
 
+** APPEND
+#+BEGIN_SRC lisp  
+(append '(mary had) '(a) '(little lamb))
+#+END_SRC
+#+RESULTS:
+| MARY | HAD | A | LITTLE | LAMB |
+
+#+BEGIN_SRC lisp  
+(apply #'append '((mary had) (a) (little lamb)))
+#+END_SRC
+#+RESULTS:
+| MARY | HAD | A | LITTLE | LAMB |
+
+#+BEGIN_SRC lisp  
+(apply #'append '((THERE IS A DOOR GOING WEST FROM HERE.)
+                  (THERE IS A LADDER GOING UPSTAIRS FROM HERE.)))
+#+END_SRC
+#+RESULTS:
+| THERE | IS | A | DOOR | GOING | WEST | FROM | HERE. | THERE | IS | A | LADDER | GOING | UPSTAIRS | FROM | HERE. |
+
+** Listing Visible Objects
+#+BEGIN_SRC lisp  
+(defparameter *objects* '(whiskey bucket frog chain))
+#+END_SRC
+#+RESULTS:
+: *OBJECTS*
+
+#+BEGIN_SRC lisp  
+(defparameter *object-locations* '((whiskey living-room)
+                                   (bucket living-room)
+                                   (chain garden)
+                                   (frog garden)))
+#+END_SRC
+#+RESULTS:
+: *OBJECT-LOCATIONS*
+
+#+BEGIN_SRC lisp  
+(defun objects-at (loc objs obj-locs)
+  (labels ((at-loc-p (obj)
+             (eq (cadr (assoc obj obj-locs)) loc)))
+    (remove-if-not #'at-loc-p objs)))
+#+END_SRC
+#+RESULTS:
+: OBJECTS-AT
+
 #+BEGIN_SRC lisp  
 
 #+END_SRC
