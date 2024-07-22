@@ -63,19 +63,19 @@
 (electric-pair-mode t)
 
 ;; * Org-Superstar
-(require 'org-superstar)
-(with-eval-after-load 'org-superstar
-  (set-face-attribute 'org-superstar-item nil :height 1.2)
-  (set-face-attribute 'org-superstar-header-bullet nil :height 1.2)
-  (set-face-attribute 'org-superstar-leading nil :height 1.3))
-;; Set different bullets, with one getting a terminal fallback.
-(setq org-superstar-headline-bullets-list
-      '("◉" ("◆" ?◈) "○" "▷"))
-;; Stop cycling bullets to emphasize hierarchy of headlines.
-(setq org-superstar-cycle-headline-bullets nil)
-;; Hide away leading stars on terminal.
-(setq org-superstar-leading-fallback ?\s)
-(add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
+;; (require 'org-superstar)
+;; (with-eval-after-load 'org-superstar
+;;   (set-face-attribute 'org-superstar-item nil :height 1.2)
+;;   (set-face-attribute 'org-superstar-header-bullet nil :height 1.2)
+;;   (set-face-attribute 'org-superstar-leading nil :height 1.3))
+;; ;; Set different bullets, with one getting a terminal fallback.
+;; (setq org-superstar-headline-bullets-list
+;;       '("◉" ("◆" ?◈) "○" "▷"))
+;; ;; Stop cycling bullets to emphasize hierarchy of headlines.
+;; (setq org-superstar-cycle-headline-bullets nil)
+;; ;; Hide away leading stars on terminal.
+;; (setq org-superstar-leading-fallback ?\s)
+;; (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
 
 ;; * Text Step Scale
 (setq text-scale-mode-step 1.1)
@@ -102,7 +102,8 @@
    (latex . t)
    (lisp . t)
    (nix . t)
-   (racket . t)
+   (jupyter . t)
+   ;; (racket . t)
    ))
 
 ;; * Latex and preview pane

@@ -1,4 +1,5 @@
 #+STARTUP: content
+#+PROPERTY: header-args:jupyter-python :session mysession
 * Vectors, Matrices and Multidimensional Array
 ** Definition
 - Represent data as /arrays/, computations in terms of /array operations/.
@@ -24,13 +25,11 @@ print(array_int)
 print(array_float)
 print(array_complex)
 #+END_SRC
-
 #+RESULTS:
-:RESULTS:
-[1 2 3]
-[1. 2. 3.]
-[1.+0.j 2.+0.j 3.+0.j]
-:END:
+: [1 2 3]
+: [1. 2. 3.]
+: [1.+0.j 2.+0.j 3.+0.j]
+
 
 #+BEGIN_SRC jupyter-python  
 # data type might get promoted
@@ -1359,11 +1358,6 @@ display(sympy.diff(f, x, 3))
 #+END_SRC
 
 #+RESULTS:
-:RESULTS:
-[[file:./.ob-jupyter/773530f13a82b81e21870bcec05d6e88447bf711.png]]
-[[file:./.ob-jupyter/86c072741bfbf5e3b994f8e39e1496ca09016b43.png]]
-[[file:./.ob-jupyter/f4cedb0dccdbdcc0efd92b20ac2233ab38aab131.png]]
-:END:
 
 
 #+BEGIN_SRC jupyter-python  

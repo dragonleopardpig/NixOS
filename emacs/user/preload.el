@@ -57,16 +57,20 @@
 	company-web
 	ox-rst
 	alert
-	org-superstar
+	;; org-superstar
 	ob-nix
 	latex-preview-pane
 	org-modern
 	slime
 	nix-mode
-	racket-mode
+	;; racket-mode
 	geiser-mit))
 (package-install-selected-packages)
 
 ;; ** Load Custom Directory Recursively
-(let ((default-directory "~/emacs/user/custom/"))
-  (normal-top-level-add-subdirs-to-load-path))
+;; (let ((default-directory "~/emacs/user/custom/"))
+;;   (normal-top-level-add-subdirs-to-load-path))
+
+;; ** Pyvenv
+(require 'pyvenv)
+(pyvenv-activate "~/.virtualenvs/tf/")
