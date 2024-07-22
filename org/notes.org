@@ -8,6 +8,9 @@
 * Software Development
 - cp /var/lib/snapd/desktop/applications/remmina_remmina.desktop
   ~/.local/share/applications/
+** Git clone with Token in Debian
+git clone https://<token>@github.com/dragonleopardpig/NixOS.git
+
 ** Token :crypt:
 -----BEGIN PGP MESSAGE-----
 
