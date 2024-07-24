@@ -56,14 +56,16 @@
 	emmet-mode
 	company-web
 	ox-rst
-	alert
-	;; org-superstar
+	alert 
+	;; Automatically toggle Org mode LaTeX fragment previews as the cursor enters and exits them
+	org-fragtog
 	ob-nix
 	latex-preview-pane
 	org-modern
 	slime
 	nix-mode
 	;; racket-mode
+	;; org-superstar
 	geiser-mit))
 (package-install-selected-packages)
 

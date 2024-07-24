@@ -1,6 +1,0 @@
-(undo-tree-save-format-version . 1)
-"43018aea46876358c1e546c7613caf025a2740ca"
-[nil nil nil nil (26269 48188 966724 792000) 0 nil]
-([nil nil ((apply -3 1776 1794 undo--wrap-and-run-primitive-undo 1776 1794 ((1777 . 1780) 1785)) (t 26269 45657 454567 337000)) nil (26269 48188 966720 288000) 0 nil])
-([nil current ((apply -3 1851 1867 undo--wrap-and-run-primitive-undo 1851 1867 ((1852 . 1855) 1853)) (t 26269 48188 965394 707000)) nil (26269 48201 313468 376000) 0 nil])
-nil

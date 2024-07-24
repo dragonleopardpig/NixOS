@@ -33,6 +33,10 @@
 ;; * Org Crypt
 (require 'org-crypt)
 (org-crypt-use-before-save-magic)
+(setq org-tags-exclude-from-inheritance (quote ("crypt")))
+;; GPG key to use for encryption
+;; Either the Key ID or set to nil to use symmetric encryption.
+(setq org-crypt-key nil)
 
 ;; * Org Capture
 (setq org-directory "~/mountdir/org")
@@ -62,20 +66,8 @@
 ;; * Electric Pair Mode
 (electric-pair-mode t)
 
-;; * Org-Superstar
-;; (require 'org-superstar)
-;; (with-eval-after-load 'org-superstar
-;;   (set-face-attribute 'org-superstar-item nil :height 1.2)
-;;   (set-face-attribute 'org-superstar-header-bullet nil :height 1.2)
-;;   (set-face-attribute 'org-superstar-leading nil :height 1.3))
-;; ;; Set different bullets, with one getting a terminal fallback.
-;; (setq org-superstar-headline-bullets-list
-;;       '("◉" ("◆" ?◈) "○" "▷"))
-;; ;; Stop cycling bullets to emphasize hierarchy of headlines.
-;; (setq org-superstar-cycle-headline-bullets nil)
-;; ;; Hide away leading stars on terminal.
-;; (setq org-superstar-leading-fallback ?\s)
-;; (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
+;; * Org-fragtog
+(add-hook 'org-mode-hook 'org-fragtog-mode)
 
 ;; * Text Step Scale
 (setq text-scale-mode-step 1.1)
@@ -137,7 +129,7 @@ buffer's text scale."
 ;; * etc
 ;; (setq nb-notebook-directory "~/mountdir/Projects")
 ;; (org-babel-load-file "~/mountdir/emacs/scimax/scimax-notebook.org")
-(setq org-image-actual-width 100)
+;; (setq org-image-actual-width 100)
 
 (setq inferior-lisp-program "sbcl")
 (setq org-src-block-faces 'nil)
@@ -146,50 +138,50 @@ buffer's text scale."
 
 
 
-;; * Copy-and-Paste issue for org-src-block
-(defun my-flush-lines ()
-  "Calls flush-lines with a given regexp or ^$"
-  (let ((regexp "^$"))
-    (flush-lines regexp nil nil t)))
+;; ;; * Copy-and-Paste issue for org-src-block
+;; (defun my-flush-lines ()
+;;   "Calls flush-lines with a given regexp or ^$"
+;;   (let ((regexp "^$"))
+;;     (flush-lines regexp nil nil t)))
 
-(defun myreplace ()
-  "Beautify org src blk after copy and paste from PDF"
-  (interactive)
-  (org-babel-mark-block)
-  (replace-regexp-in-region "’" "'")
-  (indent-for-tab-command)
-  (my-flush-lines))
+;; (defun myreplace ()
+;;   "Beautify org src blk after copy and paste from PDF"
+;;   (interactive)
+;;   (org-babel-mark-block)
+;;   (replace-regexp-in-region "’" "'")
+;;   (indent-for-tab-command)
+;;   (my-flush-lines))
 
-(global-set-key (kbd "<f4>") 'myreplace)
+;; (global-set-key (kbd "<f4>") 'myreplace)
 
 
-;; * Remove line after :results
-(defun my-remove-line (_a _b)
-  (save-excursion 
-    (previous-line)
-    (beginning-of-line)
-    (when (looking-at-p "\n")
-      (kill-line))))
+;; ;; * Remove line after :results
+;; (defun my-remove-line (_a _b)
+;;   (save-excursion 
+;;     (previous-line)
+;;     (beginning-of-line)
+;;     (when (looking-at-p "\n")
+;;       (kill-line))))
 
-(advice-add 'org-babel--insert-results-keyword :before #'my-remove-line)
+;; (advice-add 'org-babel--insert-results-keyword :before #'my-remove-line)
 
-;; * Racket org babel
-(use-package ob-racket
-  :after org
-  :config
-  (add-hook 'ob-racket-pre-runtime-library-load-hook
-	    #'ob-racket-raco-make-runtime-library)
-  :straight (ob-racket
-	     :type git :host github :repo "hasu/emacs-ob-racket"
-	     :files ("*.el" "*.rkt")))
+;; ;; * Racket org babel
+;; ;; (use-package ob-racket
+;; ;;   :after org
+;; ;;   :config
+;; ;;   (add-hook 'ob-racket-pre-runtime-library-load-hook
+;; ;; 	    #'ob-racket-raco-make-runtime-library)
+;; ;;   :straight (ob-racket
+;; ;; 	     :type git :host github :repo "hasu/emacs-ob-racket"
+;; ;; 	     :files ("*.el" "*.rkt")))
 
-;; * Company Mode
-(add-hook 'after-init-hook 'global-company-mode)
+;; ;; * Company Mode
+;; (add-hook 'after-init-hook 'global-company-mode)
 
-;; * Magit
-(keymap-global-set "C-x g" 'magit-status)
-(keymap-global-set "C-x M-g" 'magit-dispatch)
-(keymap-global-set "C-c M-g" 'magit-file-dispatch)
+;; ;; * Magit
+;; (keymap-global-set "C-x g" 'magit-status)
+;; (keymap-global-set "C-x M-g" 'magit-dispatch)
+;; (keymap-global-set "C-c M-g" 'magit-file-dispatch)
 
 ;; **************************************************
 
@@ -326,3 +318,18 @@ buffer's text scale."
 ;; tlmgr init-usertree
 ;; sudo texhash
 ;; check /tmp/ log files for additional error.
+
+;; * Org-Superstar
+;; (require 'org-superstar)
+;; (with-eval-after-load 'org-superstar
+;;   (set-face-attribute 'org-superstar-item nil :height 1.2)
+;;   (set-face-attribute 'org-superstar-header-bullet nil :height 1.2)
+;;   (set-face-attribute 'org-superstar-leading nil :height 1.3))
+;; ;; Set different bullets, with one getting a terminal fallback.
+;; (setq org-superstar-headline-bullets-list
+;;       '("◉" ("◆" ?◈) "○" "▷"))
+;; ;; Stop cycling bullets to emphasize hierarchy of headlines.
+;; (setq org-superstar-cycle-headline-bullets nil)
+;; ;; Hide away leading stars on terminal.
+;; (setq org-superstar-leading-fallback ?\s)
+;; (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))

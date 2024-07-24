@@ -877,7 +877,7 @@ True
 #+BEGIN_SRC jupyter-python
 import sympy
 from sympy import I, pi, oo
-sympy.init_printing()
+sympy.init_printing(use_latex='svg', scale=1.5)
 
 x, y, z = sympy.symbols("x, y, z")
 #+END_SRC
@@ -885,7 +885,7 @@ x, y, z = sympy.symbols("x, y, z")
 #+RESULTS:
 
 ** Symbols
-#+BEGIN_SRC jupyter-python  
+#+BEGIN_SRC jupyter-python 
 x = sympy.Symbol("x")
 y = sympy.Symbol("y", real=True, positive=True)
 z= sympy.Symbol("z", imaginary=True)
@@ -897,9 +897,9 @@ display(sympy.sqrt(y ** 2))
 
 #+RESULTS:
 :RESULTS:
-sqrt(x**2)
-[[file:./.ob-jupyter/79f8192ffdb1f80a2b79b4e52959384fde97872f.png]]
-[[file:./.ob-jupyter/6ff6e336255d2ce4733f4c885ac81f8a169c3b19.png]]
+: sqrt(x**2)
+[[./.ob-jupyter/674663c2f0b17f920b40d71e52a4bceb4458f161.svg]]
+[[./.ob-jupyter/610c17df8642180ff0426c248d13ade05c20b711.svg]]
 :END:
 
 #+BEGIN_SRC jupyter-python  

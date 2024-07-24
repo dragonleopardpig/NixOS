@@ -1,0 +1,33 @@
+#+STARTUP: content
+#+PROPERTY: header-args:jupyter-python :session mysession
+* Symbolic Computing
+** Definition
+- In symbolic computing software, also known as computer algebra systems (CASs), representations of mathematical objects and expressions are manipulated and transformed analytically.
+
+#+BEGIN_SRC jupyter-python
+import sympy
+from sympy import I, pi, oo
+sympy.init_printing(use_latex='svg', scale=1.1)
+
+x, y, z = sympy.symbols("x, y, z")
+#+END_SRC
+
+#+RESULTS:
+
+** Symbols
+#+BEGIN_SRC jupyter-python 
+x = sympy.Symbol("x")
+y = sympy.Symbol("y", real=True, positive=True)
+z= sympy.Symbol("z", imaginary=True)
+
+print(sympy.sqrt(x ** 2))
+display(sympy.sqrt(x ** 2))
+display(sympy.sqrt(y ** 2))
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+: sqrt(x**2)
+[[./.ob-jupyter/5e9beccf2e2fa70c1f4f5f3dda7a545f88fb48e6.svg]]
+[[./.ob-jupyter/2c0cb17298096fb53cdb904c8170504c9ada93bc.svg]]
+:END:
