@@ -410,6 +410,527 @@ print(mymin)
 :      njev: 4
 
 * SciPy Sparse Data
+- Sparse Data :: data set where most of the item values are zero.
+- Dense Array :: opposite of a sparse array: most of the values are not zero.
+- CSC :: Compressed Sparse Column. For efficient arithmetic, fast column slicing.
+
+- CSR :: Compressed Sparse Row. For fast row slicing, faster matrix vector products
+
+** CSR Matrix
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.sparse import csr_matrix
+
+arr = np.array([0, 0, 0, 0, 0, 1, 1, 0, 2])
+
+print(csr_matrix(arr))
+
+# From the result we can see that there are 3 items with value.
+
+# The 1. item is in row 0 position 5 and has the value 1.
+# The 2. item is in row 0 position 6 and has the value 1.
+# The 3. item is in row 0 position 8 and has the value 2.
+
+#+END_SRC
+
+#+RESULTS:
+:   (0, 5)	1
+:   (0, 6)	1
+:   (0, 8)	2
+
+** Sparse Matrix Methods
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.sparse import csr_matrix
+
+arr = np.array([[0, 0, 0], [0, 0, 1], [1, 0, 2]])
+
+print(csr_matrix(arr).data)
+#+END_SRC
+
+#+RESULTS:
+: [1 1 2]
+
+
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.sparse import csr_matrix
+
+arr = np.array([[0, 0, 0], [0, 0, 1], [1, 0, 2]])
+
+print(csr_matrix(arr).count_nonzero())
+#+END_SRC
+
+#+RESULTS:
+: 3
+
+
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.sparse import csr_matrix
+
+arr = np.array([[0, 0, 0], [0, 0, 1], [1, 0, 2]])
+
+mat = csr_matrix(arr)
+mat.eliminate_zeros()
+
+print(mat) 
+#+END_SRC
+
+#+RESULTS:
+:   (1, 2)	1
+:   (2, 0)	1
+:   (2, 2)	2
+
+
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.sparse import csr_matrix
+
+arr = np.array([[0, 0, 0], [0, 0, 1], [1, 0, 2]])
+
+mat = csr_matrix(arr)
+mat.sum_duplicates()
+
+print(mat)
+#+END_SRC
+
+#+RESULTS:
+:   (1, 2)	1
+:   (2, 0)	1
+:   (2, 2)	2
+
+
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.sparse import csr_matrix
+
+arr = np.array([[0, 0, 0], [0, 0, 1], [1, 0, 2]])
+
+newarr = csr_matrix(arr).tocsc()
+
+print(newarr)
+#+END_SRC
+
+#+RESULTS:
+:   (2, 0)	1
+:   (1, 2)	1
+:   (2, 2)	2
+
+* Scipy Graphs
+** Adjacency Matrix
+- Adjacency matrix :: a \(n \times n\) matrix where $n$ is the number of elements in a graph.
+
+- And the values represents the connection between the elements.
+** Connected Components
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.sparse.csgraph import connected_components
+from scipy.sparse import csr_matrix
+
+arr = np.array([
+  [0, 1, 2],
+  [1, 0, 0],
+  [2, 0, 0]
+])
+
+newarr = csr_matrix(arr)
+
+print(connected_components(newarr)) 
+#+END_SRC
+
+#+RESULTS:
+: (1, array([0, 0, 0], dtype=int32))
+
+** Dijkstra
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.sparse.csgraph import dijkstra
+from scipy.sparse import csr_matrix
+
+arr = np.array([
+  [0, 1, 2],
+  [1, 0, 0],
+  [2, 0, 0]
+])
+
+newarr = csr_matrix(arr)
+
+print(dijkstra(newarr, return_predecessors=True, indices=0))
+#+END_SRC
+
+#+RESULTS:
+: (array([0., 1., 2.]), array([-9999,     0,     0], dtype=int32))
+
+** Floyd Warshall
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.sparse.csgraph import floyd_warshall
+from scipy.sparse import csr_matrix
+
+arr = np.array([
+  [0, 1, 2],
+  [1, 0, 0],
+  [2, 0, 0]
+])
+
+newarr = csr_matrix(arr)
+
+print(floyd_warshall(newarr, return_predecessors=True)) 
+#+END_SRC
+
+#+RESULTS:
+: (array([[0., 1., 2.],
+:        [1., 0., 3.],
+:        [2., 3., 0.]]), array([[-9999,     0,     0],
+:        [    1, -9999,     0],
+:        [    2,     0, -9999]], dtype=int32))
+
+** Bellman Ford
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.sparse.csgraph import bellman_ford
+from scipy.sparse import csr_matrix
+
+arr = np.array([
+  [0, -1, 2],
+  [1, 0, 0],
+  [2, 0, 0]
+])
+
+newarr = csr_matrix(arr)
+
+print(bellman_ford(newarr, return_predecessors=True, indices=0)) 
+#+END_SRC
+
+#+RESULTS:
+: (array([ 0., -1.,  2.]), array([-9999,     0,     0], dtype=int32))
+
+** Depth First Order
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.sparse.csgraph import depth_first_order
+from scipy.sparse import csr_matrix
+
+arr = np.array([
+  [0, 1, 0, 1],
+  [1, 1, 1, 1],
+  [2, 1, 1, 0],
+  [0, 1, 0, 1]
+])
+
+newarr = csr_matrix(arr)
+
+print(depth_first_order(newarr, 1)) 
+#+END_SRC
+
+#+RESULTS:
+: (array([1, 0, 3, 2], dtype=int32), array([    1, -9999,     1,     0], dtype=int32))
+
+** Breadth First Order
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.sparse.csgraph import breadth_first_order
+from scipy.sparse import csr_matrix
+
+arr = np.array([
+  [0, 1, 0, 1],
+  [1, 1, 1, 1],
+  [2, 1, 1, 0],
+  [0, 1, 0, 1]
+])
+
+newarr = csr_matrix(arr)
+
+print(breadth_first_order(newarr, 1)) 
+#+END_SRC
+
+#+RESULTS:
+: (array([1, 0, 2, 3], dtype=int32), array([    1, -9999,     1,     1], dtype=int32))
+
+* SciPy Spatial Data
+** Triangulation
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.spatial import Delaunay
+import matplotlib.pyplot as plt
+
+points = np.array([
+  [2, 4],
+  [3, 4],
+  [3, 0],
+  [2, 2],
+  [4, 1]
+])
+
+simplices = Delaunay(points).simplices
+
+plt.triplot(points[:, 0], points[:, 1], simplices)
+plt.scatter(points[:, 0], points[:, 1], color='r')
+
+plt.show()
+#+END_SRC
+
+#+RESULTS:
+[[./.ob-jupyter/c7b3b05af5a4f5832aa564b7fe24c2ef43e9cf23.png]]
+
+** Convex Hull
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.spatial import ConvexHull
+import matplotlib.pyplot as plt
+
+points = np.array([
+  [2, 4],
+  [3, 4],
+  [3, 0],
+  [2, 2],
+  [4, 1],
+  [1, 2],
+  [5, 0],
+  [3, 1],
+  [1, 2],
+  [0, 2]
+])
+
+hull = ConvexHull(points)
+hull_points = hull.simplices
+
+plt.scatter(points[:,0], points[:,1])
+for simplex in hull_points:
+  plt.plot(points[simplex,0], points[simplex,1], 'k-')
+
+plt.show()
+#+END_SRC
+
+#+RESULTS:
+[[./.ob-jupyter/37a35634a268ce8c7f31cc014120c65302d9f8f5.png]]
+
+** KDTrees
+#+BEGIN_SRC jupyter-python  
+from scipy.spatial import KDTree
+
+points = [(1, -1), (2, 3), (-2, 3), (2, -3)]
+
+kdtree = KDTree(points)
+
+res = kdtree.query((1, 1))
+
+print(res)
+#+END_SRC
+
+#+RESULTS:
+: (2.0, 0)
+
+** Distance Matrix
+*** Euclidean Distance
+#+BEGIN_SRC jupyter-python  
+from scipy.spatial.distance import euclidean
+
+p1 = (1, 0)
+p2 = (10, 2)
+
+res = euclidean(p1, p2)
+
+print(res)
+#+END_SRC
+
+#+RESULTS:
+: 9.219544457292887
+
+*** Cityblock Distance (Manhattan Distance)
+#+BEGIN_SRC jupyter-python  
+from scipy.spatial.distance import cityblock
+
+p1 = (1, 0)
+p2 = (10, 2)
+
+res = cityblock(p1, p2)
+
+print(res)
+#+END_SRC
+
+#+RESULTS:
+: 11
+
+*** Cosine Distance
+#+BEGIN_SRC jupyter-python  
+from scipy.spatial.distance import cosine
+
+p1 = (1, 0)
+p2 = (10, 2)
+
+res = cosine(p1, p2)
+
+print(res)
+#+END_SRC
+
+#+RESULTS:
+: 0.019419324309079777
+
+*** Hamming Distance
+#+BEGIN_SRC jupyter-python  
+from scipy.spatial.distance import hamming
+
+p1 = (True, False, True)
+p2 = (False, True, True)
+
+res = hamming(p1, p2)
+
+print(res)
+#+END_SRC
+
+#+RESULTS:
+: 0.6666666666666666
+
+* SciPy Interpolation
+** 1D Interpolation
+#+BEGIN_SRC jupyter-python  
+from scipy.interpolate import interp1d
+import numpy as np
+
+xs = np.arange(10)
+ys = 2*xs + 1
+
+interp_func = interp1d(xs, ys)
+
+newarr = interp_func(np.arange(2.1, 3, 0.1))
+
+print(newarr)
+#+END_SRC
+
+#+RESULTS:
+: [5.2 5.4 5.6 5.8 6.  6.2 6.4 6.6 6.8]
+
+** Spline Interpolation
+#+BEGIN_SRC jupyter-python  
+from scipy.interpolate import UnivariateSpline
+import numpy as np
+
+xs = np.arange(10)
+ys = xs**2 + np.sin(xs) + 1
+
+interp_func = UnivariateSpline(xs, ys)
+
+newarr = interp_func(np.arange(2.1, 3, 0.1))
+
+print(newarr)
+#+END_SRC
+
+#+RESULTS:
+: [5.62826474 6.03987348 6.47131994 6.92265019 7.3939103  7.88514634
+:  8.39640439 8.92773053 9.47917082]
+
+** Interpolation with Radial Basis Function
+#+BEGIN_SRC jupyter-python  
+from scipy.interpolate import Rbf
+import numpy as np
+
+xs = np.arange(10)
+ys = xs**2 + np.sin(xs) + 1
+
+interp_func = Rbf(xs, ys)
+
+newarr = interp_func(np.arange(2.1, 3, 0.1))
+
+print(newarr)
+#+END_SRC
+
+#+RESULTS:
+: [6.25748981 6.62190817 7.00310702 7.40121814 7.8161443  8.24773402
+:  8.69590519 9.16070828 9.64233874]
+
+* SciPy Statistical Significance Tests
+** T-Test
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.stats import ttest_ind
+
+v1 = np.random.normal(size=100)
+v2 = np.random.normal(size=100)
+
+res = ttest_ind(v1, v2)
+
+print(res)
+#+END_SRC
+
+#+RESULTS:
+: TtestResult(statistic=0.30077949900442086, pvalue=0.7638982413056166, df=198.0)
+
+
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.stats import ttest_ind
+
+v1 = np.random.normal(size=100)
+v2 = np.random.normal(size=100)
+
+res = ttest_ind(v1, v2).pvalue
+
+print(res)
+#+END_SRC
+
+#+RESULTS:
+: 0.3396830749620574
+
+** KS-Test
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.stats import kstest
+
+v = np.random.normal(size=100)
+
+res = kstest(v, 'norm')
+
+print(res)
+#+END_SRC
+
+#+RESULTS:
+: KstestResult(statistic=0.12150750931883636, pvalue=0.09592371156527746, statistic_location=-0.07905989677704951, statistic_sign=1)
+
+** Statistical Description of Data
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.stats import describe
+
+v = np.random.normal(size=100)
+res = describe(v)
+
+print(res)
+#+END_SRC
+
+#+RESULTS:
+: DescribeResult(nobs=100, minmax=(-2.2183321144135233, 3.3800301959681147), mean=0.259608490859444, variance=1.0158301811374906, skewness=0.3720192641371613, kurtosis=0.7872982180698336)
+
+** Normality Tests (Skewness and Kurtosis)
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.stats import skew, kurtosis
+
+v = np.random.normal(size=100)
+
+print(skew(v))
+print(kurtosis(v)) 
+#+END_SRC
+
+#+RESULTS:
+: 0.12671614122709027
+: -0.7930927602421178
+
+
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+from scipy.stats import normaltest
+
+v = np.random.normal(size=100)
+
+print(normaltest(v)) 
+#+END_SRC
+
+#+RESULTS:
+: NormaltestResult(statistic=0.6165815902893398, pvalue=0.7347016392727235)
+
+
 #+BEGIN_SRC jupyter-python  
 
 #+END_SRC

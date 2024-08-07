@@ -94,7 +94,7 @@
 ;; 		  ("python" (:background "DarkSeaGreen1" :extend t))
 ;; 		  ("sqlite" (:background "#a24224" :extend t))
 ;; 		  ("haskell" (:background "#4200a2" :extend t))
-;; 		  ("nix" (:background "maroon" :extend t))
+;; 		  ("nix" (:background "light yellow" :extend t))
 ;; 		  ("lisp" (:background "honeydew" :extend t))))
 ;; 	  (custom-set-faces
 ;; 	   '(org-block-begin-line

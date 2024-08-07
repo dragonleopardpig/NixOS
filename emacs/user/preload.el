@@ -66,7 +66,9 @@
 	nix-mode
 	;; racket-mode
 	;; org-superstar
-	geiser-mit))
+	geiser-mit
+	pyvenv
+	))
 (package-install-selected-packages)
 
 ;; ** Load Custom Directory Recursively

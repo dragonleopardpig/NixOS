@@ -65,11 +65,11 @@
 
 ** Vector
    
-   - Vector: \(\Vec{A}=A_x \hat{\imath} + A_y \hat{\jmath} + A_z \hat{k}\)
-   - Del operator:  \(\Vec{\nabla}=\frac{\partial}{\partial x}\hat{\imath}+\frac{\partial}{\partial y}\hat{\jmath}+\frac{\partial}{\partial z}\hat{k}\)
-   - Divergence: \(\Vec{\nabla}\cdot \Vec{A} = \frac{\partial A_x}{\partial x}+\frac{\partial A_y}{\partial y}+\frac{\partial A_z}{\partial z}\)
-   - Curl: \(\vec{\nabla}\times\vec{A}=(\frac{\partial A_z}{\partial y}-\frac{\partial A_y}{\partial z})\hat{\imath} + (\frac{\partial A_x}{\partial z}-\frac{\partial A_z}{\partial x})\hat{\jmath} + (\frac{\partial A_y}{\partial x}-\frac{\partial A_x}{\partial y})\hat{k}\)
-   - Curl of curl: \(\vec{\nabla}\times(\vec{\nabla}\times\vec{A})=\vec{\nabla}(\vec{\nabla}\cdot\vec{A})-\nabla^2\vec{A}\)
+   - Vector :: \(\Vec{A}=A_x \hat{\imath} + A_y \hat{\jmath} + A_z \hat{k}\)
+   - Del operator ::  \(\Vec{\nabla}=\frac{\partial}{\partial x}\hat{\imath}+\frac{\partial}{\partial y}\hat{\jmath}+\frac{\partial}{\partial z}\hat{k}\)
+   - Divergence :: \(\Vec{\nabla}\cdot \Vec{A} = \frac{\partial A_x}{\partial x}+\frac{\partial A_y}{\partial y}+\frac{\partial A_z}{\partial z}\)
+   - Curl :: \(\vec{\nabla}\times\vec{A}=(\frac{\partial A_z}{\partial y}-\frac{\partial A_y}{\partial z})\hat{\imath} + (\frac{\partial A_x}{\partial z}-\frac{\partial A_z}{\partial x})\hat{\jmath} + (\frac{\partial A_y}{\partial x}-\frac{\partial A_x}{\partial y})\hat{k}\)
+   - Curl of curl :: \(\vec{\nabla}\times(\vec{\nabla}\times\vec{A})=\vec{\nabla}(\vec{\nabla}\cdot\vec{A})-\nabla^2\vec{A}\)
      
   
 ** Wave and vibration
