@@ -685,6 +685,384 @@ print("Selected Elements using Boolean Indexing:", selected_elements)
 #+RESULTS:
 : Selected Elements using Boolean Indexing: [3 4 5]
 
+* Modifying Array Elements
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# Creating a 1D array
+arr_1d = np.array([1, 2, 3, 4, 5])
+
+# Modifying elements
+arr_1d[1] = 10
+
+print("Modified Array:", arr_1d)
+
+# Modifying elements using slicing
+arr_1d[2:4] = [20, 30]
+
+print("Array after Slicing and Modification:", arr_1d)
+#+END_SRC
+
+#+RESULTS:
+: Modified Array: [ 1 10  3  4  5]
+: Array after Slicing and Modification: [ 1 10 20 30  5]
+
+* Working with Views vs. Copies
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# Creating a 1D array
+arr_1d = np.array([1, 2, 3, 4, 5])
+
+# Creating a slice view
+slice_view = arr_1d[2:5]
+
+slice_view[:] = 100  # Modifying the view
+
+print("Original Array after Modifying Slice View:", arr_1d)
+#+END_SRC
+
+#+RESULTS:
+: Original Array after Modifying Slice View: [  1   2 100 100 100]
+
+* Basic Array Slicing in NumPy
+** Slicing 1D Arrays
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# Creating a 1D array
+arr_1d = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+# Slicing elements from index 2 to 5
+sliced_arr = arr_1d[2:6]
+
+print("Sliced Array:", sliced_arr)
+
+# Slicing with a step of 2
+step_slice = arr_1d[1:9:2]
+
+print("Sliced Array with Step:", step_slice)
+#+END_SRC
+
+#+RESULTS:
+: Sliced Array: [3 4 5 6]
+: Sliced Array with Step: [2 4 6 8]
+
+** Slicing Multi-Dimensional Arrays
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# Creating a 2D array
+arr_2d = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+
+# Slicing a 2D array
+sliced_2d = arr_2d[:2, 1:]
+
+print(arr_2d)
+print("Sliced 2D Array:")
+print(sliced_2d)
+#+END_SRC
+
+#+RESULTS:
+: [[1 2 3]
+:  [4 5 6]
+:  [7 8 9]]
+: Sliced 2D Array:
+: [[2 3]
+:  [5 6]]
+
+** Using Ellipsis (...) in Slicing
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# Creating a 3D array
+arr_3d = np.array([[[1, 2, 3], [4, 5, 6]], [[7, 8, 9], [10, 11, 12]]])
+
+# Slicing using ellipsis
+sliced_3d = arr_3d[..., 1:]
+
+print("Sliced 3D Array using Ellipsis:")
+print(sliced_3d)
+#+END_SRC
+
+#+RESULTS:
+: Sliced 3D Array using Ellipsis:
+: [[[ 2  3]
+:   [ 5  6]]
+: 
+:  [[ 8  9]
+:   [11 12]]]
+
+** Negative Slicing Indices
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# Creating a 1D array
+arr_1d = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+# Slicing using negative indices
+neg_slice = arr_1d[-3:-1]
+
+print("Sliced Array using Negative Indices:", neg_slice)
+#+END_SRC
+
+#+RESULTS:
+: Sliced Array using Negative Indices: [8 9]
+
+** Modifying Arrays Using Slicing
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# Creating a 1D array
+arr_1d = np.array([1, 2, 3, 4, 5])
+
+# Modifying elements using slicing
+arr_1d[1:4] = [10, 20, 30]
+
+print("Array after Slicing and Modification:", arr_1d)
+#+END_SRC
+
+#+RESULTS:
+: Array after Slicing and Modification: [ 1 10 20 30  5]
+
+** Working with Step-wise Slicing
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# Creating a 1D array
+arr_1d = np.array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+
+# Slicing with a step of 2
+step_slice = arr_1d[::2]
+
+print("Sliced Array with Step:", step_slice)
+#+END_SRC
+
+#+RESULTS:
+: Sliced Array with Step: [1 3 5 7 9]
+
+** Slice Views vs. Copies
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# Creating a 1D array
+arr_1d = np.array([1, 2, 3, 4, 5])
+
+# Creating a slice view
+slice_view = arr_1d[2:5]
+
+slice_view[:] = 100  # Modifying the view
+
+print("Original Array after Modifying Slice View:", arr_1d)
+#+END_SRC
+
+#+RESULTS:
+: Original Array after Modifying Slice View: [  1   2 100 100 100]
+
+* Basics of NumPy Data Types
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# Specifying data types using type codes
+arr_int = np.array([1, 2, 3], dtype='int32')
+
+arr_float = np.array([1.0, 2.5, 3.7], dtype='float64')
+
+# Specifying data types using type objects
+arr_complex = np.array([1 + 2j, 3 + 4j], dtype=np.complex128)
+#+END_SRC
+
+#+RESULTS:
+
+** Integers
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# Integer data types
+arr_int8 = np.array([1, 2, 3], dtype='int8')
+arr_int16 = np.array([1, 2, 3], dtype='int16')
+arr_int32 = np.array([1, 2, 3], dtype='int32')
+arr_int64 = np.array([1, 2, 3], dtype='int64')
+#+END_SRC
+
+#+RESULTS:
+
+** Floating Point Numbers
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# Floating point data types
+arr_float16 = np.array([1.0, 2.0, 3.0], dtype='float16')
+arr_float32 = np.array([1.0, 2.0, 3.0], dtype='float32')
+arr_float64 = np.array([1.0, 2.0, 3.0], dtype='float64')
+#+END_SRC
+
+#+RESULTS:
+
+** Complex Numbers
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# Complex data types
+arr_complex64 = np.array([1 + 2j, 3 + 4j], dtype='complex64')
+arr_complex128 = np.array([1 + 2j, 3 + 4j], dtype='complex128')
+#+END_SRC
+
+#+RESULTS:
+
+** Boolean Data Type
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# Boolean data type
+arr_bool = np.array([True, False, True], dtype='bool')
+#+END_SRC
+
+#+RESULTS:
+
+** Strings and Unicode
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# String data type
+arr_str = np.array(['abc', 'def', 'ghi'], dtype='S')
+arr_unicode = np.array(['αβγ', 'δεζ', 'ηθι'], dtype='U')
+#+END_SRC
+
+#+RESULTS:
+
+** Casting Data Types
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3])
+
+# Changing data type using astype
+arr_float = arr.astype('float64')
+#+END_SRC
+
+#+RESULTS:
+
+** Type Inference
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3.5])
+
+# Checking inferred data type
+print("Inferred Data Type:", arr.dtype)
+
+# Explicit conversion to int
+arr_int = arr.astype('int')
+
+print("Converted to Int Array:", arr_int)
+#+END_SRC
+
+#+RESULTS:
+: Inferred Data Type: float64
+: Converted to Int Array: [1 2 3]
+
+** Data Type Attributes
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# Data type attributes
+dtype_int = np.dtype('int32')
+
+print("Type Name:", dtype_int.name)
+print("Item Size (in bytes):", dtype_int.itemsize)
+print("Type Character:", dtype_int.char)
+#+END_SRC
+
+#+RESULTS:
+: Type Name: int32
+: Item Size (in bytes): 4
+: Type Character: i
+
+** Checking if an Array is a View
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+view_arr = arr[::2]  # Creating a view of the original array
+
+# Checking if it's a view
+
+print(view_arr.base)  # This will output the original array if it's a view
+#+END_SRC
+
+#+RESULTS:
+: [1 2 3 4 5]
+
+** Creating a Copy of an Array
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+copy_arr = arr.copy()  # Creating a copy of the original array
+#+END_SRC
+
+#+RESULTS:
+
+** Slicing Creates a View
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+sliced_arr = arr[1:4]  # Creating a slice (view) of the original array
+
+print("Sliced Array:", sliced_arr)
+
+print("Is it a View?", sliced_arr.base)  # Output: Original array if it's a view
+#+END_SRC
+
+#+RESULTS:
+: Sliced Array: [2 3 4]
+: Is it a View? [1 2 3 4 5]
+
+** Reshaping Creates a View
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([[1, 2, 3], [4, 5, 6]])
+
+reshaped_arr = arr.reshape(3, 2)  # Reshaping the array (view)
+
+print("Reshaped Array:")
+
+print(reshaped_arr)
+
+print("Is it a View?", reshaped_arr.base)  # Output: Original array if it's a view
+#+END_SRC
+
+#+RESULTS:
+: Reshaped Array:
+: [[1 2]
+:  [3 4]
+:  [5 6]]
+: Is it a View? [[1 2 3]
+:  [4 5 6]]
+
+** Copy Method Creates a Copy
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+copied_arr = arr.copy()  # Creating a copy of the original array
+
+print("Copied Array:", copied_arr)
+
+print("Is it a View?", copied_arr.base)  # Output: None (No base for a copy)
+#+END_SRC
+
+#+RESULTS:
+: Copied Array: [1 2 3 4 5]
+: Is it a View? None
+
 
 #+BEGIN_SRC jupyter-python  
 
