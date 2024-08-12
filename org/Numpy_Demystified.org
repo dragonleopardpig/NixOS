@@ -1063,6 +1063,1141 @@ print("Is it a View?", copied_arr.base)  # Output: None (No base for a copy)
 : Copied Array: [1 2 3 4 5]
 : Is it a View? None
 
+** Modifying a View
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+view_arr = arr[::2]  # Creating a view of the original array
+
+view_arr[0] = 10  # Modifying the view
+
+print("Modified View:", view_arr)
+print("Original Array:", arr)  # Original array also modified
+#+END_SRC
+
+#+RESULTS:
+: Modified View: [10  3  5]
+: Original Array: [10  2  3  4  5]
+
+** Modifying a Copy
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+copy_arr = arr.copy()  # Creating a copy of the original array
+
+copy_arr[0] = 10  # Modifying the copy
+
+print("Modified Copy:", copy_arr)
+print("Original Array:", arr)  # Original array remains unchanged
+#+END_SRC
+
+#+RESULTS:
+: Modified Copy: [10  2  3  4  5]
+: Original Array: [1 2 3 4 5]
+
+* Basics of NumPy Array Shape
+** Shape of an Array
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+# Creating arrays and checking shapes
+
+arr_1d = np.array([1, 2, 3, 4, 5])
+
+arr_2d = np.array([[1, 2, 3], [4, 5, 6]])
+
+print("Shape of 1D Array:", arr_1d.shape)  # Output: (5,)
+print("Shape of 2D Array:", arr_2d.shape)  # Output: (2, 3)
+#+END_SRC
+
+#+RESULTS:
+: Shape of 1D Array: (5,)
+: Shape of 2D Array: (2, 3)
+
+** Identifying Array Dimensions
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr_1d = np.array([1, 2, 3, 4, 5])
+
+arr_2d = np.array([[1, 2, 3], [4, 5, 6]])
+
+print("Number of Dimensions in 1D Array:", arr_1d.ndim)  # Output: 1
+print("Number of Dimensions in 2D Array:", arr_2d.ndim)  # Output: 2
+#+END_SRC
+
+#+RESULTS:
+: Number of Dimensions in 1D Array: 1
+: Number of Dimensions in 2D Array: 2
+
+** Accessing Array Shape
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([[1, 2, 3], [4, 5, 6]])
+
+array_shape = arr.shape
+
+print("Array Shape:", array_shape)
+#+END_SRC
+
+#+RESULTS:
+: Array Shape: (2, 3)
+
+** Reshaping to Higher Dimensions
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5, 6])
+
+reshaped_arr = arr.reshape(2, 3)  # Reshaping to a 2x3 array
+
+print("Reshaped Array:")
+print(reshaped_arr)
+#+END_SRC
+
+#+RESULTS:
+: Reshaped Array:
+: [[1 2 3]
+:  [4 5 6]]
+
+** Automatic Dimension Inference
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5, 6])
+
+reshaped_arr = arr.reshape(2, -1)  # Automatically inferring the size of the second dimension
+
+print("Automatically Reshaped Array:")
+print(reshaped_arr)
+#+END_SRC
+
+#+RESULTS:
+: Automatically Reshaped Array:
+: [[1 2 3]
+:  [4 5 6]]
+
+* Operations Based on Array Shape
+** Element-Wise Operations
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr1 = np.array([[1, 2], [3, 4]])
+
+arr2 = np.array([[5, 6], [7, 8]])
+
+result = arr1 + arr2  # Element-wise addition
+
+print("Element-Wise Addition Result:")
+print(result)
+#+END_SRC
+
+#+RESULTS:
+: Element-Wise Addition Result:
+: [[ 6  8]
+:  [10 12]]
+
+** Broadcasting
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([[1, 2, 3], [4, 5, 6]])
+
+scalar = 10
+
+result = arr + scalar  # Broadcasting scalar to the array
+
+print("Broadcasting Scalar Result:")
+print(result)
+#+END_SRC
+
+#+RESULTS:
+: Broadcasting Scalar Result:
+: [[11 12 13]
+:  [14 15 16]]
+
+** Understanding Reshaping
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5, 6])
+
+reshaped_arr = arr.reshape(2, 3)  # Reshaping to a 2x3 array
+
+print("Reshaped Array:")
+print(reshaped_arr)
+#+END_SRC
+
+#+RESULTS:
+: Reshaped Array:
+: [[1 2 3]
+:  [4 5 6]]
+
+** Reshaping to Higher Dimensions
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5, 6])
+
+reshaped_arr = arr.reshape(2, 3)  # Reshaping to a 2x3 array
+
+print("Reshaped Array:")
+print(reshaped_arr)
+#+END_SRC
+
+#+RESULTS:
+: Reshaped Array:
+: [[1 2 3]
+:  [4 5 6]]
+
+** Reshaping with Automatic Dimension Inference
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5, 6])
+
+reshaped_arr = arr.reshape(2, -1)  # Automatically inferring the size of the second dimension
+
+print("Automatically Reshaped Array:")
+print(reshaped_arr)
+#+END_SRC
+
+#+RESULTS:
+: Automatically Reshaped Array:
+: [[1 2 3]
+:  [4 5 6]]
+
+** Reshaping to Different Dimensions
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5, 6])
+
+# Reshaping to different dimensions
+
+reshaped_2d = arr.reshape(2, 3)
+
+reshaped_3d = arr.reshape(2, 1, 3)
+
+print("Reshaped to 2D Array:")
+print(reshaped_2d)
+print("\nReshaped to 3D Array:")
+print(reshaped_3d)
+#+END_SRC
+
+#+RESULTS:
+: Reshaped to 2D Array:
+: [[1 2 3]
+:  [4 5 6]]
+: 
+: Reshaped to 3D Array:
+: [[[1 2 3]]
+: 
+:  [[4 5 6]]]
+
+** Reshaping for Transposing Arrays
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([[1, 2, 3], [4, 5, 6]])
+
+# Transposing with reshape
+transposed_arr = arr.reshape(3, 2)
+
+print("Original Array:")
+print(arr)
+print("\nTransposed Array:")
+print(transposed_arr)
+#+END_SRC
+
+#+RESULTS:
+: Original Array:
+: [[1 2 3]
+:  [4 5 6]]
+: 
+: Transposed Array:
+: [[1 2]
+:  [3 4]
+:  [5 6]]
+
+** Image Processing
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Generating a grayscale image
+image = np.random.randint(0, 255, size=(100, 100))  # Creating a random 100x100 image
+
+# Displaying the original image
+plt.imshow(image, cmap='gray')
+plt.title('Original Image')
+plt.axis('off')
+plt.show()
+
+# Reshaping the image array for processing
+reshaped_image = image.reshape(10, 10, 10, 10)  # Reshaping to a different shape
+
+print("Reshaped Image Shape:", reshaped_image.shape)
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+[[./.ob-jupyter/8bc0346070ea66dcac085fd58af0c37c36388ed1.png]]
+: Reshaped Image Shape: (10, 10, 10, 10)
+:END:
+
+* Iterating through NumPy Arrays
+** Using nditer() Function
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([[1, 2], [3, 4]])
+
+# Iterating using nditer()
+for x in np.nditer(arr):
+    print(x)
+#+END_SRC
+
+#+RESULTS:
+: 1
+: 2
+: 3
+: 4
+
+** Iterating with Different Data Types
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3])
+
+# Iterating with a specific data type
+for x in np.nditer(arr, flags=['buffered'], op_dtypes=['S']):
+    print(x)
+#+END_SRC
+
+#+RESULTS:
+: b'1'
+: b'2'
+: b'3'
+
+** Iterating 2D Arrays
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([[1, 2], [3, 4]])
+
+# Iterating through a 2D array
+for row in arr:    
+    for elem in row:
+        print(elem)
+#+END_SRC
+
+#+RESULTS:
+: 1
+: 2
+: 3
+: 4
+
+** Using ndenumerate()
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([[1, 2], [3, 4]])
+
+# Using ndenumerate() for iteration
+for idx, val in np.ndenumerate(arr):
+    print("Index:", idx, "Value:", val)
+#+END_SRC
+
+#+RESULTS:
+: Index: (0, 0) Value: 1
+: Index: (0, 1) Value: 2
+: Index: (1, 0) Value: 3
+: Index: (1, 1) Value: 4
+
+** C-style and F-style Iteration
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr_c = np.array([[1, 2], [3, 4]])  # C-style array
+
+arr_f = np.array([[1, 2], [3, 4]], order='F')  # F-style array
+
+print("C-style Array Iteration:")
+
+for x in np.nditer(arr_c):
+    print(x)
+#+END_SRC
+
+#+RESULTS:
+: C-style Array Iteration:
+: 1
+: 2
+: 3
+: 4
+
+** Contiguous Iteration
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.arange(1000000).reshape(1000, 1000)
+
+# Contiguous iteration using Fortran order
+for x in np.nditer(arr, order='F', flags=['external_loop']):
+    pass  # Process data
+#+END_SRC
+
+#+RESULTS:
+
+** Using flags Argument
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.arange(1000000).reshape(1000, 1000)
+
+# Using flags for optimized iteration
+for x in np.nditer(arr,
+                   flags=['external_loop', 'buffered'],
+                   op_flags=['readonly']):
+    pass  # Process data
+#+END_SRC
+
+#+RESULTS:
+
+* Basics of NumPy Array Joining
+** Concatenating Arrays with np.concatenate()
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr1 = np.array([1, 2, 3])
+
+arr2 = np.array([4, 5, 6])
+
+result = np.concatenate((arr1, arr2))  # Concatenating 1D arrays
+
+print("Concatenated Result:", result)
+#+END_SRC
+
+#+RESULTS:
+: Concatenated Result: [1 2 3 4 5 6]
+
+** Vertical and Horizontal Stacking
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr1 = np.array([[1, 2], [3, 4]])
+arr2 = np.array([[5, 6]])
+
+vstack_result = np.vstack((arr1, arr2))  # Vertical stack
+hstack_result = np.hstack((arr1, arr2.T))  # Horizontal stack
+
+print("Vertical Stack Result:")
+print(vstack_result)
+print("\nHorizontal Stack Result:")
+print(hstack_result)
+#+END_SRC
+
+#+RESULTS:
+: Vertical Stack Result:
+: [[1 2]
+:  [3 4]
+:  [5 6]]
+: 
+: Horizontal Stack Result:
+: [[1 2 5]
+:  [3 4 6]]
+
+* Understanding Axis in NumPy Arrays
+** Axis Concept in NumPy
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([[1, 2], [3, 4]])
+
+# Axis concept in NumPy arrays
+axis_0 = np.concatenate((arr, arr), axis=0)  # Concatenating along axis 0 (rows)
+
+axis_1 = np.concatenate((arr, arr), axis=1)  # Concatenating along axis 1 (columns)
+
+print("Concatenated along Axis 0:")
+print(axis_0)
+print("\nConcatenated along Axis 1:")
+print(axis_1)
+#+END_SRC
+
+#+RESULTS:
+: Concatenated along Axis 0:
+: [[1 2]
+:  [3 4]
+:  [1 2]
+:  [3 4]]
+: 
+: Concatenated along Axis 1:
+: [[1 2 1 2]
+:  [3 4 3 4]]
+
+** Concatenating along Higher Dimensions
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr1 = np.array([[1, 2], [3, 4]])
+arr2 = np.array([[5, 6], [7, 8]])
+
+dstack_result = np.dstack((arr1, arr2))  # Concatenating along the third axis
+
+print("Concatenated along the Third Axis:")
+print(dstack_result)
+#+END_SRC
+
+#+RESULTS:
+: Concatenated along the Third Axis:
+: [[[1 5]
+:   [2 6]]
+: 
+:  [[3 7]
+:   [4 8]]]
+
+** Combining Multiple Arrays
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr1 = np.array([[1, 2], [3, 4]])
+arr2 = np.array([[5, 6], [7, 8]])
+arr3 = np.array([[9, 10]])
+
+result = np.concatenate((arr1, arr2, arr3), axis=0)  # Concatenating multiple arrays
+
+print("Concatenated Result:")
+print(result)
+#+END_SRC
+
+#+RESULTS:
+: Concatenated Result:
+: [[ 1  2]
+:  [ 3  4]
+:  [ 5  6]
+:  [ 7  8]
+:  [ 9 10]]
+
+** Joining along Different Axes
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr1 = np.array([1, 2, 3])
+arr2 = np.array([4, 5, 6])
+
+result_axis0 = np.stack((arr1, arr2), axis=0) # Joining along axis 0
+result_axis1 = np.stack((arr1, arr2), axis=1) # Joining along axis 1
+
+print("Stacked along Axis 0:")
+print(result_axis0)
+print("\nStacked along Axis 1:")
+print(result_axis1)
+#+END_SRC
+
+#+RESULTS:
+: Stacked along Axis 0:
+: [[1 2 3]
+:  [4 5 6]]
+: 
+: Stacked along Axis 1:
+: [[1 4]
+:  [2 5]
+:  [3 6]]
+
+* Basics of NumPy Array Splitting
+** Splitting Arrays with np.split()
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.arange(9)
+
+result = np.split(arr, 3)  # Splitting into 3 equal parts
+
+print("Split Result:", result)
+#+END_SRC
+
+#+RESULTS:
+: Split Result: [array([0, 1, 2]), array([3, 4, 5]), array([6, 7, 8])]
+
+** Vertical and Horizontal Splitting
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.arange(16).reshape(4, 4)
+
+vsplit_result = np.vsplit(arr, 2) # Vertical split into 2 parts
+hsplit_result = np.hsplit(arr, 2) # Horizontal split into 2 parts
+
+print("Vertical Split Result:")
+print(vsplit_result)
+print("\nHorizontal Split Result:")
+print(hsplit_result)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Vertical Split Result:
+[array([[0, 1, 2, 3],
+       [4, 5, 6, 7]]), array([[ 8,  9, 10, 11],
+       [12, 13, 14, 15]])]
+
+Horizontal Split Result:
+[array([[ 0,  1],
+       [ 4,  5],
+       [ 8,  9],
+       [12, 13]]), array([[ 2,  3],
+       [ 6,  7],
+       [10, 11],
+       [14, 15]])]
+#+end_example
+
+** Axis Concept in NumPy
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.arange(16).reshape(4, 4)
+
+# Axis concept in NumPy arrays
+
+split_axis0 = np.split(arr, 2, axis=0)  # Splitting along axis 0 (rows)
+
+split_axis1 = np.split(arr, 2, axis=1)  # Splitting along axis 1 (columns)
+
+print("Split along Axis 0:")
+print(split_axis0)
+print("\nSplit along Axis 1:")
+print(split_axis1)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Split along Axis 0:
+[array([[0, 1, 2, 3],
+       [4, 5, 6, 7]]), array([[ 8,  9, 10, 11],
+       [12, 13, 14, 15]])]
+
+Split along Axis 1:
+[array([[ 0,  1],
+       [ 4,  5],
+       [ 8,  9],
+       [12, 13]]), array([[ 2,  3],
+       [ 6,  7],
+       [10, 11],
+       [14, 15]])]
+#+end_example
+
+** Splitting at Specified Indices
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.arange(9)
+result = np.split(arr, [2, 5])  # Splitting at indices 2 and 5
+
+print("Split Result at Indices:", result)
+#+END_SRC
+
+#+RESULTS:
+: Split Result at Indices: [array([0, 1]), array([2, 3, 4]), array([5, 6, 7, 8])]
+
+** Splitting Arrays into Unequal Parts
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.arange(10)
+result = np.array_split(arr, [3, 6])  # Splitting into unequal parts
+
+print("Unequal Split Result:", result)
+#+END_SRC
+
+#+RESULTS:
+: Unequal Split Result: [array([0, 1, 2]), array([3, 4, 5]), array([6, 7, 8, 9])]
+
+** Vertical and Horizontal Splitting for 2D Arrays
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.arange(16).reshape(4, 4)
+
+vsplit_result = np.vsplit(arr, 2)  # Vertical split for 2D array
+hsplit_result = np.hsplit(arr, 2)  # Horizontal split for 2D array
+
+print("Vertical Split Result:")
+print(vsplit_result)
+print("\nHorizontal Split Result:")
+print(hsplit_result)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Vertical Split Result:
+[array([[0, 1, 2, 3],
+       [4, 5, 6, 7]]), array([[ 8,  9, 10, 11],
+       [12, 13, 14, 15]])]
+
+Horizontal Split Result:
+[array([[ 0,  1],
+       [ 4,  5],
+       [ 8,  9],
+       [12, 13]]), array([[ 2,  3],
+       [ 6,  7],
+       [10, 11],
+       [14, 15]])]
+#+end_example
+
+* Basics of NumPy Array Search
+** Finding Elements with np.where()
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+result = np.where(arr > 3)  # Finding elements greater than 3
+
+print("Indices with Values > 3:", result)
+#+END_SRC
+
+#+RESULTS:
+: Indices with Values > 3: (array([3, 4]),)
+
+** Using np.argwhere() for Index-Based Search
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([[1, 2], [3, 4]])
+
+indices = np.argwhere(arr > 2)  # Finding indices where values are greater than 2
+
+print("Indices with Values > 2:", indices)
+#+END_SRC
+
+#+RESULTS:
+: Indices with Values > 2: [[1 0]
+:  [1 1]]
+
+** Element-Wise Comparison with np.nonzero()
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([0, 1, 0, 2, 3, 0])
+
+nonzero_indices = np.nonzero(arr)  # Finding indices of non-zero elements
+
+print("Non-Zero Indices:", nonzero_indices)
+#+END_SRC
+
+#+RESULTS:
+: Non-Zero Indices: (array([1, 3, 4]),)
+
+** Conditional Search for Multiple Conditions
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+result = np.where((arr > 2) & (arr < 5))  # Finding elements between 2 and 5
+
+print("Indices with Values between 2 and 5:", result)
+#+END_SRC
+
+#+RESULTS:
+: Indices with Values between 2 and 5: (array([2, 3]),)
+
+** Finding Specific Elements
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array(['apple', 'banana', 'cherry', 'apple', 'cherry'])
+
+result = np.where(arr == 'apple')  # Finding indices of 'apple'
+
+print("Indices of 'apple':", result)
+#+END_SRC
+
+#+RESULTS:
+: Indices of 'apple': (array([0, 3]),)
+
+** Identifying Outliers in Data
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+data = np.random.randn(100)  # Generating random data
+
+outliers = np.where(np.abs(data) > 2.5)  # Finding outliers
+
+print("Indices of Outliers:", outliers)
+#+END_SRC
+
+#+RESULTS:
+: Indices of Outliers: (array([52, 74]),)
+
+* Basics of NumPy Array Sorting
+** Sorting Elements with np.sort()
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([3, 1, 2, 5, 4])
+
+sorted_arr = np.sort(arr)  # Sorting elements in ascending order
+
+print("Sorted Array:", sorted_arr)
+#+END_SRC
+
+#+RESULTS:
+: Sorted Array: [1 2 3 4 5]
+
+** Sorting Indices with np.argsort()
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([3, 1, 2, 5, 4])
+
+indices = np.argsort(arr)  # Sorting indices of the array
+
+print("Sorted Indices:", indices)
+#+END_SRC
+
+#+RESULTS:
+: Sorted Indices: [1 2 0 4 3]
+
+** Sorting along Specified Axes
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([[3, 2, 1], [6, 5, 4]])
+
+sorted_axis0 = np.sort(arr, axis=0)  # Sorting along axis 0 (columns)
+sorted_axis1 = np.sort(arr, axis=1)  # Sorting along axis 1 (rows)
+
+print("Sorted along Axis 0:")
+print(sorted_axis0)
+print("\nSorted along Axis 1:")
+print(sorted_axis1)
+#+END_SRC
+
+#+RESULTS:
+: Sorted along Axis 0:
+: [[3 2 1]
+:  [6 5 4]]
+: 
+: Sorted along Axis 1:
+: [[1 2 3]
+:  [4 5 6]]
+
+** Sorting in Descending Order
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([3, 1, 2, 5, 4])
+
+sorted_desc = np.sort(arr)[::-1]  # Sorting in descending order
+
+print("Sorted in Descending Order:", sorted_desc)
+#+END_SRC
+
+#+RESULTS:
+: Sorted in Descending Order: [5 4 3 2 1]
+
+** Sorting Arrays with String Elements
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array(['banana', 'apple', 'cherry'])
+
+sorted_str_arr = np.sort(arr)  # Sorting string elements
+
+print("Sorted String Array:", sorted_str_arr)
+#+END_SRC
+
+#+RESULTS:
+: Sorted String Array: ['apple' 'banana' 'cherry']
+
+** Sorting Based on Multiple Columns
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([[5, 10, 5], [7, 4, 6]])
+
+sorted_indices = np.lexsort((arr[:, 0], arr[:, 1]))  # Sorting based on multiple columns
+
+sorted_arr = arr[sorted_indices]
+
+print("Sorted Based on Multiple Columns:")
+
+print(sorted_arr)
+#+END_SRC
+
+#+RESULTS:
+: Sorted Based on Multiple Columns:
+: [[ 7  4  6]
+:  [ 5 10  5]]
+
+* Basics of NumPy Array Filtering
+** Filtering with Boolean Indexing
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+filtered_arr = arr[arr > 2]  # Filtering elements greater than 2
+
+print("Filtered Array:", filtered_arr)
+#+END_SRC
+
+#+RESULTS:
+: Filtered Array: [3 4 5]
+
+** Using np.where() for Conditional Filtering
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+indices = np.where(arr > 2)  # Finding indices where values are greater than 2
+
+filtered_values = arr[indices]  # Filtering elements based on indices
+
+print("Filtered Values:", filtered_values)
+#+END_SRC
+
+#+RESULTS:
+: Filtered Values: [3 4 5]
+
+** Element-Wise Comparison for Filtering
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+filtered_arr = arr[arr % 2 == 0]  # Filtering even numbers
+
+print("Filtered Even Numbers:", filtered_arr)
+#+END_SRC
+
+#+RESULTS:
+: Filtered Even Numbers: [2 4]
+
+** Conditional Filtering with Multiple Conditions
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+filtered_arr = arr[(arr > 2) & (arr % 2 == 0)]  # Filtering numbers > 2 and even
+
+print("Filtered Values:", filtered_arr)
+#+END_SRC
+
+#+RESULTS:
+: Filtered Values: [4]
+
+** Extracting Specific Elements
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array(['apple', 'banana', 'cherry'])
+
+filtered_arr = arr[arr != 'banana']  # Filtering to extract non-'banana' elements
+
+print("Filtered Array:", filtered_arr)
+#+END_SRC
+
+#+RESULTS:
+: Filtered Array: ['apple' 'cherry']
+
+** Filtering Outliers in Data
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+data = np.random.randn(100)  # Generating random data
+
+filtered_data = data[np.abs(data) < 2.5]  # Filtering outliers
+
+print("Filtered Data:", filtered_data)
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+Filtered Data: [ 0.93500676 -0.42665415  0.46429246  0.00674295 -0.08197979 -0.18952925
+ -0.56483372 -0.22771588 -1.69662366  0.22073251 -0.62403811 -0.87607496
+ -0.45476536  0.92108568  0.04856901  0.58836685  1.13431897  0.76628075
+  0.60177194 -2.45246329  0.2596666  -1.45442421 -1.35377203 -0.38994084
+ -0.73846427  0.16581845 -0.26105422 -0.58047785 -0.40704706 -0.01958472
+  1.70409978 -1.87676841 -1.39335952  1.23739122 -0.07519852  0.95822923
+ -0.50648881 -0.61230482  1.22766513  1.81747088  0.69812574  0.14334924
+  0.40996631  2.08256212 -1.12180569 -0.03169329  0.59633204 -0.2838024
+  0.31783593 -0.35766867  0.58699519  2.00675143  1.69830565  0.57428964
+  0.00391491 -0.2138198  -0.29555602  0.74508483 -0.09960877 -1.61427824
+ -0.48488309  1.32338945 -0.74720369 -0.37454116  0.24922808 -1.20395907
+ -0.85270747 -0.66510914  0.30708733 -1.1394012   0.05154155  1.16276699
+  0.22560048 -0.03750979  1.22607151  1.16911748  0.90379411 -1.45861281
+ -0.7782366   1.96433324 -0.00904654  1.45298935  0.32196573 -0.25451307
+  0.41792236  0.85182295 -1.49449598 -0.6231035  -1.40390655 -1.33254439
+ -0.24504271  0.46228622 -0.03125495 -0.83181004 -1.32273395  1.16728744
+  0.78198855  0.02337712]
+#+end_example
+
+* Basics of NumPy Random Module
+** Generating Random Numbers
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+random_number = np.random.rand()  # Generating a random number between 0 and 1
+
+print("Random Number:", random_number)
+#+END_SRC
+
+#+RESULTS:
+: Random Number: 0.34972637311043886
+
+** Generating Random Integers
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+random_int = np.random.randint(1, 10)  # Generating a random integer between 1 and 9
+
+print("Random Integer:", random_int)
+#+END_SRC
+
+#+RESULTS:
+: Random Integer: 3
+
+** Setting a Seed for Reproducibility
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+np.random.seed(42)  # Setting a seed for reproducibility
+
+random_number = np.random.rand()
+
+print("Random Number with Seed:", random_number)
+#+END_SRC
+
+#+RESULTS:
+: Random Number with Seed: 0.3745401188473625
+
+* Generating Random Distributions
+** Uniform Distribution
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+import matplotlib.pyplot as plt
+
+uniform_data = np.random.uniform(0, 1, 1000) # Generating 1000 random numbers from a uniform distribution
+
+plt.hist(uniform_data, bins=20)
+plt.title('Uniform Distribution')
+plt.show()
+#+END_SRC
+
+#+RESULTS:
+[[./.ob-jupyter/4e18cca60672ab8c5dedaa0573ef774144908bca.png]]
+
+** Normal Distribution
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+import matplotlib.pyplot as plt
+
+normal_data = np.random.normal(0, 1, 1000)  # Generating 1000 random numbers from a normal distribution
+
+plt.hist(normal_data, bins=20)
+plt.title('Normal Distribution')
+plt.show()
+#+END_SRC
+
+#+RESULTS:
+[[./.ob-jupyter/0a97e0890f6c013daf388d1e65d997a42efabdd7.png]]
+
+* Random Sampling
+** Random Sampling from Arrays
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+random_sample = np.random.choice(arr, size=3, replace=False)  # Randomly sampling 3 elements without replacement
+
+print("Random Sample:", random_sample)
+#+END_SRC
+
+#+RESULTS:
+: Random Sample: [2 1 4]
+
+** Shuffling Arrays
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+np.random.shuffle(arr)  # Shuffling elements in the array
+
+print("Shuffled Array:", arr)
+#+END_SRC
+
+#+RESULTS:
+: Shuffled Array: [1 3 2 5 4]
+
+** Permutation
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+
+arr = np.array([1, 2, 3, 4, 5])
+
+permutation = np.random.permutation(arr)  # Generating a random permutation of the array
+
+print("Random Permutation:", permutation)
+#+END_SRC
+
+#+RESULTS:
+: Random Permutation: [1 4 2 3 5]
+
+** Beta Distribution
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+import matplotlib.pyplot as plt
+
+beta_data = np.random.beta(2, 5, 1000)  # Generating 1000 random numbers from a beta distribution
+
+plt.hist(beta_data, bins=20)
+plt.title('Beta Distribution')
+plt.show()
+#+END_SRC
+
+#+RESULTS:
+[[./.ob-jupyter/7fb821fd14a7eeec85cdb9db4cbeb88afbbbd193.png]]
+
+** Generating Random Distributions
+#+BEGIN_SRC jupyter-python  
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Generating random data for different distributions
+normal_data = np.random.normal(0, 1, 1000)  # Normal distribution
+uniform_data = np.random.uniform(0, 1, 1000)  # Uniform distribution
+exponential_data = np.random.exponential(1, 1000)  # Exponential distribution
+
+# Visualizing distributions using histograms
+plt.figure(figsize=(10, 6))
+plt.subplot(2, 2, 1)
+plt.hist(normal_data, bins=30)
+plt.title('Normal Distribution')
+plt.subplot(2, 2, 2)
+plt.hist(uniform_data, bins=30)
+plt.title('Uniform Distribution')
+plt.subplot(2, 2, 3)
+plt.hist(exponential_data, bins=30)
+plt.title('Exponential Distribution')
+plt.tight_layout()
+plt.show()
+#+END_SRC
+
+#+RESULTS:
+[[./.ob-jupyter/23785fcc29c2dba39c82a6d40c7c746aa3f3280b.png]]
+
 
 #+BEGIN_SRC jupyter-python  
 

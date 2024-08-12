@@ -68,6 +68,7 @@
 	;; org-superstar
 	geiser-mit
 	pyvenv
+	srcery-theme
 	))
 (package-install-selected-packages)
 
