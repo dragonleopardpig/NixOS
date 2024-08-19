@@ -69,6 +69,8 @@
 	geiser-mit
 	pyvenv
 	srcery-theme
+	nov
+	markdown-mode
 	))
 (package-install-selected-packages)
 
@@ -79,3 +81,4 @@
 ;; ** Pyvenv
 (require 'pyvenv)
 (pyvenv-activate "~/.virtualenvs/tf/")
+

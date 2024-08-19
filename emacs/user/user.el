@@ -39,7 +39,7 @@
 (setq org-crypt-key nil)
 
 ;; * Org Capture
-(setq org-directory "~/mountdir/org")
+(setq org-directory "~/NixOS/org")
 (setq org-default-notes-file (concat org-directory "/tasks.org"))
 
 ;; * Org Alert
@@ -123,7 +123,7 @@ buffer's text scale."
    (cons 'image
          (plist-put
           (cdr (overlay-get ov 'display))
-          :scale (+ 1.0 (* 0.25 text-scale-mode-amount))))))
+          :scale (+ 1.0 (* 0.15 text-scale-mode-amount))))))
 (add-hook 'text-scale-mode-hook #'my/text-scale-adjust-latex-previews)
 
 ;; * etc
@@ -135,7 +135,22 @@ buffer's text scale."
 (setq org-src-block-faces 'nil)
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
+;; * epub reader
+(setq nov-unzip-program (executable-find "bsdtar")
+      nov-unzip-args '("-xC" directory "-f" filename))
+(add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
+;; ** epub reader
+(use-package nov-xwidget
+  :demand t
+  :after nov
+  :config
+  (define-key nov-mode-map (kbd "o") 'nov-xwidget-view)
+  (add-hook 'nov-mode-hook 'nov-xwidget-inject-all-files))
+
+;; * PDF Tools
+(pdf-tools-install)  ; Standard activation command
+(pdf-loader-install) ; On demand loading, leads to faster startup time
 
 
 ;; ;; * Copy-and-Paste issue for org-src-block

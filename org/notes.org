@@ -35,7 +35,10 @@ ppieDefZ+4dYAcNm8RYFOQ==
 find ./ -iname "*.ipynb" -type f -exec sh -c 'pandoc "${0}" -o "${0%.ipynb}.org"' {} \;
 
 # replace "python" with "jupyter-python" recursively
-find . -type f -name "*.org" -exec sed -i 's/python/jupyter-python/g' {} +
+find . -type f -name "*.org" -exec sed -i 's|#+begin_src python|#+begin_src jupyter-python|g' {} +
+
+# delete line start with <<
+find . -type f -name "*.org" -exec sed -i '/^<</d' {} +
 #+END_SRC
 
 #+NAME: jupytext
