@@ -1,0 +1,357 @@
+Printed and electronic copies of /Modeling and Simulation in Python/ are
+available from [[https://nostarch.com/modeling-and-simulation-python][No
+Starch Press]] and
+[[https://bookshop.org/p/books/modeling-and-simulation-in-python-allen-b-downey/17836697?ean=9781718502161][Bookshop.org]]
+and [[https://amzn.to/3y9UxNb][Amazon]].
+
+* Optimal Baseball
+  :PROPERTIES:
+  :CUSTOM_ID: optimal-baseball
+  :END:
+
+/Modeling and Simulation in Python/
+
+Copyright 2021 Allen Downey
+
+License: [[https://creativecommons.org/licenses/by-nc-sa/4.0/][Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International]]
+
+#+begin_src jupyter-python
+# install Pint if necessary
+
+try:
+    from pint import UnitRegistry
+except ImportError:
+    !pip install pint
+    
+# import units
+from pint import UnitRegistry
+units = UnitRegistry()
+#+end_src
+
+#+begin_src jupyter-python
+# download modsim.py if necessary
+
+from os.path import basename, exists
+
+def download(url):
+    filename = basename(url)
+    if not exists(filename):
+        from urllib.request import urlretrieve
+        local, _ = urlretrieve(url, filename)
+        print('Downloaded ' + local)
+    
+download('https://github.com/AllenDowney/ModSimPy/raw/master/' +
+         'modsim.py')
+#+end_src
+
+#+begin_src jupyter-python
+# import functions from modsim
+
+from modsim import *
+#+end_src
+
+This chapter is available as a Jupyter notebook where you can read the
+text, run the code, and work on the exercises. Click here to access the
+notebooks: [[https://allendowney.github.io/ModSimPy/]].
+
+#+begin_src jupyter-python
+download('https://github.com/AllenDowney/ModSimPy/raw/master/' +
+         'chap22.py')
+#+end_src
+
+#+begin_src jupyter-python
+# import functions from previous notebook
+
+from chap22 import params
+from chap22 import make_system
+from chap22 import slope_func
+from chap22 import event_func
+#+end_src
+
+In the previous chapter we developed a model of the flight of a
+baseball, including gravity and a simple version of drag, but neglecting
+spin, Magnus force, and the dependence of the coefficient of drag on
+velocity.
+
+In this chapter we apply that model to an optimization problem. In
+general, /optimization/ is a process for improving a design by searching
+for the parameters that maximize a benefit or minimize a cost. For
+example, in this chapter we'll find the angle you should hit a baseball
+to maximize the distance it travels. And we'll use a new function,
+called =maximize_scalar= that searches for this angle efficiently.
+
+** The Manny Ramirez Problem
+   :PROPERTIES:
+   :CUSTOM_ID: the-manny-ramirez-problem
+   :END:
+Manny Ramirez is a former member of the Boston Red Sox (an American
+baseball team) who was notorious for his relaxed attitude and taste for
+practical jokes. Our objective in this chapter is to solve the following
+Manny-inspired problem:
+
+#+begin_quote
+  What is the minimum effort required to hit a home run in Fenway Park?
+#+end_quote
+
+Fenway Park is a baseball stadium in Boston, Massachusetts. One of its
+most famous features is the "Green Monster", which is a wall in left
+field that is unusually close to home plate, only 310 feet away. To
+compensate for the short distance, the wall is unusually high, at 37
+feet (see [[http://modsimpy.com/wally]]).
+
+Starting with =params= from the previous chapter, I'll make a new
+=Params= object with two additional parameters, =wall_distance= and
+=wall_height=, in meters.
+
+#+begin_src jupyter-python
+feet_to_meter = (1 * units.feet).to(units.meter).magnitude
+
+params = params.set(
+    wall_distance = 310 * feet_to_meter,
+    wall_height = 37 * feet_to_meter,
+)
+
+show(params)
+#+end_src
+
+The answer we want is the minimum speed at which a ball can leave home
+plate and still go over the Green Monster. We'll proceed in the
+following steps:
+
+1. For a given speed, we'll find the optimal /launch angle/, that is,
+   the angle the ball should leave home plate to maximize its height
+   when it reaches the wall.
+
+2. Then we'll find the minimum speed that clears the wall, given that it
+   has the optimal launch angle.
+
+** Finding the Range
+   :PROPERTIES:
+   :CUSTOM_ID: finding-the-range
+   :END:
+Suppose we want to find the launch angle that maximizes /range/, that
+is, the distance the ball travels in the air before landing. We'll use a
+function in the ModSim library, =maximize_scalar=, which takes a
+function and finds its maximum.
+
+The function we pass to =maximize_scalar= should take launch angle in
+degrees, simulate the flight of a ball launched at that angle, and
+return the distance the ball travels along the \(x\) axis.
+
+#+begin_src jupyter-python
+def range_func(angle, params):
+    params = params.set(angle=angle)
+    system = make_system(params)
+    results, details = run_solve_ivp(system, slope_func,
+                                     events=event_func)
+    x_dist = results.iloc[-1].x
+    print(angle, x_dist)
+    return x_dist
+#+end_src
+
+=range_func= makes a new =System= object with the given value of
+=angle=. Then it calls =run_solve_ivp= and returns the final value of
+=x= from the results.
+
+We can call =range_func= directly like this:
+
+#+begin_src jupyter-python
+range_func(45, params)
+#+end_src
+
+With launch angle 45°, the ball lands about 99 meters from home plate.
+
+Now we can sweep a sequence of angles like this:
+
+#+begin_src jupyter-python
+angles = linspace(20, 80, 21)
+sweep = SweepSeries()
+
+for angle in angles:
+    x_dist = range_func(angle, params)
+    sweep[angle] = x_dist
+#+end_src
+
+Here's what the results look like.
+
+#+begin_src jupyter-python
+sweep.plot()
+
+decorate(xlabel='Launch angle (degrees)',
+         ylabel='Range (m)')
+#+end_src
+
+It looks like the range is maximized when the initial angle is near 40°.
+We can find the optimal angle more precisely and more efficiently using
+=maximize_scalar=, like this:
+
+#+begin_src jupyter-python
+res = maximize_scalar(range_func, params, bounds=[0, 90])
+#+end_src
+
+The first parameter is the function we want to maximize. The second is
+the range of values we want to search; in this case, it's the range of
+angles from 0° to 90°.
+
+The return value from =maximize_scalar= is an object that contains the
+results, including =x=, which is the angle that yielded the maximum
+range, and =fun=, which is the range when the ball is launched at the
+optimal angle.
+
+#+begin_src jupyter-python
+res
+#+end_src
+
+#+begin_src jupyter-python
+res.x, res.fun
+#+end_src
+
+For these parameters, the optimal angle is about 41°, which yields a
+range of 100 m. Now we have what we need to finish the problem; the last
+step is to find the minimum velocity needed to get the ball over the
+wall. In the exercises at the end of the chapter, I provide some
+suggestions. Then it's up to you!
+
+** Summary
+   :PROPERTIES:
+   :CUSTOM_ID: summary
+   :END:
+This chapter introduces a new tool, =maximize_scalar=, that provides an
+efficient way to search for the maximum of a function. We used it to
+find the launch angle that maximizes the distance a baseball flies
+through the air, given its initial velocity.
+
+If you enjoy this example, you might be interested in this paper: "How
+to hit home runs: Optimum baseball bat swing parameters for maximum
+range trajectories", by Sawicki, Hubbard, and Stronge, at
+[[http://modsimpy.com/runs]].
+
+In the next chapter, we start a new topic: rotation!
+
+** Exercises
+   :PROPERTIES:
+   :CUSTOM_ID: exercises
+   :END:
+This chapter is available as a Jupyter notebook where you can read the
+text, run the code, and work on the exercises. You can access the
+notebooks at [[https://allendowney.github.io/ModSimPy/]].
+
+*** Exercise 1
+    :PROPERTIES:
+    :CUSTOM_ID: exercise-1
+    :END:
+Let's finish off the Manny Ramirez problem:
+
+#+begin_quote
+  What is the minimum effort required to hit a home run in Fenway Park?
+#+end_quote
+
+Although the problem asks for a minimum, it is not an optimization
+problem. Rather, we want to solve for the initial speed that just barely
+gets the ball to the top of the wall, given that it is launched at the
+optimal angle.
+
+And we have to be careful about what we mean by "optimal". For this
+problem, we don't want the longest range; we want the maximum height at
+the point where it reaches the wall.
+
+If you are ready to solve the problem on your own, go ahead. Otherwise I
+will walk you through the process with an outline and some starter code.
+
+As a first step, write an =event_func= that stops the simulation when
+the ball reaches the wall at =wall_distance=, which is a parameter in
+=params=. Test your function with the initial conditions.
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+Next, write a function called =height_func= that takes a launch angle,
+simulates the flight of a baseball, and returns the height of the
+baseball when it reaches the wall. Test your function with the initial
+conditions.
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+Now use =maximize_scalar= to find the optimal angle. Is it higher or
+lower than the angle that maximizes range?
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+The angle that maximizes the height at the wall is a little higher than
+the angle that maximizes range.
+
+Now, let's find the initial speed that makes the height at the wall
+exactly 37 feet, given that it's launched at the optimal angle. This is
+a root-finding problem, so we'll use =root_scalar=.
+
+Write an error function that takes a speed and a =System= object as
+parameters. It should use =maximize_scalar= to find the highest possible
+height of the ball at the wall, for the given speed. Then it should
+return the difference between that optimal height and =wall_height=,
+which is a parameter in =params=.
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+Test your error function before you call =root_scalar=.
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+Then use =root_scalar= to find the answer to the problem, the minimum
+speed that gets the ball out of the park.
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+And just to check, run =error_func= with the value you found.
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+** Under the Hood
+   :PROPERTIES:
+   :CUSTOM_ID: under-the-hood
+   :END:
+=maximize_scalar= uses a SciPy function called =minimize_scalar=, which
+provides several optimization methods. By default, it uses =bounded=, a
+version of Brent's algorithm that is safe in the sense that it always
+uses values within the bounds you provide (including both ends). You can
+read more about it at [[http://modsimpy.com/minimize]]).
+
+#+begin_src jupyter-python
+#+end_src

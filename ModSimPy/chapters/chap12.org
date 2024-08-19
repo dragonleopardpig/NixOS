@@ -1,0 +1,287 @@
+Printed and electronic copies of /Modeling and Simulation in Python/ are
+available from [[https://nostarch.com/modeling-and-simulation-python][No
+Starch Press]] and
+[[https://bookshop.org/p/books/modeling-and-simulation-in-python-allen-b-downey/17836697?ean=9781718502161][Bookshop.org]]
+and [[https://amzn.to/3y9UxNb][Amazon]].
+
+* Modeling Vaccination
+  :PROPERTIES:
+  :CUSTOM_ID: modeling-vaccination
+  :END:
+
+/Modeling and Simulation in Python/
+
+Copyright 2021 Allen Downey
+
+License: [[https://creativecommons.org/licenses/by-nc-sa/4.0/][Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International]]
+
+#+begin_src jupyter-python
+# download modsim.py if necessary
+
+from os.path import basename, exists
+
+def download(url):
+    filename = basename(url)
+    if not exists(filename):
+        from urllib.request import urlretrieve
+        local, _ = urlretrieve(url, filename)
+        print('Downloaded ' + local)
+    
+download('https://github.com/AllenDowney/ModSimPy/raw/master/' +
+         'modsim.py')
+#+end_src
+
+#+begin_src jupyter-python
+# import functions from modsim
+
+from modsim import *
+#+end_src
+
+#+begin_src jupyter-python
+download('https://github.com/AllenDowney/ModSimPy/raw/master/chap11.py')
+#+end_src
+
+#+begin_src jupyter-python
+# import code from previous notebooks
+
+from chap11 import make_system
+from chap11 import update_func
+from chap11 import run_simulation
+#+end_src
+
+In the previous chapter I presented the Kermack-McKendrick (KM) model of
+infectious disease and used it to model the Freshman Plague at Olin. In
+this chapter we'll consider metrics intended to quantify the effects of
+the disease and interventions intended to reduce those effects.
+
+We'll use some of the functions from the previous chapter:
+=make_system=, =update_func=, and the last version of =run_simulation=,
+which returns the results in a =DataFrame= object.
+
+** Immunization
+   :PROPERTIES:
+   :CUSTOM_ID: immunization
+   :END:
+Models like this are useful for testing "what if?" scenarios. As an
+example, we'll consider the effect of immunization.
+
+Suppose there is a vaccine that causes a student to become immune to the
+Freshman Plague without being infected. How might you modify the model
+to capture this effect?
+
+One option is to treat immunization as a shortcut from susceptible to
+recovered without going through infectious. We can implement this
+feature like this:
+
+#+begin_src jupyter-python
+def add_immunization(system, fraction):
+    system.init.s -= fraction
+    system.init.r += fraction
+#+end_src
+
+=add_immunization= moves the given fraction of the population from =S=
+to =R=.
+
+As a basis for comparison, I'll run the model with the same parameters
+as in the previous chapter, with no immunization.
+
+#+begin_src jupyter-python
+tc = 3             # time between contacts in days 
+tr = 4             # recovery time in days
+
+beta = 1 / tc      # contact rate in per day
+gamma = 1 / tr     # recovery rate in per day
+
+system = make_system(beta, gamma)
+results = run_simulation(system, update_func)
+#+end_src
+
+Now let's see what happens if 10% of students are immune. I'll make
+another =System= object with the same parameters, then run
+=add_immunization= to modify the initial conditions.
+
+#+begin_src jupyter-python
+system2 = make_system(beta, gamma)
+add_immunization(system2, 0.1)
+#+end_src
+
+Now we can run the simulation like this:
+
+#+begin_src jupyter-python
+results2 = run_simulation(system2, update_func)
+#+end_src
+
+The following figure shows =s= as a function of time, with and without
+immunization.
+
+#+begin_src jupyter-python
+results.s.plot(style='--', label='No immunization')
+results2.s.plot(label='10% immunization')
+
+decorate(xlabel='Time (days)',
+         ylabel='Fraction of population')
+#+end_src
+
+With immunization, there is a smaller change in =s=; that is, fewer
+people are infected. In the next section we'll compute this change and
+use it to quantify the effect of immunization.
+
+** Metrics
+   :PROPERTIES:
+   :CUSTOM_ID: metrics
+   :END:
+When we plot a time series, we get a view of everything that happened
+when the model ran, but often we want to boil it down to a few numbers
+that summarize the outcome. These summary statistics are called
+/metrics/.
+
+In the KM model, we might want to know the time until the peak of the
+outbreak, the number of people who are sick at the peak, the number of
+students who will still be sick at the end of the semester, or the total
+number of students who get sick at any point.
+
+As an example, I will focus on the last one --- the total number of sick
+students --- and we will consider interventions intended to minimize it.
+
+We can get the total number of infections by computing the difference in
+=s= at the beginning and the end of the simulation.
+
+#+begin_src jupyter-python
+def calc_total_infected(results, system):
+    s_0 = results.s[0]
+    s_end = results.s[system.t_end]
+    return s_0 - s_end
+#+end_src
+
+And here are the results from the two simulations.
+
+#+begin_src jupyter-python
+calc_total_infected(results, system)
+#+end_src
+
+#+begin_src jupyter-python
+calc_total_infected(results2, system2)
+#+end_src
+
+Without immunization, almost 47% of the population gets infected at some
+point. With 10% immunization, only 31% get infected. That's pretty good.
+
+** Sweeping Immunization
+   :PROPERTIES:
+   :CUSTOM_ID: sweeping-immunization
+   :END:
+Now let's see what happens if we administer more vaccines. This
+following function sweeps a range of immunization rates:
+
+#+begin_src jupyter-python
+def sweep_immunity(fraction_array):
+    sweep = SweepSeries()
+
+    for fraction in fraction_array:
+        system = make_system(beta, gamma)
+        add_immunization(system, fraction)
+        results = run_simulation(system, update_func)
+        sweep[fraction] = calc_total_infected(results, system)
+
+    return sweep
+#+end_src
+
+The parameter of =sweep_immunity= is an array of immunization rates. The
+result is a =SweepSeries= object that maps from each immunization rate
+to the resulting fraction of students ever infected.
+
+We can call it like this:
+
+#+begin_src jupyter-python
+fraction_array = linspace(0, 1, 21)
+infected_sweep = sweep_immunity(fraction_array)
+#+end_src
+
+The following figure plots the =SweepSeries=. Notice that the \(x\)-axis
+is the immunization rate, not time.
+
+#+begin_src jupyter-python
+infected_sweep.plot(color='C2')
+
+decorate(xlabel='Fraction immunized',
+         ylabel='Total fraction infected',
+         title='Fraction infected vs. immunization rate')
+#+end_src
+
+As the immunization rate increases, the number of infections drops
+steeply. If 40% of the students are immunized, fewer than 4% get sick.
+That's because immunization has two effects: it protects the people who
+get immunized (of course) but it also protects the rest of the
+population.
+
+Reducing the number of "susceptibles" and increasing the number of
+"resistants" makes it harder for the disease to spread, because some
+fraction of contacts are wasted on people who cannot be infected. This
+phenomenon is called /herd immunity/, and it is an important element of
+public health (see [[http://modsimpy.com/herd]]).
+
+The steepness of the curve is a blessing and a curse. It's a blessing
+because it means we don't have to immunize everyone, and vaccines can
+protect the "herd" even if they are not 100% effective.
+
+But it's a curse because a small decrease in immunization can cause a
+big increase in infections. In this example, if we drop from 80%
+immunization to 60%, that might not be too bad. But if we drop from 40%
+to 20%, that would trigger a major outbreak, affecting more than 15% of
+the population. For a serious disease like measles, just to name one,
+that would be a public health catastrophe.
+
+** Summary
+   :PROPERTIES:
+   :CUSTOM_ID: summary
+   :END:
+In general, models are used to predict, explain, and design. In this
+chapter, we use an SIR model to predict the effect of immunization and
+to explain the phenomenon of herd immunity.
+
+In the repository for this book, you will find a file called
+/plague.ipynb/ that uses this model for design, that is, for making
+public health decisions intended to achieve a goal.
+
+In the next chapter, we'll explore the SIR model further by sweeping the
+parameters.
+
+But first you might want to work on this exercise.
+
+** Exercises
+   :PROPERTIES:
+   :CUSTOM_ID: exercises
+   :END:
+This chapter is available as a Jupyter notebook where you can read the
+text, run the code, and work on the exercises. You can access the
+notebooks at [[https://allendowney.github.io/ModSimPy/]].
+
+*** Exercise 1
+    :PROPERTIES:
+    :CUSTOM_ID: exercise-1
+    :END:
+Suppose we have the option to quarantine infected students. For example,
+a student who feels ill might be moved to an infirmary or a private dorm
+room until they are no longer infectious.
+
+How might you incorporate the effect of quarantine in the SIR model?
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+#+begin_src jupyter-python
+# Solution goes here
+#+end_src
+
+#+begin_src jupyter-python
+#+end_src

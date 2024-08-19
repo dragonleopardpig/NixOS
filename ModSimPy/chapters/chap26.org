@@ -1,0 +1,333 @@
+Printed and electronic copies of /Modeling and Simulation in Python/ are
+available from [[https://nostarch.com/modeling-and-simulation-python][No
+Starch Press]] and
+[[https://bookshop.org/p/books/modeling-and-simulation-in-python-allen-b-downey/17836697?ean=9781718502161][Bookshop.org]]
+and [[https://amzn.to/3y9UxNb][Amazon]].
+
+* Case Studies Part 3
+  :PROPERTIES:
+  :CUSTOM_ID: case-studies-part-3
+  :END:
+
+/Modeling and Simulation in Python/
+
+Copyright 2021 Allen Downey
+
+License: [[https://creativecommons.org/licenses/by-nc-sa/4.0/][Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International]]
+
+This chapter is a collection of case studies you might want to read and
+work on. They are based on the methods in the last few chapters,
+including Newtonian mechanics in 1-D and 2-D, and rotation around a
+single axis.
+
+** Bungee Jumping
+   :PROPERTIES:
+   :CUSTOM_ID: bungee-jumping
+   :END:
+Suppose you want to set the world record for the highest "bungee dunk",
+which is a stunt in which a bungee jumper dunks a cookie in a cup of tea
+at the lowest point of a jump. An example is shown in this video:
+[[http://modsimpy.com/dunk]].
+
+Since the record is 70 m, let's design a jump for 80 m. We'll start with
+the following modeling assumptions:
+
+- Initially the bungee cord hangs from a crane with the attachment point
+  80 m above a cup of tea.
+
+- Until the cord is fully extended, it applies no force to the jumper.
+  It turns out this might not be a good assumption; we'll revisit it in
+  the next case study.
+
+- After the cord is fully extended, it obeys Hooke's Law; that is, it
+  applies a force to the jumper proportional to the extension of the
+  cord beyond its resting length. See [[http://modsimpy.com/hooke]].
+
+- The mass of the jumper is 75 kg.
+
+- The jumper is subject to drag force so that their terminal velocity is
+  60 m/s.
+
+Our objective is to choose the length of the cord, =L=, and its spring
+constant, =k=, so that the jumper falls all the way to the tea cup, but
+no farther!
+
+In the repository for this book, you will find a notebook,
+/bungee1.ipynb/, which contains starter code and exercises for this case
+study. You can download it from
+[[https://github.com/AllenDowney/ModSimPy/raw/master/examples/bungee1.ipynb]]
+or run it on Colab at
+[[https://colab.research.google.com/github/AllenDowney/ModSimPy/blob/master/examples/bungee1.ipynb]].
+
+** Bungee Dunk Revisited
+   :PROPERTIES:
+   :CUSTOM_ID: bungee-dunk-revisited
+   :END:
+In the previous case study, we assume that the cord applies no force to
+the jumper until it is stretched. It is tempting to say that the cord
+has no effect because it falls along with the jumper, but that intuition
+is incorrect. As the cord falls, it transfers energy to the jumper.
+
+At [[http://modsimpy.com/bungee]] you'll find a paper (Heck, Uylings,
+and Kędzierska, "Understanding the physics of bungee jumping", Physics
+Education, Volume 45, Number 1, 2010.) that explains this phenomenon and
+derives the acceleration of the jumper, \(a\), as a function of
+position, \(y\), and velocity, \(v\):
+
+\[a = g + \frac{\mu v^2/2}{\mu(L+y) + 2L}\]
+
+where \(g\) is acceleration due to gravity, \(L\) is the length of the
+cord, and \(\mu\) is the ratio of the mass of the cord, \(m\), and the
+mass of the jumper, \(M\).
+
+If you don't believe that their model is correct, this video might
+convince you: [[http://modsimpy.com/drop]].
+
+In the repository for this book, you will find a notebook,
+/bungee2.ipynb/, which contains starter code and exercises for this case
+study. You can download it from
+[[https://github.com/AllenDowney/ModSimPy/raw/master/examples/bungee2.ipynb]]
+or run it on Colab at
+[[https://colab.research.google.com/github/AllenDowney/ModSimPy/blob/master/examples/bungee2.ipynb]].
+
+How does the behavior of the system change as we vary the mass of the
+cord? When the mass of the cord equals the mass of the jumper, what is
+the net effect on the lowest point in the jump?
+
+** Orbiting the Sun
+   :PROPERTIES:
+   :CUSTOM_ID: orbiting-the-sun
+   :END:
+In the exercise at the end of Chapter 20, we modeled the interaction
+between the Earth and the Sun, simulating what would happen if the Earth
+stopped in its orbit and fell straight into the Sun.
+
+Now let's extend the model to two dimensions and simulate one revolution
+of the Earth around the Sun, that is, one year.
+
+In the repository for this book, you will find a notebook,
+/orbit.ipynb/, which contains starter code and exercises for this case
+study. You can download it from
+[[https://github.com/AllenDowney/ModSimPy/raw/master/examples/orbit.ipynb]]
+or run it on Colab at
+[[https://colab.research.google.com/github/AllenDowney/ModSimPy/blob/master/examples/orbit.ipynb]].
+
+Among other things, you will have a chance to experiment with different
+algorithms and see what effect they have on the accuracy of the results.
+
+** Spider-man
+   :PROPERTIES:
+   :CUSTOM_ID: spider-man
+   :END:
+In this case study we'll develop a model of Spider-Man swinging from a
+springy cable of webbing attached to the top of the Empire State
+Building. Initially, Spider-Man is at the top of a nearby building, as
+shown in this figure:
+
+[[https://github.com/AllenDowney/ModSim/raw/main/figs/spiderman.png]]
+
+The origin, =O=, is at the base of the Empire State Building. The vector
+=H= represents the position where the webbing is attached to the
+building, relative to =O=. The vector =P= is the position of Spider-Man
+relative to =O=. And =L= is the vector from the attachment point to
+Spider-Man.
+
+By following the arrows from =O=, along =H=, and along =L=, we can see
+that
+
+#+begin_example
+H + L = P
+#+end_example
+
+So we can compute =L= like this:
+
+#+begin_example
+L = P - H
+#+end_example
+
+The goals of this case study are:
+
+1. Implement a model of this scenario to predict Spider-Man's
+   trajectory.
+
+2. Choose the right time for Spider-Man to let go of the webbing in
+   order to maximize the distance he travels before landing.
+
+3. Choose the best angle for Spider-Man to jump off the building, and
+   let go of the webbing, to maximize range.
+
+We'll use the following parameters:
+
+1. According to the Spider-Man Wiki ([[http://modsimpy.com/spider]]),
+   Spider-Man weighs 76 kg.
+
+2. Let's assume his terminal velocity is 60 m/s.
+
+3. The length of the web is 100 m.
+
+4. The initial angle of the web is 45° to the left of straight down.
+
+5. The spring constant of the web is 40 N/m when the cord is stretched,
+   and 0 when it's compressed.
+
+In the repository for this book, you will find a notebook,
+/spiderman.ipynb/, which contains starter code. You can download it from
+[[https://github.com/AllenDowney/ModSimPy/raw/master/examples/spiderman.ipynb]]
+or run it on Colab at
+[[https://colab.research.google.com/github/AllenDowney/ModSimPy/blob/master/examples/spiderman.ipynb]].
+
+Read through the notebook and run the code. It uses =minimize=, which is
+a SciPy function that can search for an optimal set of parameters (as
+contrasted with =minimize_scalar=, which can only search along a single
+axis).
+
+** Kittens
+   :PROPERTIES:
+   :CUSTOM_ID: kittens
+   :END:
+If you have used the Internet, you have probably seen videos of kittens
+unrolling toilet paper. And you might have wondered how long it would
+take a standard kitten to unroll 47 m of paper, the length of a standard
+roll.
+
+The interactions of the kitten and the paper rolls are complex. To keep
+things simple, let's assume that the kitten pulls down on the free end
+of the roll with constant force. And let's neglect the friction between
+the roll and the axle.
+
+This diagram shows the paper roll with the force applied by the kitten,
+\(F\), the lever arm of the force around the axis of rotation, \(r\),
+and the resulting torque, \(\tau\).
+
+[[https://github.com/AllenDowney/ModSim/raw/main/figs/kitten.png]]
+
+Assuming that the force applied by the kitten is 0.002 N, how long would
+it take to unroll a standard roll of toilet paper?
+
+In the repository for this book, you will find a notebook,
+/kitten.ipynb/, which contains starter code for this case study. Use it
+to implement this model and check whether the results seem plausible.
+You can download it from
+[[https://github.com/AllenDowney/ModSimPy/raw/master/examples/kitten.ipynb]]
+or run it on Colab at
+[[https://colab.research.google.com/github/AllenDowney/ModSimPy/blob/master/examples/kitten.ipynb]].
+
+** Simulating a Yo-yo
+   :PROPERTIES:
+   :CUSTOM_ID: simulating-a-yo-yo
+   :END:
+Suppose you are holding a yo-yo with a length of string wound around its
+axle, and you drop it while holding the end of the string stationary. As
+gravity accelerates the yo-yo downward, tension in the string exerts a
+force upward. Since this force acts on a point offset from the center of
+mass, it exerts a torque that causes the yo-yo to spin.
+
+The following diagram shows the forces on the yo-yo and the resulting
+torque. The outer shaded area shows the body of the yo-yo. The inner
+shaded area shows the rolled up string, the radius of which changes as
+the yo-yo unrolls.
+
+[[https://github.com/AllenDowney/ModSim/raw/main/figs/yoyo.png]]
+
+In this system, we can't figure out the linear and angular acceleration
+independently; we have to solve a system of equations:
+
+\[\begin{aligned}
+\sum F &= m a \\
+\sum \tau &= I \alpha\end{aligned}\]
+
+where the summations indicate that we are adding up forces and torques.
+
+As in the previous examples, linear and angular velocity are related
+because of the way the string unrolls:
+
+\[\frac{dy}{dt} = -r \frac{d \theta}{dt}\]
+
+In this example, the linear and angular accelerations have opposite
+sign. As the yo-yo rotates counter-clockwise, \(\theta\) increases and
+\(y\), which is the length of the rolled part of the string, decreases.
+
+Taking the derivative of both sides yields a similar relationship
+between linear and angular acceleration:
+
+\[\frac{d^2 y}{dt^2} = -r \frac{d^2 \theta}{dt^2}\]
+
+Which we can write more concisely:
+
+\[a = -r \alpha\]
+
+This relationship is not a general law of nature; it is specific to
+scenarios like this where one object rolls along another without
+stretching or slipping.
+
+Because of the way we've set up the problem, \(y\) actually has two
+meanings: it represents the length of the rolled string and the height
+of the yo-yo, which decreases as the yo-yo falls. Similarly, \(a\)
+represents acceleration in the length of the rolled string and the
+height of the yo-yo.
+
+We can compute the acceleration of the yo-yo by adding up the linear
+forces:
+
+\[\sum F = T - mg = ma\]
+
+Where \(T\) is positive because the tension force points up, and \(mg\)
+is negative because gravity points down.
+
+Because gravity acts on the center of mass, it creates no torque, so the
+only torque is due to tension:
+
+\[\sum \tau = T r = I \alpha\]
+
+Positive (upward) tension yields positive (counter-clockwise) angular
+acceleration.
+
+Now we have three equations in three unknowns, \(T\), \(a\), and
+\(\alpha\), with \(I\), \(m\), \(g\), and \(r\) as known parameters. We
+could solve these equations by hand, but we can also get SymPy to do it
+for us:
+
+#+begin_src jupyter-python
+from sympy import symbols, Eq, solve
+
+T, a, alpha, I, m, g, r = symbols('T a alpha I m g r')
+eq1 = Eq(a, -r * alpha)
+eq2 = Eq(T - m*g, m * a)
+eq3 = Eq(T * r, I * alpha)
+soln = solve([eq1, eq2, eq3], [T, a, alpha])
+soln
+#+end_src
+
+The results are
+
+\[\begin{aligned}
+T      &= m g I / I^*   \\
+a      &= -m g r^2 / I^* \\
+\alpha &= m g r / I^*    \\\end{aligned}\]
+
+where \(I^*\) is the augmented moment of inertia, \(I + m r^2\). We can
+use these equations for \(a\) and \(\alpha\) to write a slope function
+and simulate this system.
+
+In the repository for this book, you will find a notebook, /yoyo.ipynb/,
+which contains starter code you can use to implement and test this
+model. You can download it from
+[[https://github.com/AllenDowney/ModSimPy/raw/master/examples/yoyo.ipynb]]
+or run it on Colab at
+[[https://colab.research.google.com/github/AllenDowney/ModSimPy/blob/master/examples/yoyo.ipynb]].
+
+** Congratulations
+   :PROPERTIES:
+   :CUSTOM_ID: congratulations
+   :END:
+With that, you have reached the end of the book, so congratulations! I
+hope you enjoyed it and learned a lot. I think the tools in this book
+are useful, and the ways of thinking are important, not just in
+engineering and science, but in practically every field of inquiry.
+
+Models are the tools we use to understand the world: if you build good
+models, you are more likely to get things right. Good luck!
+
+#+begin_src jupyter-python
+#+end_src
