@@ -1,14 +1,8 @@
-Printed and electronic copies of /Modeling and Simulation in Python/ are
-available from [[https://nostarch.com/modeling-and-simulation-python][No
-Starch Press]] and
-[[https://bookshop.org/p/books/modeling-and-simulation-in-python-allen-b-downey/17836697?ean=9781718502161][Bookshop.org]]
-and [[https://amzn.to/3y9UxNb][Amazon]].
-
 * Bike Share System
   :PROPERTIES:
   :CUSTOM_ID: bike-share-system
   :END:
-
+** Preload
 /Modeling and Simulation in Python/
 
 Copyright 2021 Allen Downey
@@ -24,6 +18,8 @@ try:
 except ImportError:
     !pip install pint
 #+end_src
+
+#+RESULTS:
 
 #+begin_src jupyter-python
 # download modsim.py if necessary
@@ -41,11 +37,16 @@ download('https://raw.githubusercontent.com/AllenDowney/' +
          'ModSimPy/master/modsim.py')
 #+end_src
 
+#+RESULTS:
+: Downloaded modsim.py
+
 #+begin_src jupyter-python
 # import functions from modsim
 
 from modsim import *
 #+end_src
+
+#+RESULTS:
 
 This chapter presents a simple model of a bike share system and
 demonstrates the features of Python we'll use to develop simulations of
@@ -63,35 +64,29 @@ notebooks: [[https://allendowney.github.io/ModSimPy/]].
    :PROPERTIES:
    :CUSTOM_ID: modeling-a-bike-share-system
    :END:
-Imagine a bike share system for students traveling between Olin College
-and Wellesley College, which are about three miles apart in eastern
-Massachusetts.
+Imagine a bike share system for students traveling between Olin College and Wellesley College, which are about three miles apart in eastern Massachusetts.
 
-Suppose the system contains 12 bikes and two bike racks, one at Olin and
-one at Wellesley, each with the capacity to hold 12 bikes.
+Suppose the system contains 12 bikes and two bike racks, one at Olin and one at Wellesley, each with the capacity to hold 12 bikes.
 
-As students arrive, check out a bike, and ride to the other campus, the
-number of bikes in each location changes. In the simulation, we'll need
-to keep track of where the bikes are. To do that, we'll use a function
-called =State=, which is defined in the ModSim library.
+As students arrive, check out a bike, and ride to the other campus, the number
+of bikes in each location changes. In the simulation, we'll need to keep track
+of where the bikes are. To do that, we'll use a function called =State=, which is defined in the ModSim library.
 
 #+begin_src jupyter-python
 bikeshare = State(olin=10, wellesley=2)
 #+end_src
 
-The equations in parentheses create two variables, =olin= and
-=wellesley=, and give them the values =10= and =2=. The =State= function
-stores these variables and their values in a =State= object, which gets
-assigned to a new variable named =bikeshare=.
+#+RESULTS:
+
+The equations in parentheses create two variables, =olin= and =wellesley=, and
+give them the values =10= and =2=. The =State= function stores these variables
+and their values in a =State= object, which gets assigned to a new variable named =bikeshare=.
 
 Variables stored inside a =State= object are called /state variables/.
-In this example, the state variables represent the number of bikes at
-each location. Their values indicate that there are 10 bikes at Olin and
-2 at Wellesley.
+In this example, the state variables represent the number of bikes at each
+location. Their values indicate that there are 10 bikes at Olin and 2 at Wellesley.
 
-The =State= object is assigned to a new variable named =bikeshare=. We
-can get the value of a variable in a =State= object using the /dot
-operator/, like this:
+The =State= object is assigned to a new variable named =bikeshare=. We can get the value of a variable in a =State= object using the /dot operator/, like this:
 
 #+begin_src jupyter-python
 bikeshare.olin

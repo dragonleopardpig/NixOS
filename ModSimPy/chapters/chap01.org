@@ -570,6 +570,11 @@ from pint import UnitRegistry
 units = UnitRegistry()
 meter = units.meter
 second = units.second
+mile = units.mile
+hour = units.hour
+foot = units.foot
+kilometer = units.kilometer
+minute = units.minute
 #+END_SRC
 
 #+RESULTS:
@@ -805,25 +810,55 @@ a = 9.8 * meter / second**2
 h = 381 * meter
 #+end_src
 
-#+begin_src jupyter-python
-# Solution goes here
-#+end_src
+#+RESULTS:
 
 #+begin_src jupyter-python
-# Solution goes here
+# Solution
+
+v_terminal = 29 * meter / second 
 #+end_src
 
-#+begin_src jupyter-python
-# Solution goes here
-#+end_src
+#+RESULTS:
 
 #+begin_src jupyter-python
-# Solution goes here
+# Solution
+
+t1 = v_terminal / a
+print('Time to reach terminal velocity', t1)
 #+end_src
 
+#+RESULTS:
+: Time to reach terminal velocity 2.9591836734693877 second
+
 #+begin_src jupyter-python
-# Solution goes here
+# Solution
+
+h1 = a * t1**2 / 2
+print('Height fallen in t1', h1)
 #+end_src
+
+#+RESULTS:
+: Height fallen in t1 42.90816326530612 meter
+
+#+begin_src jupyter-python
+# Solution
+
+t2 = (h - h1) / v_terminal
+print('Time to fall remaining distance', t2)
+#+end_src
+
+#+RESULTS:
+: Time to fall remaining distance 11.658339197748065 second
+
+#+begin_src jupyter-python
+# Solution
+
+t_total = t1 + t2
+print('Total falling time', t_total)
+#+end_src
+
+#+RESULTS:
+: Total falling time 14.617522871217453 second
 
 *** Exercise 7
     :PROPERTIES:
@@ -842,24 +877,75 @@ I suggest you convert all quantities to SI units like meters and seconds
 (see [[https://en.wikipedia.org/wiki/International_System_of_Units]]).
 
 #+begin_src jupyter-python
-# Solution goes here
+# Solution
+
+# I suggest the following model: 
+
+# 1. Let's ignore the motion of the ball toward home plate and
+#    think about how far the ball would drop while it's in flight.
+
+# 2. Let's ignore air resistance.  Since we are only thinking 
+#    about the relatively slow motion in the vertical direction, 
+#    this is probably a good assumption.
+
+# 3. Let's also ignore the effect of spin.  This is probably a
+#    less good assumption.
+
+# The distance from the pitcher's mound to home plate is about 60
+# feet, but the point where the ball is released is a bit closer.
+
+# An average pitcher in high school might be able to throw a ball
+# at 80 mph.
 #+end_src
 
-#+begin_src jupyter-python
-# Solution goes here
-#+end_src
+#+RESULTS:
 
 #+begin_src jupyter-python
-# Solution goes here
+# Solution
+
+v = (80 * mile / hour).to(meter/second)
+x = (60 * foot).to(meter)
 #+end_src
 
-#+begin_src jupyter-python
-# Solution goes here
-#+end_src
+#+RESULTS:
 
 #+begin_src jupyter-python
-# Solution goes here
+# Solution
+
+t = x / v
+t
 #+end_src
+
+#+RESULTS:
+:RESULTS:
+0.5113636363636362 second
+:END:
+
+#+begin_src jupyter-python
+# Solution
+
+a = 9.8 * meter / second**2
+h = a * t**2 / 2
+h
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+1.2813145661157022 meter
+:END:
+
+#+begin_src jupyter-python
+# Solution
+
+# In the time it takes the ball to reach home plate, it drops
+# about 1.3 m.  If the release point is at 2 m, which is plausible,
+# it would cross the plate at 0.7 m, which is in the strike zone.
+
+# So I could be wrong -- it is plausible that the ball leaves
+# the pitcher's hand at a downward angle, at least for some pitches.
+#+end_src
+
+#+RESULTS:
 
 *** Exercise 8
     :PROPERTIES:
@@ -875,28 +961,80 @@ minute = units.minute
 #+end_src
 
 #+begin_src jupyter-python
-# Solution goes here
+# Solution
+
+t = 52 * second + 44 * minute
+t
 #+end_src
 
-#+begin_src jupyter-python
-# Solution goes here
-#+end_src
+#+RESULTS:
+:RESULTS:
+2692 second
+:END:
 
 #+begin_src jupyter-python
-# Solution goes here
+# Solution
+
+v = 10 * kilometer / t
+v
 #+end_src
 
-#+begin_src jupyter-python
-# Solution goes here
-#+end_src
+#+RESULTS:
+:RESULTS:
+0.003714710252600297 kilometer/second
+:END:
 
 #+begin_src jupyter-python
-# Solution goes here
+# Solution
+
+pace_per_km = (1 / v)
+pace_per_km
 #+end_src
 
+#+RESULTS:
+:RESULTS:
+269.2 second/kilometer
+:END:
+
 #+begin_src jupyter-python
-# Solution goes here
+# Solution
+
+pace_per_mile = pace_per_km.to(minute / mile)
+pace_per_mile
 #+end_src
+
+#+RESULTS:
+:RESULTS:
+7.220590080000001 minute/mile
+:END:
+
+#+begin_src jupyter-python
+# Solution
+
+# To convert to minutes and seconds, we can use np.round.
+# But we haven't covered that yet.
+
+from numpy import round
+
+round(pace_per_mile)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+7.0 minute/mile
+:END:
+
+#+begin_src jupyter-python
+# Solution
+
+remainder = pace_per_mile - round(pace_per_mile)
+remainder.to(second/mile)
+#+end_src
+
+#+RESULTS:
+:RESULTS:
+13.235404800000055 second/mile
+:END:
 
 ** More Jupyter
    :PROPERTIES:
@@ -946,4 +1084,5 @@ Select "Restart & Run All" now and confirm that it runs all of the
 cells.
 
 #+begin_src jupyter-python
+
 #+end_src

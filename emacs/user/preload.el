@@ -71,6 +71,7 @@
 	srcery-theme
 	nov
 	markdown-mode
+	mixed-pitch
 	))
 (package-install-selected-packages)
 
