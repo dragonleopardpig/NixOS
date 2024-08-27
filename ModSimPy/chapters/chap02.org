@@ -38,7 +38,6 @@ download('https://raw.githubusercontent.com/AllenDowney/' +
 #+end_src
 
 #+RESULTS:
-: Downloaded modsim.py
 
 #+begin_src jupyter-python
 # import functions from modsim
@@ -77,6 +76,7 @@ bikeshare = State(olin=10, wellesley=2)
 #+end_src
 
 #+RESULTS:
+: 9112f2bb-d3d6-4773-bfda-b5e5bde8ac6b
 
 The equations in parentheses create two variables, =olin= and =wellesley=, and
 give them the values =10= and =2=. The =State= function stores these variables
@@ -92,11 +92,17 @@ The =State= object is assigned to a new variable named =bikeshare=. We can get t
 bikeshare.olin
 #+end_src
 
+#+RESULTS:
+: np.int64(10)
+
 And this:
 
 #+begin_src jupyter-python
 bikeshare.wellesley
 #+end_src
+
+#+RESULTS:
+: np.int64(2)
 
 Or, to display all of the state variables and their values, you can
 enter just the name of the object:
@@ -104,6 +110,11 @@ enter just the name of the object:
 #+begin_src jupyter-python
 bikeshare
 #+end_src
+
+#+RESULTS:
+: olin         10
+: wellesley     2
+: Name: state, dtype: int64
 
 These values make up the /state/ of the system.
 
@@ -113,6 +124,14 @@ The ModSim library provides a function called =show= that displays a
 #+begin_src jupyter-python
 show(bikeshare)
 #+end_src
+
+#+RESULTS:
+:RESULTS:
+|           | state |
+|-----------+-------|
+| olin      | 10    |
+| wellesley | 2     |
+:END:
 
 You don't have to use =show=, but I think the results look better.
 
@@ -125,6 +144,8 @@ bikeshare.olin = 9
 bikeshare.wellesley = 3
 #+end_src
 
+#+RESULTS:
+
 Or we can use /update operators/, =-== and =+==, to subtract 1 from
 =olin= and add 1 to =wellesley=:
 
@@ -132,6 +153,20 @@ Or we can use /update operators/, =-== and =+==, to subtract 1 from
 bikeshare.olin -= 1
 bikeshare.wellesley += 1
 #+end_src
+
+#+RESULTS:
+
+#+BEGIN_SRC jupyter-python
+show(bikeshare)
+#+END_SRC
+
+#+RESULTS:
+:RESULTS:
+|           | state |
+|-----------+-------|
+| olin      | 8     |
+| wellesley | 4     |
+:END:
 
 The result is the same either way.
 
@@ -152,6 +187,8 @@ bikeshare.olin -= 1
 bikeshare.wellesley += 1
 #+end_src
 
+#+RESULTS:
+
 Rather than repeat them every time a bike moves, we can define a new
 function:
 
@@ -160,6 +197,8 @@ def bike_to_wellesley():
     bikeshare.olin -= 1
     bikeshare.wellesley += 1
 #+end_src
+
+#+RESULTS:
 
 =def= is a special word in Python that indicates we are defining a new
 function. The name of the function is =bike_to_wellesley=. The empty
@@ -178,6 +217,8 @@ this function:
 bike_to_wellesley()
 #+end_src
 
+#+RESULTS:
+
 When you call the function, it runs the statements in the body, which
 update the variables of the =bikeshare= object; you can check by
 displaying the new state.
@@ -186,12 +227,23 @@ displaying the new state.
 show(bikeshare)
 #+end_src
 
+#+RESULTS:
+:RESULTS:
+|           | state |
+|-----------+-------|
+| olin      | 6     |
+| wellesley | 6     |
+:END:
+
 When you call a function, you have to include the parentheses. If you
 leave them out, you get this:
 
 #+begin_src jupyter-python
 bike_to_wellesley
 #+end_src
+
+#+RESULTS:
+: <function __main__.bike_to_wellesley()>
 
 This result indicates that =bike_to_wellesley= is a function. You don't
 have to know what =__main__= means, but if you see something like this,
@@ -214,6 +266,9 @@ bikeshare.olin
 bikeshare.wellesley
 #+end_src
 
+#+RESULTS:
+: np.int64(6)
+
 Jupyter runs both lines, but it only displays the value of the second.
 If you want to display more than one value, you can use print
 statements:
@@ -223,6 +278,10 @@ print(bikeshare.olin)
 print(bikeshare.wellesley)
 #+end_src
 
+#+RESULTS:
+: 6
+: 6
+
 When you call the =print= function, you can put a variable in
 parentheses, as in the previous example, or you can provide a sequence
 of variables separated by commas, like this:
@@ -230,6 +289,9 @@ of variables separated by commas, like this:
 #+begin_src jupyter-python
 print(bikeshare.olin, bikeshare.wellesley)
 #+end_src
+
+#+RESULTS:
+: 6 6
 
 Python looks up the values of the variables and displays them; in this
 example, it displays two values on the same line, with a space between
@@ -244,6 +306,8 @@ def bike_to_wellesley():
     bikeshare.olin -= 1
     bikeshare.wellesley += 1
 #+end_src
+
+#+RESULTS:
 
 Each time we call this version of the function, it displays a message,
 which can help us keep track of what the program is doing. The message
@@ -260,11 +324,16 @@ def bike_to_olin():
     bikeshare.olin += 1
 #+end_src
 
+#+RESULTS:
+
 And call it like this:
 
 #+begin_src jupyter-python
 bike_to_olin()
 #+end_src
+
+#+RESULTS:
+: Moving a bike to Olin
 
 One benefit of defining functions is that you avoid repeating chunks of
 code, which makes programs smaller. Another benefit is that the name you
@@ -290,9 +359,14 @@ between 0 and 1, like this:
 np.random.seed(17)
 #+end_src
 
+#+RESULTS:
+
 #+begin_src jupyter-python
 flip(0.7)
 #+end_src
+
+#+RESULTS:
+: True
 
 The result is one of two values: =True= with probability 0.7 (in this
 example) or =False= with probability 0.3. If you run =flip= like this
@@ -315,6 +389,8 @@ if flip(0.5):
     print('heads')
 #+end_src
 
+#+RESULTS:
+
 If the result from =flip= is =True=, the program displays the string
 ='heads'=. Otherwise it does nothing.
 
@@ -332,6 +408,9 @@ else:
     print('tails')    
 #+end_src
 
+#+RESULTS:
+: heads
+
 If you run the previous cell a few times, it should print =heads= about
 half the time, and =tails= about half the time.
 
@@ -345,6 +424,9 @@ if flip(0.5):
     bike_to_wellesley()
 #+end_src
 
+#+RESULTS:
+: Moving a bike to Wellesley
+
 If students arrive at the Wellesley station every three minutes, on
 average, the chance of an arrival during any one-minute period is 33%,
 and we can simulate it like this:
@@ -353,6 +435,8 @@ and we can simulate it like this:
 if flip(0.33):
     bike_to_olin()
 #+end_src
+
+#+RESULTS:
 
 We can combine these snippets into a function that simulates a /time
 step/, which is an interval of time, in this case one minute:
@@ -366,11 +450,15 @@ def step():
         bike_to_olin()
 #+end_src
 
+#+RESULTS:
+
 Then we can simulate a time step like this:
 
 #+begin_src jupyter-python
 step()
 #+end_src
+
+#+RESULTS:
 
 Depending on the results from =flip=, this function might move a bike to
 Olin, or to Wellesley, or neither, or both.
@@ -397,12 +485,17 @@ def step(p1, p2):
         bike_to_olin()
 #+end_src
 
+#+RESULTS:
+
 The values of =p1= and =p2= are not set inside this function; instead,
 they are provided when the function is called, like this:
 
 #+begin_src jupyter-python
 step(0.5, 0.33)
 #+end_src
+
+#+RESULTS:
+: Moving a bike to Wellesley
 
 The values you provide when you call the function are called
 /arguments/. The arguments, =0.5= and =0.33= in this example, get
@@ -589,7 +682,10 @@ Make a =State= object with a third state variable, called =downtown=,
 with initial value 0, and display the state of the system.
 
 #+begin_src jupyter-python
-# Solution goes here
+# Solution
+
+bikeshare = State(olin=10, wellesley=2, downtown=0)
+show(bikeshare)
 #+end_src
 
 *** Exercise 3
@@ -621,11 +717,27 @@ To test your function:
    =num_steps=60=.
 
 #+begin_src jupyter-python
-# Solution goes here
+# Solution
+
+def run_simulation(p1, p2, num_steps):
+    results = TimeSeries()
+    results[0] = bikeshare.olin
+    
+    for i in range(num_steps):
+        step(p1, p2)
+        results[i+1] = bikeshare.olin
+        
+    results.plot()
+    decorate(title='Olin-Wellesley Bikeshare',
+             xlabel='Time step (min)', 
+             ylabel='Number of bikes')
 #+end_src
 
 #+begin_src jupyter-python
-# Solution goes here
+# Solution
+
+bikeshare = State(olin=10, wellesley=2)
+run_simulation(0.3, 0.2, 60)
 #+end_src
 
 ** Under the Hood
@@ -677,4 +789,5 @@ source_code(flip)
 #+end_src
 
 #+begin_src jupyter-python
+
 #+end_src

@@ -1,9 +1,3 @@
-Printed and electronic copies of /Modeling and Simulation in Python/ are
-available from [[https://nostarch.com/modeling-and-simulation-python][No
-Starch Press]] and
-[[https://bookshop.org/p/books/modeling-and-simulation-in-python-allen-b-downey/17836697?ean=9781718502161][Bookshop.org]]
-and [[https://amzn.to/3y9UxNb][Amazon]].
-
 * World Population
   :PROPERTIES:
   :CUSTOM_ID: world-population
@@ -25,6 +19,8 @@ except ImportError:
     !pip install pint
 #+end_src
 
+#+RESULTS:
+
 #+begin_src jupyter-python
 # download modsim.py if necessary
 
@@ -41,11 +37,15 @@ download('https://raw.githubusercontent.com/AllenDowney/' +
          'ModSimPy/master/modsim.py')
 #+end_src
 
+#+RESULTS:
+
 #+begin_src jupyter-python
 # import functions from modsim
 
 from modsim import *
 #+end_src
+
+#+RESULTS:
 
 In 1968 Paul Erlich published /The Population Bomb/, in which he
 predicted that world population would grow quickly during the 1970s,
@@ -84,6 +84,9 @@ download('https://raw.githubusercontent.com/AllenDowney/' +
          'ModSimPy/master/data/World_population_estimates.html')
 #+end_src
 
+#+RESULTS:
+: Downloaded World_population_estimates.html
+
 To read this data, we will use the Pandas library, which provides
 functions for working with data. The function we'll use is =read_html=,
 which can read a web page and extract data from any tables it contains.
@@ -92,6 +95,8 @@ Before we can use it, we have to import it.
 #+begin_src jupyter-python
 from pandas import read_html
 #+end_src
+
+#+RESULTS:
 
 Now we can use it like this:
 
@@ -102,6 +107,8 @@ tables = read_html(filename,
                    index_col=0,
                    decimal='M')
 #+end_src
+
+#+RESULTS:
 
 The arguments are:
 
@@ -133,6 +140,8 @@ like this:
 table2 = tables[2]
 #+end_src
 
+#+RESULTS:
+
 This line selects the third table (numbered 2), which contains
 population estimates from 1950 to 2016.
 
@@ -141,6 +150,18 @@ We can use =head= to display the first few lines of the table.
 #+begin_src jupyter-python
 table2.head()
 #+end_src
+
+#+RESULTS:
+:RESULTS:
+|      |     census |          prb |           un |     maddison |         hyde |       tanton |      biraben |           mj |   thomlinson | durand |        clark |
+|------+------------+--------------+--------------+--------------+--------------+--------------+--------------+--------------+--------------+--------+--------------|
+| Year |            |              |              |              |              |              |              |              |              |        |              |
+| 1950 | 2557628654 | 2.516000e+09 | 2.525149e+09 | 2.544000e+09 | 2.527960e+09 | 2.400000e+09 | 2.527000e+09 | 2.500000e+09 | 2.400000e+09 |    NaN | 2.486000e+09 |
+| 1951 | 2594939877 |          NaN | 2.572851e+09 | 2.571663e+09 |          NaN |          NaN |          NaN |          NaN |          NaN |    NaN |          NaN |
+| 1952 | 2636772306 |          NaN | 2.619292e+09 | 2.617949e+09 |          NaN |          NaN |          NaN |          NaN |          NaN |    NaN |          NaN |
+| 1953 | 2682053389 |          NaN | 2.665865e+09 | 2.665959e+09 |          NaN |          NaN |          NaN |          NaN |          NaN |    NaN |          NaN |
+| 1954 | 2730228104 |          NaN | 2.713172e+09 | 2.716927e+09 |          NaN |          NaN |          NaN |          NaN |          NaN |    NaN |          NaN |
+:END:
 
 The first column, which is labeled =Year=, is special. It is the /index/
 for this =DataFrame=, which means it contains the labels for the rows.
@@ -157,7 +178,20 @@ We can replace them with shorter strings like this:
 table2.columns = ['census', 'prb', 'un', 'maddison', 
                   'hyde', 'tanton', 'biraben', 'mj', 
                   'thomlinson', 'durand', 'clark']
+table2.head()
 #+end_src
+
+#+RESULTS:
+:RESULTS:
+|      |     census |          prb |           un |     maddison |         hyde |       tanton |      biraben |           mj |   thomlinson | durand |        clark |
+|------+------------+--------------+--------------+--------------+--------------+--------------+--------------+--------------+--------------+--------+--------------|
+| Year |            |              |              |              |              |              |              |              |              |        |              |
+| 1950 | 2557628654 | 2.516000e+09 | 2.525149e+09 | 2.544000e+09 | 2.527960e+09 | 2.400000e+09 | 2.527000e+09 | 2.500000e+09 | 2.400000e+09 |    NaN | 2.486000e+09 |
+| 1951 | 2594939877 |          NaN | 2.572851e+09 | 2.571663e+09 |          NaN |          NaN |          NaN |          NaN |          NaN |    NaN |          NaN |
+| 1952 | 2636772306 |          NaN | 2.619292e+09 | 2.617949e+09 |          NaN |          NaN |          NaN |          NaN |          NaN |    NaN |          NaN |
+| 1953 | 2682053389 |          NaN | 2.665865e+09 | 2.665959e+09 |          NaN |          NaN |          NaN |          NaN |          NaN |    NaN |          NaN |
+| 1954 | 2730228104 |          NaN | 2.713172e+09 | 2.716927e+09 |          NaN |          NaN |          NaN |          NaN |          NaN |    NaN |          NaN |
+:END:
 
 Now we can select a column from the =DataFrame= using the dot operator,
 like selecting a state variable from a =State= object.
@@ -167,6 +201,8 @@ Here are the estimates from the United States Census Bureau:
 #+begin_src jupyter-python
 census = table2.census / 1e9
 #+end_src
+
+#+RESULTS:
 
 The result is a Pandas =Series=, which is similar to the =TimeSeries=
 and =SweepSeries= objects we've been using.
@@ -182,6 +218,15 @@ We can use =tail= to see the last few elements of the =Series=:
 census.tail()
 #+end_src
 
+#+RESULTS:
+: Year
+: 2012    7.013871
+: 2013    7.092128
+: 2014    7.169968
+: 2015    7.247893
+: 2016    7.325997
+: Name: census, dtype: float64
+
 The left column is the /index/ of the =Series=; in this example it
 contains the dates. The right column contains the /values/, which are
 population estimates. In 2016 the world population was about 7.3
@@ -194,6 +239,15 @@ and Social Affairs (U.N. DESA):
 un = table2.un / 1e9
 un.tail()
 #+end_src
+
+#+RESULTS:
+: Year
+: 2012    7.080072
+: 2013    7.162119
+: 2014    7.243784
+: 2015    7.349472
+: 2016         NaN
+: Name: un, dtype: float64
 
 The most recent estimate we have from the U.N. is for 2015, so the value
 for 2016 is =NaN=.
@@ -208,6 +262,8 @@ def plot_estimates():
              ylabel='World population (billions)') 
 #+end_src
 
+#+RESULTS:
+
 The keyword argument =style=':'= specifies a dotted line; =style='--'=
 specifies a dashed line. The =label= argument provides the string that
 appears in the legend.
@@ -218,6 +274,9 @@ And here's what it looks like.
 plot_estimates()
 decorate(title='World population estimates')
 #+end_src
+
+#+RESULTS:
+[[./.ob-jupyter/c7f758587a0a7e25b7c7dd08033066078a7d0b03.png]]
 
 The lines overlap almost completely, but the most recent estimates
 diverge slightly. In the next section, we'll quantify these differences.
@@ -237,12 +296,23 @@ To compute absolute errors, we can import =abs= from NumPy:
 from numpy import abs
 #+end_src
 
+#+RESULTS:
+
 And use it like this:
 
 #+begin_src jupyter-python
 abs_error = abs(un - census)
 abs_error.tail()
 #+end_src
+
+#+RESULTS:
+: Year
+: 2012    0.066201
+: 2013    0.069991
+: 2014    0.073816
+: 2015    0.101579
+: 2016         NaN
+: dtype: float64
 
 When you subtract two =Series= objects, the result is a new =Series=.
 Because one of the estimates for 2016 is =NaN=, the result for 2016 is
@@ -256,6 +326,9 @@ from numpy import mean
 mean(abs_error)
 #+end_src
 
+#+RESULTS:
+: np.float64(0.029034508242424265)
+
 On average, the estimates differ by about 0.029 billion. But we can also
 use =max= to compute the maximum absolute error.
 
@@ -264,6 +337,9 @@ from numpy import max
 
 max(abs_error)
 #+end_src
+
+#+RESULTS:
+: np.float64(0.10157921199999986)
 
 In the worst case, they differ by about 0.1 billion.
 
@@ -275,10 +351,22 @@ Another way to quantify the magnitude of the difference is /relative
 error/, which is the size of the error divided by the estimates
 themselves.
 
+\(\text{Relative error} = 100 \times \frac{\text{absolute error}}{\text{census}}
+\%\)
+
 #+begin_src jupyter-python
 rel_error = 100 * abs_error / census
 rel_error.tail()
 #+end_src
+
+#+RESULTS:
+: Year
+: 2012    0.943860
+: 2013    0.986888
+: 2014    1.029514
+: 2015    1.401500
+: 2016         NaN
+: dtype: float64
 
 I multiplied by 100 so we can interpret the results as a percentage. In
 2015, the difference between the estimates is about 1.4%, and that
@@ -289,6 +377,9 @@ Again, we can summarize the results by computing the mean.
 #+begin_src jupyter-python
 mean(rel_error)
 #+end_src
+
+#+RESULTS:
+: np.float64(0.5946585816022846)
 
 The mean relative error is about 0.6%. So that's not bad.
 
@@ -324,11 +415,16 @@ We can select a value from a =Series= using the bracket operator:
 census[1950]
 #+end_src
 
+#+RESULTS:
+: np.float64(2.557628654)
+
 So we can get the total growth during the interval like this:
 
 #+begin_src jupyter-python
 total_growth = census[2016] - census[1950]
 #+end_src
+
+#+RESULTS:
 
 In this example, the labels 2016 and 1950 are part of the data, so it
 would be better not to make them part of the program. Putting values
@@ -345,6 +441,9 @@ t_0 = census.index[0]
 t_0
 #+end_src
 
+#+RESULTS:
+: np.int64(1950)
+
 So =t_0= is the label of the first element, which is 1950. We can get
 the label of the last element like this.
 
@@ -352,6 +451,9 @@ the label of the last element like this.
 t_end = census.index[-1]
 t_end
 #+end_src
+
+#+RESULTS:
+: np.int64(2016)
 
 The value =-1= indicates the last element; =-2= indicates the second to
 last element, and so on.
@@ -364,6 +466,9 @@ elapsed_time = t_end - t_0
 elapsed_time
 #+end_src
 
+#+RESULTS:
+: np.int64(66)
+
 Now we can use =t_0= and =t_end= to select the population at the
 beginning and end of the interval.
 
@@ -372,6 +477,8 @@ p_0 = census[t_0]
 p_end = census[t_end]
 #+end_src
 
+#+RESULTS:
+
 And compute the total growth during the interval.
 
 #+begin_src jupyter-python
@@ -379,12 +486,20 @@ total_growth = p_end - p_0
 total_growth
 #+end_src
 
+#+RESULTS:
+: np.float64(4.768368055)
+
 Finally, we can compute average annual growth.
+
+\(\text{anual growth} = \frac{\text{total growth}}{\text{elapsed time}}\)
 
 #+begin_src jupyter-python
 annual_growth = total_growth / elapsed_time
 annual_growth
 #+end_src
+
+#+RESULTS:
+: np.float64(0.07224800083333333)
 
 From 1950 to 2016, world population grew by about 0.07 billion people
 per year, on average. The next step is to use this estimate to simulate
@@ -402,11 +517,15 @@ and add =annual_growth= each year. To store the results, we'll use a
 results = TimeSeries()
 #+end_src
 
+#+RESULTS:
+
 We can set the first value in the new =TimeSeries= like this.
 
 #+begin_src jupyter-python
 results[t_0] = p_0
 #+end_src
+
+#+RESULTS:
 
 Here's what it looks like so far.
 
@@ -414,12 +533,22 @@ Here's what it looks like so far.
 show(results)
 #+end_src
 
+#+RESULTS:
+:RESULTS:
+|      | Quantity |
+|------+----------|
+| Time |          |
+| 1950 | 2.557629 |
+:END:
+
 Now we set the rest of the values by simulating annual growth:
 
 #+begin_src jupyter-python
 for t in range(t_0, t_end):
     results[t+1] = results[t] + annual_growth
 #+end_src
+
+#+RESULTS:
 
 The values of =t= go from =t_0= to =t_end=, including the first but not
 the last.
@@ -437,6 +566,9 @@ results.plot(color='gray', label='model')
 plot_estimates()
 decorate(title='Constant growth model')
 #+end_src
+
+#+RESULTS:
+[[./.ob-jupyter/0a5eda2bcdf57132e1016956244347e34094246f.png]]
 
 From 1950 to 1990, the model does not fit the data particularly well,
 but after that, it's pretty good.
@@ -492,11 +624,16 @@ for t in range(t_0, t_end):
     results[t+1] = results[t] + annual_growth
 #+end_src
 
+#+RESULTS:
+
 #+begin_src jupyter-python
 results.plot(color='gray', label='model')
 plot_estimates()
 decorate(title='Constant growth model')
 #+end_src
+
+#+RESULTS:
+[[./.ob-jupyter/0a5eda2bcdf57132e1016956244347e34094246f.png]]
 
 *** Exercise 1
     :PROPERTIES:
@@ -515,16 +652,36 @@ Suggestions:
    data better.
 
 #+begin_src jupyter-python
-# Solution goes here
+# Solution
+
+results = TimeSeries()
+results[t_0] = p_0 - 0.45
+
+for t in range(t_0, t_end):
+    results[t+1] = results[t] + annual_growth
 #+end_src
 
-#+begin_src jupyter-python
-# Solution goes here
-#+end_src
+#+RESULTS:
 
 #+begin_src jupyter-python
-# Solution goes here
+# Solution
+
+results = TimeSeries()
+results[t_0] = p_0 - 0.45
+
+for t in range(t_0, t_end):
+    results[t+1] = results[t] + annual_growth
 #+end_src
 
+#+RESULTS:
+
 #+begin_src jupyter-python
+# Solution
+
+results.plot(color='gray', label='model')
+plot_estimates()
+decorate(title='Constant growth model, t0=1970')
 #+end_src
+
+#+RESULTS:
+[[./.ob-jupyter/fd0bdb539fc6e4264da4844c3ea9d1f036c7dfa4.png]]

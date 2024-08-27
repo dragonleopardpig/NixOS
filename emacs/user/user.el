@@ -11,6 +11,11 @@
 	  (lambda() (set-fill-column 80)))
 (column-number-mode)
 
+;; * Custom Keyboard Shortcut
+(global-set-key (kbd "M-p") 'scroll-up-line)
+(global-set-key (kbd "M-n") 'scroll-down-line)
+(global-set-key (kbd "C-M-a") 'org-babel-mark-block)
+
 ;; * GUI Interface
 (delete-selection-mode 1)
 (menu-bar-mode -1)
@@ -30,6 +35,7 @@
 ;; * Org Mode Startup
 (setq org-startup-folded t)
 (add-hook 'org-mode-hook 'mixed-pitch-mode)
+(add-hook 'org-mode-hook 'follow-mode)
 
 ;; * Org Crypt
 (require 'org-crypt)
@@ -66,6 +72,11 @@
 
 ;; * Electric Pair Mode
 (electric-pair-mode t)
+;; ** disable "<" pairing
+(add-hook 'org-mode-hook (lambda ()
+			   (setq-local electric-pair-inhibit-predicate
+				       `(lambda (c)
+					  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 
 ;; * Org-fragtog
 (add-hook 'org-mode-hook 'org-fragtog-mode)
@@ -153,6 +164,18 @@ buffer's text scale."
 (pdf-tools-install)  ; Standard activation command
 (pdf-loader-install) ; On demand loading, leads to faster startup time
 
+;; * EAF Apps
+;; (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
+;; (require 'eaf)
+;; (require 'eaf-browser)
+;; (require 'eaf-pdf-viewer)
+;; (require 'eaf-mindmap)
+;; (require 'eaf-image-viewer)
+;; (require 'eaf-video-player)
+;; (require 'eaf-terminal)
+;; (require 'eaf-markdown-previewer)
+;; (require 'eaf-file-manager)
+;; (require 'eaf-jupyter)
 
 ;; ;; * Copy-and-Paste issue for org-src-block
 ;; (defun my-flush-lines ()

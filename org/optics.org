@@ -44,7 +44,9 @@
 
 * INTRODUCTION
   
-   - PDF download website: http://gen.lib.rus.ec/
+   - PDF download website:
+     - http://gen.lib.rus.ec/
+     - https://llhlf.com/
    - Books:
      - A Student's Guide to Waves
      - A Student's Guide to Maxwell Equations
