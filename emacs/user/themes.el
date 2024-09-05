@@ -89,7 +89,7 @@
 ;; 	  (setq org-src-block-faces
 ;; 		'(("emacs-lisp" (:background "LightCyan1" :extend t))
 ;; 		  ("sh" (:background "gray90" :extend t))
-;; 		  ("jupyter-python" (:background "thistle1" :extend t))
+;; 		  ("jupyter-python" (:background "seashell" :extend t))
 ;; 		  ("ipython" (:background "thistle1" :extend t))
 ;; 		  ("python" (:background "DarkSeaGreen1" :extend t))
 ;; 		  ("sqlite" (:background "#a24224" :extend t))

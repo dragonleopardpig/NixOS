@@ -37,6 +37,12 @@ find ./ -iname "*.ipynb" -type f -exec sh -c 'pandoc "${0}" -o "${0%.ipynb}.org"
 # replace "python" with "jupyter-python" recursively
 find . -type f -name "*.org" -exec sed -i 's|#+begin_src python|#+begin_src jupyter-python|g' {} +
 
+# replace "*E" with "** E" recursively
+find . -type f -name "*.org" -exec sed -i 's|*E|** E|g' {} +
+
+# delete charactor * in every line end with *
+find . -type f -name "*.org" -exec sed -i 's/*$//' {} +
+
 # delete line start with <<
 find . -type f -name "*.org" -exec sed -i '/^<</d' {} +
 #+END_SRC

@@ -4,6 +4,7 @@
 
 ;; * Set Faces, etc...
 (set-face-attribute 'default nil :height 130)
+(setq text-scale-mode-step 1.1)
 (global-visual-line-mode t)
 (global-display-fill-column-indicator-mode t)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
@@ -36,6 +37,7 @@
 (setq org-startup-folded t)
 (add-hook 'org-mode-hook 'mixed-pitch-mode)
 (add-hook 'org-mode-hook 'follow-mode)
+(setq org-babel-min-lines-for-block-output 1000)
 
 ;; * Org Crypt
 (require 'org-crypt)
@@ -79,10 +81,9 @@
 					  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 
 ;; * Org-fragtog
+;; Auto preview Latex
 (add-hook 'org-mode-hook 'org-fragtog-mode)
 
-;; * Text Step Scale
-(setq text-scale-mode-step 1.1)
 
 ;; * Org Agenda
 (setq org-agenda-include-diary t)
@@ -177,21 +178,26 @@ buffer's text scale."
 ;; (require 'eaf-file-manager)
 ;; (require 'eaf-jupyter)
 
-;; ;; * Copy-and-Paste issue for org-src-block
-;; (defun my-flush-lines ()
-;;   "Calls flush-lines with a given regexp or ^$"
-;;   (let ((regexp "^$"))
-;;     (flush-lines regexp nil nil t)))
+;; * Copy-and-Paste issue for org-src-block
+(defun my-flush-lines ()
+  "Calls flush-lines with a given regexp or ^$"
+  (let ((regexp "^$"))
+    (flush-lines regexp nil nil t)))
 
-;; (defun myreplace ()
-;;   "Beautify org src blk after copy and paste from PDF"
-;;   (interactive)
-;;   (org-babel-mark-block)
-;;   (replace-regexp-in-region "’" "'")
-;;   (indent-for-tab-command)
-;;   (my-flush-lines))
+(defun myreplace ()
+  "Beautify org src blk after copy and paste from PDF"
+  (interactive)
+  (org-babel-mark-block)
+  (replace-regexp-in-region "’" "'")
+  (replace-regexp-in-region "“" "\"")
+  (replace-regexp-in-region "”" "\"")
+  (replace-regexp-in-region "−" "-")
+  (query-replace-regexp "^[0-9]+\\. " "")
+  (indent-for-tab-command)
+  ;; (my-flush-lines)
+  )
 
-;; (global-set-key (kbd "<f4>") 'myreplace)
+(global-set-key (kbd "<f4>") 'myreplace)
 
 
 ;; ;; * Remove line after :results

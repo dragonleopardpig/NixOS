@@ -1,5 +1,0 @@
--r requirements.txt
-pandoc
-pypandoc
-pytest
-nbmake
