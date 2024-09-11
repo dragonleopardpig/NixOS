@@ -26,7 +26,7 @@
 (setq custom-safe-themes t) 
 (setq scimax-theme nil)
 
-;; * Load MELPA
+;;* Load MELPA
 (when (>= emacs-major-version 24)
   (progn
     ;; load emacs 24's package system.
@@ -57,21 +57,18 @@
 	company-web
 	ox-rst
 	alert 
-	;; Automatically toggle Org mode LaTeX fragment previews as the cursor enters and exits them
 	org-fragtog
 	ob-nix
 	latex-preview-pane
 	org-modern
 	slime
 	nix-mode
-	;; racket-mode
-	;; org-superstar
 	geiser-mit
 	pyvenv
 	srcery-theme
 	nov
 	markdown-mode
-	mixed-pitch
+	mixed-pitch ;;disable org-block-begin-line, org-block-end-line
 	))
 (package-install-selected-packages)
 

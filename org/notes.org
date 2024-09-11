@@ -29,6 +29,11 @@ ppieDefZ+4dYAcNm8RYFOQ==
 - scikit-image
 ** TODO Design of Experiment
 - R
+** wget all files
+#+BEGIN_SRC sh
+wget -r --no-parent https://pythonnumericalmethods.studentorg.berkeley.edu/_sources/notebooks/
+#+END_SRC
+
 ** Convert ipynb to org file
 #+BEGIN_SRC sh
 # convert all: ipynb file --> org files

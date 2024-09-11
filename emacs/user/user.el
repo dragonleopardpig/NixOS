@@ -1,3 +1,7 @@
+;; * Org-fragtog
+;; Auto preview Latex
+(add-hook 'org-mode-hook 'org-fragtog-mode)
+
 ;; * Disable some defaults
 (disable-theme 'smart-mode-line-light)
 (google-this-mode -1)
@@ -80,10 +84,6 @@
 				       `(lambda (c)
 					  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 
-;; * Org-fragtog
-;; Auto preview Latex
-(add-hook 'org-mode-hook 'org-fragtog-mode)
-
 
 ;; * Org Agenda
 (setq org-agenda-include-diary t)
@@ -107,7 +107,7 @@
    (latex . t)
    (lisp . t)
    (nix . t)
-   (jupyter . t)
+   ;; (jupyter . t)
    ;; (racket . t)
    ))
 
@@ -160,23 +160,14 @@ buffer's text scale."
 ;;   :config
 ;;   (define-key nov-mode-map (kbd "o") 'nov-xwidget-view)
 ;;   (add-hook 'nov-mode-hook 'nov-xwidget-inject-all-files))
+;; (add-to-list 'load-path "/home/thinky/.emacs.d/elpa/nov-xwidget/")
+;; (require 'nov-xwidget)
 
 ;; * PDF Tools
 (pdf-tools-install)  ; Standard activation command
 (pdf-loader-install) ; On demand loading, leads to faster startup time
 
-;; * EAF Apps
-;; (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
-;; (require 'eaf)
-;; (require 'eaf-browser)
-;; (require 'eaf-pdf-viewer)
-;; (require 'eaf-mindmap)
-;; (require 'eaf-image-viewer)
-;; (require 'eaf-video-player)
-;; (require 'eaf-terminal)
-;; (require 'eaf-markdown-previewer)
-;; (require 'eaf-file-manager)
-;; (require 'eaf-jupyter)
+
 
 ;; * Copy-and-Paste issue for org-src-block
 (defun my-flush-lines ()
@@ -192,6 +183,7 @@ buffer's text scale."
   (replace-regexp-in-region "“" "\"")
   (replace-regexp-in-region "”" "\"")
   (replace-regexp-in-region "−" "-")
+  (replace-regexp-in-region "\\#" "#")
   (query-replace-regexp "^[0-9]+\\. " "")
   (indent-for-tab-command)
   ;; (my-flush-lines)
@@ -200,33 +192,25 @@ buffer's text scale."
 (global-set-key (kbd "<f4>") 'myreplace)
 
 
-;; ;; * Remove line after :results
-;; (defun my-remove-line (_a _b)
-;;   (save-excursion 
-;;     (previous-line)
-;;     (beginning-of-line)
-;;     (when (looking-at-p "\n")
-;;       (kill-line))))
+;; * Remove line after :results
+(defun my-remove-line (_a _b)
+  (save-excursion 
+    (previous-line)
+    (beginning-of-line)
+    (when (looking-at-p "\n")
+      (kill-line))))
 
-;; (advice-add 'org-babel--insert-results-keyword :before #'my-remove-line)
+(advice-add 'org-babel--insert-results-keyword :before #'my-remove-line)
 
-;; ;; * Racket org babel
-;; ;; (use-package ob-racket
-;; ;;   :after org
-;; ;;   :config
-;; ;;   (add-hook 'ob-racket-pre-runtime-library-load-hook
-;; ;; 	    #'ob-racket-raco-make-runtime-library)
-;; ;;   :straight (ob-racket
-;; ;; 	     :type git :host github :repo "hasu/emacs-ob-racket"
-;; ;; 	     :files ("*.el" "*.rkt")))
 
-;; ;; * Company Mode
-;; (add-hook 'after-init-hook 'global-company-mode)
 
-;; ;; * Magit
-;; (keymap-global-set "C-x g" 'magit-status)
-;; (keymap-global-set "C-x M-g" 'magit-dispatch)
-;; (keymap-global-set "C-c M-g" 'magit-file-dispatch)
+;; * Company Mode
+(add-hook 'after-init-hook 'global-company-mode)
+
+;; * Magit
+(keymap-global-set "C-x g" 'magit-status)
+(keymap-global-set "C-x M-g" 'magit-dispatch)
+(keymap-global-set "C-c M-g" 'magit-file-dispatch)
 
 ;; **************************************************
 
@@ -378,3 +362,26 @@ buffer's text scale."
 ;; ;; Hide away leading stars on terminal.
 ;; (setq org-superstar-leading-fallback ?\s)
 ;; (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1)))
+
+;; * Racket org babel
+;; (use-package ob-racket
+;;   :after org
+;;   :config
+;;   (add-hook 'ob-racket-pre-runtime-library-load-hook
+;; 	    #'ob-racket-raco-make-runtime-library)
+;;   :straight (ob-racket
+;; 	     :type git :host github :repo "hasu/emacs-ob-racket"
+;; 	     :files ("*.el" "*.rkt")))
+
+;; * EAF Apps
+;; (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
+;; (require 'eaf)
+;; (require 'eaf-browser)
+;; (require 'eaf-pdf-viewer)
+;; (require 'eaf-mindmap)
+;; (require 'eaf-image-viewer)
+;; (require 'eaf-video-player)
+;; (require 'eaf-terminal)
+;; (require 'eaf-markdown-previewer)
+;; (require 'eaf-file-manager)
+;; (require 'eaf-jupyter)
