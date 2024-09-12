@@ -1650,34 +1650,24 @@ the practical exercises and complex projects. So, let's get coding and
 explore the transformative power of Fourier analysis!
 
 * CHAPTER 2: MATHEMATICAL FOUNDATIONS
-
+** Introduction
 At the heart of calculus lies the concept of a function, a relationship
 that assigns a unique output for every valid input. Functions can be
 simple, like linear functions, or more complex, involving trigonometric,
 exponential, or logarithmic expressions.
 
-1. Linear Functions:
-2. A linear function is of the form ( f(x) = ax + b ), where ( a ) and (
-   b ) are constants.
-3. These functions graph as straight lines and are characterized by a
-   constant slope, ( a ).
-4. Polynomial Functions:
-5. Polynomials are expressions involving sums of powers of ( x ) with
-   constant coefficients, e.g., ( f(x) = ax^n + bx^{n-1} + \ldots + k ).
-6. The degree of the polynomial (the highest power of ( x )) determines
-   the function's general shape.
-7. Trigonometric Functions:
-8. Trigonometric functions like sine (( \sin )), cosine (( \cos )), and
-   tangent (( \tan )) are periodic and play a crucial role in signal
-   processing.
-9. They relate angles to ratios of sides in right-angled triangles and
-   are fundamental in Fourier analysis.
-10. Exponential and Logarithmic Functions:
-11. Exponential functions, of the form ( f(x) = e^x ), exhibit constant
-    percentage growth rates and are vital in modeling growth processes.
-12. Logarithmic functions, the inverses of exponentials, are essential
-    in data analysis, particularly in transforming multiplicative
-    relationships into additive ones.
+*** Linear Functions:
++ A linear function is of the form \( f(x) = ax + b \), where \( a \) and \(b \) are constants.
++ These functions graph as straight lines and are characterized by a constant slope, \( a \).
+*** Polynomial Functions:
++ Polynomials are expressions involving sums of powers of \( x \) with constant coefficients, e.g., \( f(x) = ax^n + bx^{n-1} + \ldots + k \).
++ The degree of the polynomial (the highest power of \( x \)) determines the function's general shape.
+*** Trigonometric Functions:
++ Trigonometric functions like sine (\( \sin \)), cosine (\( \cos \)), and tangent (\( \tan \)) are periodic and play a crucial role in signal processing.
++ They relate angles to ratios of sides in right-angled triangles and are fundamental in Fourier analysis.
+*** Exponential and Logarithmic Functions:
++ Exponential functions, of the form \( f(x) = e^x \), exhibit constant percentage growth rates and are vital in modeling growth processes.
++ Logarithmic functions, the inverses of exponentials, are essential in data analysis, particularly in transforming multiplicative relationships into additive ones.
 
 ** Differentiation: The Concept of Change
   :PROPERTIES:
@@ -1687,25 +1677,19 @@ Differentiation measures how a function changes as its input changes.
 It's the cornerstone of calculus, providing insights into rates of
 change and the behavior of functions.
 
-1. Definition and Notation:
-2. The derivative of a function ( f(x) ) with respect to ( x ) is
-   denoted ( f'(x) ) or ( \frac{df}{dx} ).
-3. It represents the slope of the tangent to the function's graph at any
-   point, providing a measure of the function's instantaneous rate of
-   change.
-4. Basic Differentiation Rules:
-5. Power Rule: ( \frac{d}{dx} x^n = nx^{n-1} )
-6. Sum Rule: ( \frac{d}{dx} \(f(x) + g(x)\) = f'(x) + g'(x) )
-7. Product Rule: ( \frac{d}{dx} \(f(x)g(x)\) = f'(x)g(x) + f(x)g'(x) )
-8. Quotient Rule: ( \frac{d}{dx} \left\( \frac{f(x)}{g(x)} \right\) =
-   \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2} )
-9. Chain Rule: ( \frac{d}{dx} f(g(x)) = f'(g(x)) \cdot g'(x) )
-10. Higher-Order Derivatives:
-11. The second derivative ( f''(x) ) is the derivative of the
-    derivative, providing information about the curvature or concavity
-    of the function.
-12. Higher-order derivatives can be computed similarly and have
-    applications in various fields, including signal processing.
+*** Definition and Notation:
++ The derivative of a function \( f(x) \) with respect to \( x \) is denoted \( f'(x) \) or \( \frac{df}{dx} \).
++ It represents the slope of the tangent to the function's graph at any point, providing a measure of the function's instantaneous rate of change.
+*** Basic Differentiation Rules:
++ Power Rule :: \( \frac{d}{dx} x^n = nx^{n-1} \)
++ Sum Rule :: \( \frac{d}{dx} (f(x) + g(x)) = f'(x) + g'(x) \)
++ Product Rule :: \( \frac{d}{dx} (f(x)g(x)) = f'(x)g(x) + f(x)g'(x) \)
++ Quotient Rule :: \( \frac{d}{dx} \left( \frac{f(x)}{g(x)} \right) =
+  \frac{f'(x)g(x) - f(x)g'(x)}{g(x)^2} \)
++ Chain Rule :: \( \frac{d}{dx} f(g(x)) = f'(g(x)) \cdot g'(x) \)
+*** Higher-Order Derivatives:
++ The second derivative \( f''(x) \) is the derivative of the derivative, providing information about the curvature or concavity of the function.
++ Higher-order derivatives can be computed similarly and have applications in various fields, including signal processing.
 
 ** Integration: The Concept of Accumulation
   :PROPERTIES:
@@ -1715,26 +1699,18 @@ Integration, the inverse operation of differentiation, accumulates
 quantities over an interval. It's essential for computing areas under
 curves and solving differential equations.
 
-1. Definite and Indefinite Integrals:
-2. The indefinite integral (or antiderivative) of ( f(x) ) is a function
-   ( F(x) ) such that ( F'(x) = f(x) ), denoted by ( \int f(x) \, dx ).
-3. The definite integral of ( f(x) ) from ( a ) to ( b ) is denoted by (
-   \int_a^b f(x) \, dx ) and represents the area under the curve from (
-   x = a ) to ( x = b ).
-4. Basic Integration Rules:
-5. Power Rule: ( \int x^n \, dx = \frac{x^{n+1}}{n+1} + C ) (for ( n
-   \neq -1 ))
-6. Sum Rule: ( \int \(f(x) + g(x)\) \, dx = \int f(x) \, dx + \int g(x) \,
-   dx )
-7. Integration by Parts: ( \int u \, dv = uv - \int v \, du )
-8. Substitution Rule: Used to simplify integrals by transforming them
-   into an easier form.
-9. Applications of Integration:
-10. Area Calculation: Computing the area under a curve or between curves
-    is a common application of definite integrals.
-11. Solving Differential Equations: Integration is used to solve
-    differential equations, which model many physical and engineering
-    systems.
+**** Definite and Indefinite Integrals:
++ The indefinite integral (or antiderivative) of \( f(x) \) is a function
+   \( F(x) \) such that \( F'(x) = f(x) \), denoted by \( \int f(x) \, dx \).
++ The definite integral of \( f(x) \) from \( a \) to \( b \) is denoted by \( \int_a^b f(x) \, dx \) and represents the area under the curve from \( x = a \) to \( x = b \).
+**** Basic Integration Rules:
++ Power Rule :: \( \int x^n \, dx = \frac{x^{n+1}}{n+1} + C \) (for \( n \neq -1 )\)
++ Sum Rule :: \( \int (f(x) + g(x)) dx = \int f(x) dx + \int g(x) dx \)
++ Integration by Parts :: \( \int u \, dv = uv - \int v \, du \)
++ Substitution Rule :: Used to simplify integrals by transforming them into an easier form.
+**** Applications of Integration:
++ Area Calculation :: Computing the area under a curve or between curves is a common application of definite integrals.
++ Solving Differential Equations: Integration is used to solve differential equations, which model many physical and engineering systems.
 
 ** Fundamental Theorem of Calculus
   :PROPERTIES:
@@ -1744,16 +1720,12 @@ The Fundamental Theorem of Calculus links differentiation and
 integration, establishing that they are inverse processes.
 
 1. Part 1:
-2. If ( F(x) ) is an antiderivative of ( f(x) ), then ( \int_a^b f(x) \,
-   dx = F(b) - F(a) ).
-3. This theorem allows us to evaluate definite integrals using
-   antiderivatives.
-4. Part 2:
-5. If ( f(x) ) is continuous on ( \(a, b\) ), then the function ( F(x) =
-   \int_a^x f(t) \, dt ) is continuous on (\(a, b\)), differentiable on
-   ((a, b)), and ( F'(x) = f(x) ).
+   - If \( F(x) \) is an antiderivative of \( f(x) \), then \( \int_a^b f(x) dx = F(b) - F(a) \).
+   - This theorem allows us to evaluate definite integrals using  antiderivatives.
+2. Part 2:
+   - If \( f(x) \) is continuous on \( (a, b) \), then the function \( F(x) = \int_a^x f(t) dt \) is continuous on \((a, b)\), differentiable on  \((a, b)\), and \( F'(x) = f(x) \).
 
-** Practical Exercise: Applying Calculus to Fourier Analysis
+*** Practical Exercise: Applying Calculus to Fourier Analysis
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -1761,35 +1733,37 @@ To solidify our understanding, let's apply these calculus concepts to a
 practical problem in Fourier analysis using Python. We'll derive and
 integrate functions relevant to signal processing.
 
-1. Differentiation Example:
-2. Consider the signal ( f(t) = \sin(t) ). We want to determine its rate
-   of change.
-3. Using Python and symbolic computation (SymPy), we can find the
-   derivative.
+**** Differentiation Example:
++ Consider the signal \( f(t) = \sin(t) \). We want to determine its rate of change.
++ Using Python and symbolic computation (SymPy), we can find the  derivative.
 
-```python import sympy as sp
+#+BEGIN_SRC jupyter-python
+import sympy as sp
 
 t = sp.symbols('t')
-   f = sp.sin(t)
-   derivative_f = sp.diff(f, t)
-   print("The derivative of sin(t) is:", derivative_f)
+f = sp.sin(t)
+derivative_f = sp.diff(f, t)
+print("The derivative of sin(t) is:", derivative_f)
 
-```
-
+"""
 1. Integration Example:
-2. Suppose we want to compute the area under the curve of ( f(t) =
-   e^{-t^2} ) from ( t = -1 ) to ( t = 1 ).
+2. Suppose we want to compute the area under the curve of
+   f(t) = e^{-t^2} from t = -1 to t = 1.
 3. We can use numerical integration in Python.
+"""
 
-```python from scipy.integrate import quad import numpy as np
+from scipy.integrate import quad
+import numpy as np
 
-def integrand(t):
-       return np.exp(-t**2)
+def integrand(x):
+    return np.exp(-x**2)
 
 result, error = quad(integrand, -1, 1)
-   print("The integral of e^(-t^2) from -1 to 1 is:", result)
-
-```
+print("The integral of e^(-t^2) from -1 to 1 is:", result)
+#+END_SRC
+#+RESULTS:
+: The derivative of sin(t) is: cos(t)
+: The integral of e^(-t^2) from -1 to 1 is: 1.493648265624854
 
 A firm grasp of basic calculus is essential as we delve deeper into the
 world of Fourier Transforms. With these concepts refreshed, you are now
@@ -1800,102 +1774,61 @@ applications that lie ahead in this book.
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** Vectors and Vector Spaces
+*** Vectors and Vector Spaces
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
 At the core of linear algebra are vectors and vector spaces.
-<<part0005.xhtml#page_62>>These concepts are pivotal in representing and
-manipulating data in multiple dimensions, a common requirement in signal
-processing.
+These concepts are pivotal in representing and manipulating data in multiple
+dimensions, a common requirement in signal processing.
 
-1. Vectors:
-2. A vector is an ordered set of numbers, often representing a point in
-   space. For instance, in two-dimensional space, a vector can be
-   represented as ( \mathbf{v} = \(v_1, v_2\) ).
-3. Vectors can be added together and multiplied by scalars (real or
-   complex numbers) to produce new vectors.
-4. Vector Spaces:
-5. A vector space is a collection of vectors that can be added together
-   and multiplied by scalars to produce another vector within the same
-   space.
-6. The space must satisfy certain axioms, including closure under
-   addition and scalar multiplication, associativity, and the existence
-   of an additive identity and inverses.
-7. Basis and Dimension:
-8. A basis of a vector space is a set of vectors that are linearly
-   independent and span the entire space. For example, in ( \mathbb{R}^2
-   ), the standard basis vectors are ( \mathbf{e}_1 = \(1, 0\) ) and (
-   \mathbf{e}_2 = \(0, 1\) ).
-9. The number of vectors in the basis is the dimension of the vector
-   space. For ( \mathbb{R}^2 ), the dimension is 2.
+**** Vectors:
++ A vector :: is an ordered set of numbers, often representing a point in space. For instance, in two-dimensional space, a vector can be represented as \( \mathbf{v} = (v_1, v_2) \).
++ Vectors can be added together and multiplied by scalars (real or complex numbers) to produce new vectors.
+**** Vector Spaces:
++ A vector space :: is a collection of vectors that can be added together and multiplied by scalars to produce another vector within the same space.
++ The space must satisfy certain axioms, including closure under addition and scalar multiplication, associativity, and the existence of an additive identity and inverses.
+**** Basis and Dimension:
++ A basis :: of a vector space is a set of vectors that are linearly independent and span the entire space. For example, in \( \mathbb{R}^2 \), the standard basis vectors are \( \mathbf{e}_1 = (1, 0) \) and \(\mathbf{e}_2 = (0, 1) \).
++ The number of vectors in the basis is the dimension of the vector space. For \( \mathbb{R}^2 \), the dimension is 2.
 
-** Matrices and Linear Transformations
+*** Matrices and Linear Transformations
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-Matrices are rectangular arrays of numbers that can represent
-<<part0005.xhtml#page_63>>linear transformations, which map vectors from
-one vector space to another. Understanding matrices is crucial for
-operations such as Fourier Transforms.
+Matrices are rectangular arrays of numbers that can represent linear
+transformations, which map vectors from one vector space to another. Understanding matrices is crucial for operations such as Fourier Transforms.
 
-1. Matrix Representation:
-2. A matrix is a two-dimensional array of numbers, denoted as ( A =
-   \(a_{ij}\) ), where ( a_{ij} ) represents the element in the ( i )-th
-   row and ( j )-th column.
-3. Matrices can be added, subtracted, and multiplied (both by scalars
-   and other matrices).
-4. Linear Transformations:
-5. A linear transformation is a function between two vector spaces that
-   preserves vector addition and scalar multiplication. If ( T ) is a
-   linear transformation, then ( T(\mathbf{u} + \mathbf{v}) =
-   T(\mathbf{u}) + T(\mathbf{v}) ) and ( T(c\mathbf{u}) = cT(\mathbf{u})
-   ).
-6. Matrices can represent these transformations. For example, if (
-   \mathbf{v} ) is a vector and ( A ) is a matrix, then ( A\mathbf{v} )
-   is the result of applying the linear transformation represented by (
-   A ) to ( \mathbf{v} ).
-7. Inverse and Transpose:
-8. The inverse of a matrix ( A ), denoted ( A^{-1} ), is a matrix such
-   that ( AA^{-1} = A^{-1}A = I ), where ( I ) is the identity matrix.
-9. The transpose of a matrix ( A ), denoted ( A^T ), is obtained by
-   swapping the rows and columns of ( A ).
-10. Eigenvalues and Eigenvectors:
-11. An eigenvector of a matrix ( A ) is a non-zero vector ( \mathbf{v} )
-    such that ( A\mathbf{v} =
-    <<part0005.xhtml#page_64>>\lambda\mathbf{v} ), where ( \lambda ) is
-    a scalar known as the eigenvalue.
-12. Eigenvalues and eigenvectors are crucial in many applications,
-    including stability analysis and diagonalization of matrices.
+**** Matrix Representation:
++ A matrix :: is a two-dimensional array of numbers, denoted as \( A = (a_{ij}) \), where \( a_{ij} \) represents the element in the \( i \)-th row and \( j \)-th column.
++ Matrices can be added, subtracted, and multiplied (both by scalars and other matrices).
+**** Linear Transformations:
++ A linear transformation :: is a function between two vector spaces that preserves vector addition and scalar multiplication. If \( T \) is a linear transformation, then \( T(\mathbf{u} + \mathbf{v}) = T(\mathbf{u}) + T(\mathbf{v}) \) and \( T(c\mathbf{u}) = cT(\mathbf{u}) \).
++ Matrices can represent these transformations. For example, if \(\mathbf{v} \) is a vector and \( A \) is a matrix, then \( A\mathbf{v} \) is the result of applying the linear transformation represented by \( A \) to \( \mathbf{v} \).
+**** Inverse and Transpose:
++ The inverse of a matrix :: \( A \), denoted \( A^{-1} \), is a matrix such that \( AA^{-1} = A^{-1}A = I \), where \( I \) is the identity matrix.
++ The transpose of a matrix \( A \), denoted \( A^T \), is obtained by swapping the rows and columns of \( A \).
+**** Eigenvalues and Eigenvectors:
++ An eigenvector of a matrix :: \( A \) is a non-zero vector \( \mathbf{v} \) such that \( A\mathbf{v} = \lambda\mathbf{v} \), where \( \lambda \) is a scalar known as the eigenvalue.
++ Eigenvalues and eigenvectors are crucial in many applications, including stability analysis and diagonalization of matrices.
 
-** Inner Product and Orthogonality
+*** Inner Product and Orthogonality
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-The concepts of the inner product and orthogonality are fundamental in
-signal processing, particularly in Fourier analysis, where orthogonal
-functions play a significant role.
+The concepts of the inner product and orthogonality are fundamental in signal processing, particularly in Fourier analysis, where orthogonal functions play a significant role.
 
-1. Inner Product:
-2. The inner product (or dot product) of two vectors ( \mathbf{u} ) and
-   ( \mathbf{v} ) in ( \mathbb{R}^n ) is defined as ( \mathbf{u} \cdot
-   \mathbf{v} = u_1v_1 + u_2v_2 + \ldots + u_nv_n ).
-3. The inner product defines the length (or norm) of a vector and the
-   angle between two vectors.
-4. Orthogonality:
-5. Two vectors ( \mathbf{u} ) and ( \mathbf{v} ) are orthogonal if their
-   inner product is zero, ( \mathbf{u} \cdot \mathbf{v} = 0 ).
-6. In Fourier analysis, orthogonal functions form the basis for
-   representing complex signals as sums of simpler functions.
-7. Orthogonal Basis:
-8. An orthogonal basis of a vector space is a basis where all vectors
-   are mutually orthogonal. If the vectors are also unit vectors (having
-   length 1), the basis is orthonormal.
-9. Orthonormal bases simplify many computations, as the inner product of
-   two basis vectors is zero unless they are the same vector, in which
-   case it is one.
+**** Inner Product:
++ The inner product :: (or dot product) of two vectors \( \mathbf{u} \) and \(\mathbf{v} \) in \( \mathbb{R}^n \) is defined as \( \mathbf{u} \cdot \mathbf{v} = u_1v_1 + u_2v_2 + \ldots + u_nv_n \).
++ The inner product defines the length (or norm) of a vector and the angle between two vectors.
+**** Orthogonality:
++ Two vectors \( \mathbf{u} \) and \( \mathbf{v} \) are orthogonal :: if their inner product is zero, \( \mathbf{u} \cdot \mathbf{v} = 0 \).
++ In Fourier analysis, orthogonal functions form the basis for representing complex signals as sums of simpler functions.
+**** Orthogonal Basis:
++ An orthogonal basis ::  of a vector space is a basis where all vectors  are mutually orthogonal. If the vectors are also unit vectors (having length 1), the basis is orthonormal.
++ Orthonormal bases simplify many computations, as the inner product of two basis vectors is zero unless they are the same vector, in which case it is one.
 
-** Practical Exercise: Python Implementation of Linear Algebra Concepts
+**** Practical Exercise: Python Implementation of Linear Algebra Concepts
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -1903,59 +1836,79 @@ To solidify our understanding of these linear algebra concepts, let's
 implement some fundamental operations using Python. We'll use NumPy, a
 powerful library for numerical computations.
 
-1. Vector Operations:
-2. Let's start by creating vectors and performing basic operations like
-   addition, scalar multiplication, and dot product.
+***** Vector Operations:
++ Let's start by creating vectors and performing basic operations like addition, scalar multiplication, and dot product.
 
-```python import numpy as np
+#+BEGIN_SRC jupyter-python
+import numpy as np
 
-\# Define vectors
-   v1 = np.array(\(1, 2\))
-   v2 = np.array(\(3, 4\))
+# Define vectors
+v1 = np.array((1, 2))
+v2 = np.array((3, 4))
 
-\# Vector addition
-   v_add = v1 + v2
-   print("Vector Addition:", v_add)
+# Vector addition
+v_add = v1 + v2
+print("Vector Addition:", v_add)
 
-\# Scalar multiplication
-   v_scalar = 2 * v1
-   print("Scalar Multiplication:", v_scalar)
+# Scalar multiplication
+v_scalar = 2 * v1
+print("Scalar Multiplication:", v_scalar)
 
-\# Dot product
-   dot_product = np.dot(v1, v2)
-   print("Dot Product:", dot_product)
+# Dot product
+dot_product = np.dot(v1, v2)
+print("Dot Product:", dot_product)
+#+END_SRC
+#+RESULTS:
+: Vector Addition: [4 6]
+: Scalar Multiplication: [2 4]
+: Dot Product: 11
 
-```
+***** Matrix Operations:
++ Next, we'll define matrices and perform matrix multiplication, transpose, and find the inverse.
 
-1. Matrix Operations:
-2. Next, we'll define matrices and perform matrix multiplication,
-   transpose, and find the inverse.
+#+BEGIN_SRC jupyter-python
+# Define matrices
+A = np.array(((1, 2), (3, 4)))
+B = np.array(((5, 6), (7, 8)))
 
-```python # Define matrices A = np.array(\(\(1, 2\), \(3, 4\)\)) B =
-np.array(\(\(5, 6\), \(7, 8\)\))
+# Matrix multiplication
+matrix_mult = np.dot(A, B)
+print("Matrix Multiplication:\n", matrix_mult)
 
-\# Matrix multiplication
-   matrix_mult = np.dot(A, B)
-   print("Matrix Multiplication:\n", matrix_mult)
+# Transpose of a matrix
+A_transpose = np.transpose(A)
+print("Transpose of A:\n", A_transpose)
 
-\# Transpose of a matrix
-   A_transpose = np.transpose(A)
-   print("Transpose of A:\n", A_transpose)
+# Inverse of a matrix
+A_inverse = np.linalg.inv(A)
+print("Inverse of A:\n", A_inverse)
+#+END_SRC
+#+RESULTS:
+: Matrix Multiplication:
+:  [[19 22]
+:  [43 50]]
+: Transpose of A:
+:  [[1 3]
+:  [2 4]]
+: Inverse of A:
+:  [[-2.   1. ]
+:  [ 1.5 -0.5]]
 
-\# Inverse of a matrix
-   A_inverse = np.linalg.inv(A)
-   print("Inverse of A:\n", A_inverse)
+***** Eigenvalues and Eigenvectors:
++ Finally, let's compute the eigenvalues and eigenvectors of a matrix.
 
-```
+#+BEGIN_SRC jupyter-python
+# Eigenvalues and eigenvectors
+eigenvalues, eigenvectors = np.linalg.eig(A)
 
-1. Eigenvalues and Eigenvectors:
-2. Finally, let's compute the eigenvalues and eigenvectors of a matrix.
-
-```python # Eigenvalues and eigenvectors eigenvalues, eigenvectors =
-np.linalg.eig(A) print("Eigenvalues:", eigenvalues)
+print("Eigenvalues:", eigenvalues)
 print("Eigenvectors:\n", eigenvectors)
-
-```
+#+END_SRC
+#+RESULTS:
+: Eigenvalues: [-0.37228132  5.37228132]
+: Eigenvectors:
+:  [[-0.82456484 -0.41597356]
+:  [ 0.56576746 -0.90937671]]
 
 A strong understanding of linear algebra is indispensable for mastering
 Fourier Transforms and their applications. With these concepts firmly in
@@ -1970,7 +1923,7 @@ analysis.
   :CUSTOM_ID: part0005.xhtml#page_67
   :CLASS: heading_sEA
   :END:
-** Understanding Inner Product Spaces
+*** Understanding Inner Product Spaces
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -1980,33 +1933,28 @@ Euclidean spaces to more abstract vector spaces. This generalized
 concept is crucial for understanding how functions and signals can be
 manipulated in Fourier analysis.
 
-1. Inner Product Definition:
-2. The inner product of two vectors ( \mathbf{u} ) and ( \mathbf{v} ) in
-   a vector space ( V ) over the field ( \mathbb{R} ) (real numbers) or
-   ( \mathbb{C} ) (complex numbers) is a scalar, often denoted as (
-   \langle \mathbf{u}, \mathbf{v} \rangle ).
-3. For real-valued vectors, it is defined as: \( \langle \mathbf{u},
-   \mathbf{v} \rangle = \sum_{i=1}^{n} u_i v_i \)
-4. For complex-valued vectors, it includes the complex conjugate: \(
-   \langle \mathbf{u}, \mathbf{v} \rangle = \sum_{i=1}^{n} u_i
-   \overline{v_i} \)
-5. Properties of Inner Products:
-6. Linearity: ( \langle a\mathbf{u} + b\mathbf{v}, \mathbf{w} \rangle =
-   a \langle \mathbf{u}, \mathbf{w} \rangle + b \langle \mathbf{v},
-   \mathbf{w} \rangle )
-7. Conjugate Symmetry: ( \langle \mathbf{u}, \mathbf{v} \rangle =
-   \overline{\langle \mathbf{v}, \mathbf{u} \rangle} )
-8. Positive-Definiteness: ( \langle \mathbf{u}, \mathbf{u} \rangle \geq
-   0 ) and ( \langle \mathbf{u}, <<part0005.xhtml#page_68>>\mathbf{u}
-   \rangle = 0 ) if and only if ( \mathbf{u} = \mathbf{0} )
-9. Norm and Distance:
-10. The norm (or length) of a vector ( \mathbf{u} ) is derived from the
-    inner product as ( \| \mathbf{u} \| = \sqrt{\langle \mathbf{u},
-    \mathbf{u} \rangle} ).
-11. The distance between two vectors is given by ( d(\mathbf{u},
-    \mathbf{v}) = \| \mathbf{u} - \mathbf{v} \| ).
+**** Inner Product Definition:
++ The inner product of two vectors \( \mathbf{u} \) and \( \mathbf{v} \) in  a vector space \( V \) over the field \( \mathbb{R} \) (real numbers) or \( \mathbb{C} \) (complex numbers) is a scalar, often denoted as \(
+   \langle \mathbf{u}, \mathbf{v} \rangle \).
++ For real-valued vectors, it is defined as: \( \langle \mathbf{u},
+  \mathbf{v} \rangle = \sum_{i=1}^{n} u_i v_i \)
++ For complex-valued vectors, it includes the complex conjugate: \(
+  \langle \mathbf{u}, \mathbf{v} \rangle = \sum_{i=1}^{n} u_i
+  \overline{v_i} \)
+**** Properties of Inner Products:
++ Linearity :: \( \langle a\mathbf{u} + b\mathbf{v}, \mathbf{w} \rangle =  a \langle \mathbf{u}, \mathbf{w} \rangle + b \langle \mathbf{v}, \mathbf{w} \rangle \)
++ Conjugate Symmetry :: \( \langle \mathbf{u}, \mathbf{v} \rangle =
+   \overline{\langle \mathbf{v}, \mathbf{u} \rangle} \)
++ Positive-Definiteness :: \( \langle \mathbf{u}, \mathbf{u} \rangle \geq
+   0 \) and \( \langle \mathbf{u}, \mathbf{u}
+   \rangle = 0 \) if and only if \( \mathbf{u} = \mathbf{0} \)
+**** Norm and Distance:
++ The norm (or length) of a vector \( \mathbf{u} \) is derived from the inner product as \( \| \mathbf{u} \| = \sqrt{\langle \mathbf{u},
+    \mathbf{u} \rangle} \).
++ The distance between two vectors is given by \( d(\mathbf{u},
+    \mathbf{v}) = \| \mathbf{u} - \mathbf{v} \| \).
 
-** Orthogonality in Inner Product Spaces
+*** Orthogonality in Inner Product Spaces
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -2016,100 +1964,96 @@ in Fourier analysis. Orthogonality ensures that the inner product of
 orthogonal vectors is zero, leading to significant computational
 advantages.
 
-1. Orthogonal Vectors:
-2. Two vectors ( \mathbf{u} ) and ( \mathbf{v} ) are orthogonal if (
-   \langle \mathbf{u}, \mathbf{v} \rangle = 0 ).
-3. Orthogonality extends to functions in functional analysis, where two
-   functions ( f ) and ( g ) are orthogonal if their inner product over
-   a specified interval is zero: \( \int_{a}^{b} f(x) \overline{g(x)} \,
-   dx = 0 \)
-4. Orthogonal and Orthonormal Sets:
-5. A set of vectors ( { \mathbf{u}_1, \mathbf{u}_2, \ldots, \mathbf{u}_n
-   } ) is orthogonal if every pair of distinct vectors in the set is
-   orthogonal.
-6. If, in addition, each vector in the set has a norm of one, the set is
-   orthonormal. For example, the standard basis vectors in (
-   \mathbb{R}^n ) are orthonormal.
-7. Gram-Schmidt Orthogonalization:
-8. The Gram-Schmidt process is an algorithm for converting a set of
-   linearly independent vectors into an orthogonal or orthonormal set.
-9. Given a set of vectors ( { \mathbf{u}1, \mathbf{u}_2, \ldots,
-   \mathbf{u}_n } ), the process generates an orthogonal set ( {
-   \mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_n } ): \( \mathbf{v}_1
-   = \mathbf{u}_1 \) \( \mathbf{v}_k = \mathbf{u}_k - \sum{j=1}^{k-1}
-   \frac{\langle \mathbf{u}_k, \mathbf{v}_j \rangle}{\langle
-   \mathbf{v}_j, \mathbf{v}_j \rangle} \mathbf{v}_j \quad \text{for} \;
-   k > 1 \)
-10. Projection onto Subspaces:
-11. The projection of a vector ( \mathbf{u} ) onto a subspace spanned by
-    an orthonormal set ( { \mathbf{v}1, \mathbf{v}_2, \ldots,
-    \mathbf{v}_m } ) is: \( \text{Proj}{W} \mathbf{u} = \sum_{i=1}^{m}
-    \langle \mathbf{u}, \mathbf{v}_i \rangle \mathbf{v}_i \)
-12. This projection minimizes the distance between ( \mathbf{u} ) and
-    any vector in the subspace ( W ).
+**** Orthogonal Vectors:
++ Two vectors \( \mathbf{u} \) and \( \mathbf{v} \) are orthogonal if \(\langle \mathbf{u}, \mathbf{v} \rangle = 0 \).
++ Orthogonality extends to functions in functional analysis, where two functions \( f \) and \( g \) are orthogonal if their inner product over a specified interval is zero: \[ \int_{a}^{b} f(x) \overline{g(x)} \, dx = 0 \]
+**** Orthogonal and Orthonormal Sets:
++ A set of vectors \( { \mathbf{u}_1, \mathbf{u}_2, \ldots, \mathbf{u}_n} \) is orthogonal if every pair of distinct vectors in the set is orthogonal.
++ If, in addition, each vector in the set has a norm of one, the set is orthonormal. For example, the standard basis vectors in \(\mathbb{R}^n \) are orthonormal.
+**** Gram-Schmidt Orthogonalization:
++ The Gram-Schmidt process is an algorithm for converting a set of linearly independent vectors into an orthogonal or orthonormal set.
++ Given a set of vectors \( { \mathbf{u}_1, \mathbf{u}_2, \ldots,
+   \mathbf{u}_n } \), the process generates an orthogonal set \( {
+   \mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_n } \):
+  + \( \mathbf{v}_1 = \mathbf{u}_1 \)
+  +  \[ \mathbf{v}_k = \mathbf{u}_k - \sum_{j=1}^{k-1}   \frac{\langle \mathbf{u}_k, \mathbf{v}_j \rangle}{\langle   \mathbf{v}_j, \mathbf{v}_j \rangle} \mathbf{v}_j \quad \text{for} \;   k > 1 \]
+**** Projection onto Subspaces:
++ The projection of a vector \( \mathbf{u} \) onto a subspace \(W\)spanned by an orthonormal set \( { \mathbf{v}_1, \mathbf{v}_2, \ldots, \mathbf{v}_m } \) is:
+  + \[ \text{Proj}_W (\mathbf{u}) = \sum_{i=1}^{m}
+      \langle \mathbf{u}, \mathbf{v}_i \rangle \mathbf{v}_i \]
++ This projection minimizes the distance between \( \mathbf{u} \) and any vector in the subspace \( W \).
 
-** Practical Exercise: Orthogonality and Inner Products in Python
+*** Practical Exercise: Orthogonality and Inner Products in Python
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
 To gain hands-on experience with these concepts, let's implement
-orthogonalization and projections using Python. We'll use the NumPy
+Orthogonalization and projections using Python. We'll use the NumPy
 library to demonstrate these operations.
 
-1. Creating and Checking Orthogonal Vectors:
-2. We'll start by creating vectors and checking if they are orthogonal.
+**** Creating and Checking Orthogonal Vectors:
++ We'll start by creating vectors and checking if they are orthogonal.
 
-```python import numpy as np
+#+BEGIN_SRC jupyter-python
+import numpy as np
 
-\# Define vectors
-   u = np.array(\(1, 0\))
-   v = np.array(\(0, 1\))
+# Define vectors
+u = np.array((1, 0))
+v = np.array((0, 1))
 
-\# Check orthogonality
-   inner_product = np.dot(u, v)
-   print("Inner Product (u, v):", inner_product)  \# Should be 0 for
-orthogonal vectors
+# Check orthogonality
+inner_product = np.dot(u, v)
+print("Inner Product (u, v):", inner_product) # Should be 0 for orthogonal vectors
+#+END_SRC
+#+RESULTS:
+: Inner Product (u, v): 0
 
-```
+**** Gram-Schmidt Orthogonalization:
++ Convert a set of linearly independent vectors to an orthogonal set using the Gram-Schmidt process.
 
-1. Gram-Schmidt Orthogonalization:
-2. Convert a set of linearly independent vectors to an orthogonal set
-   using the Gram-Schmidt process.
+#+BEGIN_SRC jupyter-python
+# Define a set of vectors
+a = np.array((1, 1))
+b = np.array((1, -1))
 
-```python # Define a set of vectors a = np.array(\(1, 1\)) b =
-np.array(\(1, -1\))
+# Gram-Schmidt process
+def gram_schmidt(vectors):
+    ortho_vectors = []
+    for v in vectors:
+        w = v - sum(np.dot(v, ov) * ov for ov in ortho_vectors)
+        ortho_vectors.append(w / np.linalg.norm(w))
+    return np.array(ortho_vectors)
 
-\# Gram-Schmidt process
-   def gram_schmidt(vectors):
-       ortho_vectors = \(\)
-       for v in vectors:
-           w = v - sum(np.dot(v, ov) * ov for ov in ortho_vectors)
-           ortho_vectors.append(w / np.linalg.norm(w))
-       return np.array(ortho_vectors)
+vectors = np.array((a, b))
+ortho_vectors = gram_schmidt(vectors)
+print("Orthogonal Vectors:\n", ortho_vectors)
+#+END_SRC
+#+RESULTS:
+: Orthogonal Vectors:
+:  [[ 0.70710678  0.70710678]
+:  [ 0.70710678 -0.70710678]]
 
-vectors = np.array(\(a, b\))
-   ortho_vectors = gram_schmidt(vectors)
-   print("Orthogonal Vectors:\n", ortho_vectors)
+**** Projection onto a Subspace:
++ Project a vector onto the subspace spanned by an orthonormal set.
 
-```
+#+BEGIN_SRC jupyter-python
+# Define a vector and an orthonormal set
+u = np.array((2, 3))
+v1 = np.array((1, 0))
+v2 = np.array((0, 1))
 
-1. Projection onto a Subspace:
-2. Project a vector onto the subspace spanned by an orthonormal set.
+# Orthonormal set
+orthonormal_set = np.array((v1, v2))
 
-```python # Define a vector and an orthonormal set u = np.array(\(2, 3\))
-v1 = np.array(\(1, 0\)) v2 = np.array(\(0, 1\))
-
-\# Orthonormal set
-   orthonormal_set = np.array(\(v1, v2\))
-
-\# Projection function
-   def projection(u, orthonormal_set):
-       return sum(np.dot(u, v) * v for v in orthonormal_set)
+# Projection function
+def projection(u, orthonormal_set):
+    return sum(np.dot(u, v) * v for v in orthonormal_set)
 
 proj_u = projection(u, orthonormal_set)
-   print("Projection of u onto subspace:", proj_u)
-
-```
+print("Projection of u onto subspace:", proj_u)
+#+END_SRC
+#+RESULTS:
+: Projection of u onto subspace: [2 3]
 
 The principles of inner product spaces and orthogonality are
 indispensable in the realm of Fourier Transforms. These concepts
@@ -2123,12 +2067,12 @@ confidence and precision.
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** Understanding Complex Exponentials
+*** Understanding Complex Exponentials
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-At its core, a complex exponential takes the form (e^{j\theta}), where
-(j) denotes the imaginary unit (with (j^2 = -1)) and (\theta) is a real
+At its core, a complex exponential takes the form \(e^{j\theta}\), where
+\(j\) denotes the imaginary unit (with \(j^2 = -1\)) and \(\theta\) is a real
 number representing the angle in radians. This expression can be
 elegantly decomposed into its real and imaginary components using
 Euler's formula:
@@ -2139,24 +2083,19 @@ This formula reveals a profound connection between complex exponentials,
 trigonometric functions, and circular motion, making them indispensable
 tools in Fourier analysis.
 
-1. Euler's Formula:
-2. Euler's formula is a fundamental equation in complex analysis: \(
-   e^{j\theta} = \cos(\theta) + j \sin(\theta) \)
-3. This equation shows how a complex exponential can be expressed as the
-   sum of a cosine and sine function, reflecting its oscillatory nature.
-4. Magnitude and Phase:
-5. The magnitude (or modulus) of a complex exponential is always 1: \(
-   |e^{j\theta}| = \sqrt{\cos^2(\theta) + \sin^2(\theta)} = 1 \)
-6. The phase (or argument) is the angle (\theta) itself, representing
-   the position on the unit circle in the complex plane.
-7. Periodicity:
-8. Complex exponentials are periodic with a period of (2\pi): \(
-   e^{j(\theta + 2\pi k)} = e^{j\theta} \)
-9. For any integer (k), adding (2\pi k) to (\theta) does not change the
-   value of the exponential, reflecting the cyclic nature of
-   trigonometric functions.
+**** Euler's Formula:
++ Euler's formula :: is a fundamental equation in complex analysis:
+  + \(e^{j\theta} = \cos(\theta) + j \sin(\theta) \)
++ This equation shows how a complex exponential can be expressed as the sum of a cosine and sine function, reflecting its oscillatory nature.
+**** Magnitude and Phase:
++ The magnitude (or modulus) :: of a complex exponential is always 1:
+  + \(|e^{j\theta}| = \sqrt{\cos^2(\theta) + \sin^2(\theta)} = 1 \)
++ The phase (or argument) is the angle \(\theta\) itself, representing the position on the unit circle in the complex plane.
+**** Periodicity:
++ Complex exponentials are periodic with a period of \(2\pi\): \(e^{j(\theta + 2\pi k)} = e^{j\theta} \)
++ For any integer \(k\), adding \(2\pi k\) to \(\theta\) does not change the value of the exponential, reflecting the cyclic nature of trigonometric functions.
 
-** Properties of Complex Exponentials
+*** Properties of Complex Exponentials
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -2164,50 +2103,35 @@ The unique properties of complex exponentials make them particularly
 useful in signal processing and Fourier analysis. Understanding these
 properties enables us to manipulate and analyze signals efficiently.
 
-1. Addition and Multiplication:
-2. The product of two complex exponentials is itself a complex
-   exponential, with the exponents adding: <<part0005.xhtml#page_73>>\(
-   e^{j\theta_1} \cdot e^{j\theta_2} = e^{j(\theta_1 + \theta_2)} \)
-3. Similarly, the ratio of two complex exponentials results in the
-   subtraction of their exponents: \( \frac{e^{j\theta_1}}{e^{j\theta_2}}
-   = e^{j(\theta_1 - \theta_2)} \)
-4. Conjugation:
-5. The complex conjugate of (e^{j\theta}) is (e^{-j\theta}), reflecting
-   a reflection across the real axis: \( \overline{e^{j\theta}} =
-   e^{-j\theta} \)
-6. This property is essential in many signal processing algorithms,
-   particularly those involving symmetry and orthogonality.
-7. Real and Imaginary Parts:
-8. The real part of (e^{j\theta}) is (\cos(\theta)), and the imaginary
-   part is (\sin(\theta)): \( \text{Re}(e^{j\theta}) = \cos(\theta),
-   \quad \text{Im}(e^{j\theta}) = \sin(\theta) \)
+**** Addition and Multiplication:
++ The product of two complex exponentials is itself a complex exponential, with the exponents adding: \( e^{j\theta_1} \cdot e^{j\theta_2} = e^{j(\theta_1 + \theta_2)} \)
++ Similarly, the ratio of two complex exponentials results in the subtraction of their exponents: \( \frac{e^{j\theta_1}}{e^{j\theta_2}} = e^{j(\theta_1 - \theta_2)} \)
+**** Conjugation:
++ The complex conjugate of \(e^{j\theta}\) is \(e^{-j\theta}\), reflecting a reflection across the real axis: \( \overline{e^{j\theta}} = e^{-j\theta} \)
++ This property is essential in many signal processing algorithms, particularly those involving symmetry and orthogonality.
+**** Real and Imaginary Parts:
++ The real part of \(e^{j\theta}\) is \(\cos(\theta)\), and the imaginary part is \(\sin(\theta)\):
+  + \( \text{Re}(e^{j\theta}) = \cos(\theta), \quad \text{Im}(e^{j\theta}) = \sin(\theta) \)
 
-** Applications in Fourier Analysis
+*** Applications in Fourier Analysis
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-1. Fourier Series:
-2. A periodic function (f(t)) can be expressed as a sum of complex
-   exponentials: \( f(t) = \sum_{n=-\infty}^{\infty} c_n e^{jn\omega_0 t}
-   \)
-3. Here, (c_n) are the Fourier coefficients, and (\omega_0) is the
-   fundamental frequency.
-4. This representation highlights the signal's frequency content and
-   simplifies analysis and manipulation.
-5. Continuous Fourier Transform:
-6. The Fourier transform of a function (f(t)) is defined as: \( F(\omega)
-   = \int_{-\infty}^{\infty} f(t) e^{-j\omega t} \, dt \)
-7. This transform converts a time-domain signal into its
-   frequency-domain representation, encapsulating all frequency
-   components within the signal.
-8. Discrete Fourier Transform (DFT):
-9. For discrete signals, the DFT provides a similar transformation: \(
-   X(k) = \sum_{n=0}^{N-1} x(n) e^{-j \frac{2\pi}{N} kn} \)
-10. This powerful tool is widely used in digital signal processing
-    applications, enabling efficient frequency analysis of discrete
-    data.
+**** Fourier Series:
++ A periodic function \(f(t)\) can be expressed as a sum of complex exponentials:
+  + \[ f(t) = \sum_{n=-\infty}^{\infty} c_n e^{jn\omega_0 t}\]
++ Here, \(c_n\) are the Fourier coefficients, and \(\omega_0\) is the fundamental frequency.
++ This representation highlights the signal's frequency content and simplifies analysis and manipulation.
+**** Continuous Fourier Transform:
++ The Fourier transform of a function \(f(t)\) is defined as:
+  + \[ F(\omega) = \int_{-\infty}^{\infty} f(t) e^{-j\omega t} \, dt \]
++ This transform converts a time-domain signal into its frequency-domain representation, encapsulating all frequency components within the signal.
+**** Discrete Fourier Transform (DFT):
++ For discrete signals, the DFT provides a similar transformation:
+  + \[X(k) = \sum_{n=0}^{N-1} x(n) e^{-j \frac{2\pi}{N} kn} \]
++ This powerful tool is widely used in digital signal processing applications, enabling efficient frequency analysis of discrete data.
 
-** Practical Exercise: Implementing Complex Exponentials in Python
+*** Practical Exercise: Implementing Complex Exponentials in Python
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -2215,75 +2139,85 @@ To solidify our understanding of complex exponentials, we will implement
 various operations and visualize their properties using Python. The
 NumPy library will be our primary tool for these exercises.
 
-1. Visualizing Euler's Formula:
-2. Let's begin by visualizing Euler's formula and its components.
+**** Visualizing Euler's Formula:
++ Let's begin by visualizing Euler's formula and its components.
 
-```python import numpy as np import matplotlib.pyplot as plt
+#+BEGIN_SRC jupyter-python
+import numpy as np
+import matplotlib.pyplot as plt
 
-\# Define the angle theta
-   theta = np.linspace(0, 2 * np.pi, 1000)
+# Define the angle theta
+theta = np.linspace(0, 2*np.pi, 1000)
 
-\# Compute the complex exponential
-   complex_exp = np.exp(1j * theta)
+# Compute the complex exponential
+complex_exp = np.exp(1j * theta)
 
-\# Separate real and imaginary parts
-   real_part = np.real(complex_exp)
-   imaginary_part = np.imag(complex_exp)
+# Separate real and imaginary parts
+real_part = np.real(complex_exp)
+imaginary_part = np.imag(complex_exp)
 
-\# Plotting
-   plt.figure(figsize=(10, 5))
-   plt.plot(theta, real_part, label='Real part: cos(θ)')
-   plt.plot(theta, imaginary_part, label='Imaginary part: sin(θ)')
-   plt.xlabel('θ (radians)')
-   plt.ylabel('Value')
-   plt.title('Visualization of Euler\'s Formula')
-   plt.legend()
-   plt.grid(True)
-   plt.show()
+# Plotting
+# plt.figure(figsize=(10, 5))
+plt.plot(theta, real_part, label='Real part: cos(θ)')
+plt.plot(theta, imaginary_part, label='Imaginary part: sin(θ)')
+plt.xlabel('θ (radians)')
+plt.ylabel('Value')
+plt.title('Visualization of Euler\'s Formula')
+plt.legend()
+plt.grid(True)
+plt.show()
+#+END_SRC
+#+RESULTS:
+[[./.ob-jupyter/e761a736aa398a2c84cd0e88db225e218c0e1b38.png]]
 
-```
+**** Addition and Multiplication of Complex Exponentials:
++ Next, we will explore the addition and multiplication properties.
 
-1. Addition and Multiplication of Complex Exponentials:
-2. Next, we will explore the addition and multiplication properties.
+#+BEGIN_SRC jupyter-python
+# Define angles
+theta1 = np.pi / 4
+theta2 = np.pi / 3
 
-```python # Define angles theta1 = np.pi / 4 theta2 = np.pi / 3
+# Compute complex exponentials
+exp1 = np.exp(1j * theta1)
+exp2 = np.exp(1j * theta2)
 
-\# Compute complex exponentials
-   exp1 = np.exp(1j * theta1)
-   exp2 = np.exp(1j * theta2)
+# Addition of angles
+added_exp = exp1 * exp2
+print(f"e^(j(θ1 + θ2)) = {added_exp}")
 
-\# Addition of angles
-   added_exp = exp1 * exp2
-   print(f"e^(j(θ1 + θ2)) = {added_exp}")
+# Multiplication of exponentials (exponent addition)
+mult_exp = exp1 * exp2
+print(f"e^(jθ1) * e^(jθ2) = {mult_exp}")
+#+END_SRC
+#+RESULTS:
+: e^(j(θ1 + θ2)) = (-0.25881904510252063+0.9659258262890684j)
+: e^(jθ1) * e^(jθ2) = (-0.25881904510252063+0.9659258262890684j)
 
-\# Multiplication of exponentials (exponent addition)
-   mult_exp = exp1 * exp2
-   print(f"e^(jθ1) * e^(jθ2) = {mult_exp}")
+**** Fourier Transform Using Complex Exponentials:
++ Finally, we will implement a simple Fourier transform to see these exponentials in action.
 
-```
+#+BEGIN_SRC jupyter-python
+# Define a signal: sum of two sinusoids
+t = np.linspace(0, 1, 500)
+f1, f2 = 5, 20 # Frequencies
+signal = np.sin(2*np.pi*f1*t) + 0.5*np.sin(2*np.pi*f2*t)
 
-1. Fourier Transform Using Complex Exponentials:
-2. Finally, we will implement a simple Fourier transform to see these
-   exponentials in action.
+# Compute the Fourier transform
+freqs = np.fft.fftfreq(len(t), d=t[1] - t[0])
+signal_fft = np.fft.fft(signal)
 
-```python # Define a signal: sum of two sinusoids t = np.linspace(0,
-1, 500) f1, f2 = 5, 20 # Frequencies signal = np.sin(2 * np.pi * f1 * t)
-+ 0.5 * np.sin(2 * np.pi * f2 * t)
-
-\# Compute the Fourier transform
-   freqs = np.fft.fftfreq(len(t), d=t\(1\) - t\(0\))
-   signal_fft = np.fft.fft(signal)
-
-\# Plotting
-   plt.figure(figsize=(12, 6))
-   plt.plot(freqs, np.abs(signal_fft))
-   plt.title('Fourier Transform of the Signal')
-   plt.xlabel('Frequency (Hz)')
-   plt.ylabel('Magnitude')
-   plt.grid(True)
-   plt.show()
-
-```
+# Plotting
+# plt.figure(figsize=(12, 6))
+plt.plot(freqs, np.abs(signal_fft))
+plt.title('Fourier Transform of the Signal')
+plt.xlabel('Frequency (Hz)')
+plt.ylabel('Magnitude')
+plt.grid(True)
+plt.show()
+#+END_SRC
+#+RESULTS:
+[[./.ob-jupyter/45541715aa3c33478abc9d76dcde7080063bb753.png]]
 
 Complex exponentials are a fundamental element of Fourier analysis,
 encapsulating the essence of waveforms and their transformations. As
@@ -2297,7 +2231,7 @@ exploration and application in the realm of Fourier transforms.
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** Understanding Harmonics
+*** Understanding Harmonics
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -2308,18 +2242,15 @@ The fundamental frequency is the lowest frequency component of the
 signal, while higher frequency components are termed as overtones or
 harmonics.
 
-1. Fundamental Frequency:
-2. The fundamental frequency is the primary frequency of a periodic
-   signal, denoted by ( f_0 ).
-3. It defines the basic periodicity of the signal.
-4. Harmonics:
-5. Harmonics are integer multiples of the fundamental frequency.
-6. The ( n )-th harmonic has a frequency of ( n \cdot f_0 ), where ( n )
-   is a positive integer.
-7. These harmonics add complexity to the signal, contributing to its
-   overall shape and characteristics.
+**** Fundamental Frequency:
++ The fundamental frequency is the primary frequency of a periodic signal, denoted by \( f_0 \).
++ It defines the basic periodicity of the signal.
+**** Harmonics:
++ Harmonics are integer multiples of the fundamental frequency.
++ The \( n \)-th harmonic has a frequency of \( n \cdot f_0 \), where \( n \) is a positive integer.
++ These harmonics add complexity to the signal, contributing to its overall shape and characteristics.
 
-** Mathematical Formulation
+*** Mathematical Formulation
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -2328,66 +2259,51 @@ Fourier series. The Fourier series represents a periodic function as an
 infinite sum of sines and cosines, each multiplied by appropriate
 coefficients.
 
-1. Fourier Series Representation:
-2. A periodic function ( f(t) ) with period ( T ) can be expanded as: \(
-   f(t) = a_0 + \sum_{n=1}^{\infty} \left( a_n \cos\left(\frac{2\pi n
-   t}{T}\right) + b_n \sin\left(\frac{2\pi n t}{T}\right) \right) \)
-3. Here, ( a_0 ) is the average value of the function over one period.
-4. ( a_n ) and ( b_n ) are the Fourier coefficients, representing the
-   amplitude of the cosine and sine components, respectively.
-5. Fourier Coefficients:
-6. The coefficients ( a_n ) and ( b_n ) are calculated as: \( a_n =
-   \frac{2}{T} \int_{0}^{T} f(t) \cos\left(\frac{2\pi n t}{T}\right) dt
-   \) \( b_n = \frac{2}{T} \int_{0}^{T} f(t) \sin\left(\frac{2\pi n
-   t}{T}\right) dt \)
+**** Fourier Series Representation:
++ A periodic function \( f(t)\) with period \( T \) can be expanded as:
+  + \[f(t) = a_0 + \sum_{n=1}^{\infty} \left( a_n \cos\left(\frac{2\pi n   t}{T}\right) + b_n \sin\left(\frac{2\pi n t}{T}\right) \right)\]
++ Here, \( a_0 \) is the average value of the function over one period.
++ \( a_n \) and \( b_n \) are the Fourier coefficients, representing the amplitude of the cosine and sine components, respectively.
+**** Fourier Coefficients:
++ The coefficients \( a_n \) and \( b_n \) are calculated as:
+  + \[ a_n = \frac{2}{T} \int_{0}^{T} f(t) \cos\left(\frac{2\pi n t}{T}\right) dt \) \( b_n = \frac{2}{T} \int_{0}^{T} f(t) \sin\left(\frac{2\pi n t}{T}\right) dt \]
 
-** Properties of Harmonics
+*** Properties of Harmonics
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
 Understanding the properties of harmonics is crucial for their practical
 application in signal processing and Fourier analysis.
 
-1. Orthogonality:
-2. The sine and cosine functions in the Fourier series are orthogonal
-   over any interval of length ( T ).
-3. This orthogonality ensures that each harmonic can be isolated and
-   analyzed independently.
-4. Linearity:
-5. The Fourier series is a linear representation.
-6. If ( f(t) ) and ( g(t) ) are two periodic functions, then the Fourier
-   series of ( f(t) + g(t) ) is the sum of their individual series.
-7. Frequency Domain Representation:
-8. Harmonics facilitate the transition from time domain to frequency
-   domain.
-9. In the frequency domain, each harmonic corresponds to a specific
-   frequency component of the signal.
+**** Orthogonality:
++ The sine and cosine functions in the Fourier series are orthogonal over any interval of length \( T \).
++ This orthogonality ensures that each harmonic can be isolated and analyzed independently.
+**** Linearity:
++ The Fourier series is a linear representation.
++ If \( f(t) \) and \( g(t) \) are two periodic functions, then the Fourier
+   series of \( f(t) + g(t) \) is the sum of their individual series.
+**** Frequency Domain Representation:
++ Harmonics facilitate the transition from time domain to frequency domain.
++ In the frequency domain, each harmonic corresponds to a specific frequency component of the signal.
 
-** Applications of Harmonic Analysis
+*** Applications of Harmonic Analysis
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
 Harmonic analysis has wide-ranging applications across various
-<<part0005.xhtml#page_79>>fields, from audio signal processing to power
-systems. Here, we explore some key applications.
+fields, from audio signal processing to power systems. Here, we explore some key applications.
 
-1. Audio Signal Processing:
-2. Harmonics play a crucial role in the analysis and synthesis of
-   musical sounds.
-3. By analyzing the harmonic content, we can identify and reproduce
-   musical notes and timbres.
-4. Power Systems:
-5. In electrical engineering, harmonic analysis is used to study the
-   quality of power supply.
-6. Harmonics in power lines can cause distortion and reduce efficiency,
-   making their analysis essential for power quality control.
-7. Mechanical Vibrations:
-8. Harmonic analysis helps in studying mechanical vibrations and
-   structural integrity.
-9. Identifying the harmonic frequencies of mechanical systems can
-   prevent resonant vibrations and potential failures.
+**** Audio Signal Processing:
++ Harmonics play a crucial role in the analysis and synthesis of musical sounds.
++ By analyzing the harmonic content, we can identify and reproduce musical notes and timbres.
+**** Power Systems:
++ In electrical engineering, harmonic analysis is used to study the quality of power supply.
++ Harmonics in power lines can cause distortion and reduce efficiency, making their analysis essential for power quality control.
+**** Mechanical Vibrations:
++ Harmonic analysis helps in studying mechanical vibrations and structural integrity.
++ Identifying the harmonic frequencies of mechanical systems can prevent resonant vibrations and potential failures.
 
-** Implementing Harmonic Analysis with Python
+*** Implementing Harmonic Analysis with Python
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -2395,219 +2311,220 @@ Python, with its versatile libraries such as NumPy and SciPy, provides
 powerful tools for harmonic analysis. Let's explore how to perform
 harmonic analysis using Python.
 
-1. Generating a Periodic Signal:
-2. First, we will generate a periodic signal composed of multiple
-   harmonics.
+**** Generating a Periodic Signal:
++ First, we will generate a periodic signal composed of multiple harmonics.
 
-```python import numpy as np import matplotlib.pyplot as plt
+#+BEGIN_SRC jupyter-python
+import numpy as np
+import matplotlib.pyplot as plt
 
-\# Define time parameters
-   t = np.linspace(0, 1, 1000)
-   f0 = 5  \# Fundamental frequency
+# Define time parameters
+t = np.linspace(0, 1, 1000)
+f0 = 5 # Fundamental frequency
 
-\# Construct the signal with a fundamental frequency and two harmonics
-   signal = np.sin(2 * np.pi * f0 * t) + 0.5 * np.sin(2 * np.pi * 2 * f0* t) + 0.25 * np.sin(2 * np.pi * 3 * f0 * t)
+# Construct the signal with a fundamental frequency and two harmonics
+signal = np.sin(2 * np.pi * f0 * t) + 0.5 * np.sin(2 * np.pi * 2 * f0* t) + 0.25 * np.sin(2 * np.pi * 3 * f0 * t)
 
-\# Plot the signal
-   plt.figure(figsize=(10, 5))
-   plt.plot(t, signal)
-   plt.title('Generated Periodic Signal with Harmonics')
-   plt.xlabel('Time (s)')
-   plt.ylabel('Amplitude')
-   plt.grid(True)
-   plt.show()
+# Plot the signal
+# plt.figure(figsize=(10, 5))
+plt.plot(t, signal)
+plt.title('Generated Periodic Signal with Harmonics')
+plt.xlabel('Time (s)')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.show()
+#+END_SRC
+#+RESULTS:
+[[./.ob-jupyter/6372ab608be0d677bad992c93aa1ef3a64665d0b.png]]
 
-```
+**** Performing Fourier Transform:
++ Next, we will apply the Fourier transform to decompose the signal into its harmonic components.
 
-1. Performing Fourier Transform:
-2. Next, we will apply the Fourier transform to decompose the signal
-   into its harmonic components.
+#+BEGIN_SRC jupyter-python
+# Perform Fourier Transform
+signal_fft = np.fft.fft(signal)
+freqs = np.fft.fftfreq(len(t), d=t[1] - t[0])
 
-```python # Perform Fourier Transform signal_fft = np.fft.fft(signal)
-freqs = np.fft.fftfreq(len(t), d=t\(1\) - t\(0\))
+# Plot the Fourier Transform
+# plt.figure(figsize=(12, 6))
+plt.stem(freqs, np.abs(signal_fft))
+plt.title('Fourier Transform of the Periodic Signal')
+plt.xlabel('Frequency (Hz)')
+plt.ylabel('Magnitude')
+plt.grid(True)
+plt.show()
+#+END_SRC
+#+RESULTS:
+[[./.ob-jupyter/87ff0a3466da1fdf1c5308b693dbb4bb9a55a16c.png]]
 
-\# Plot the Fourier Transform
-   plt.figure(figsize=(12, 6))
-   plt.stem(freqs, np.abs(signal_fft), use_line_collection=True)
-   plt.title('Fourier Transform of the Periodic Signal')
-   plt.xlabel('Frequency (Hz)')
-   plt.ylabel('Magnitude')
-   plt.grid(True)
-   plt.show()
+**** Extracting Harmonics:
++ Finally, we will extract and analyze the harmonic components from the Fourier transform.
 
-```
-
-1. Extracting Harmonics:
-2. Finally, we will extract and analyze the harmonic components from the
-   Fourier transform.
-
-```python # Extract the fundamental frequency and harmonics fundamental
-= np.round(freqs\(np.argmax(np.abs(signal_fft))\)) harmonics =
-\(fundamental * n for n in range(1, 4)\)
+#+BEGIN_SRC jupyter-python
+# Extract the fundamental frequency and harmonics
+fundamental = np.round(freqs[np.argmax(np.abs(signal_fft))])
+harmonics = [fundamental * n for n in range(1, 4)]
 
 print(f"Fundamental Frequency: {fundamental} Hz")
-   print(f"Harmonics: {harmonics}")
-
-```
+print(f"Harmonics: {harmonics}")
+#+END_SRC
+#+RESULTS:
+: Fundamental Frequency: 5.0 Hz
+: Harmonics: [np.float64(5.0), np.float64(10.0), np.float64(15.0)]
 
 ** Fourier Series in Depth
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** Understanding the Fourier Series
+*** Understanding the Fourier Series
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-At its core, the Fourier series decomposes a periodic function ( f(t) )
+At its core, the Fourier series decomposes a periodic function \( f(t) \)
 into an infinite sum of sines and cosines, each weighted by coefficients
 that capture the function's essential characteristics.
 
-** Mathematical Definition
+*** Mathematical Definition
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
-For a periodic function ( f(t) ) with period ( T ), the Fourier series
+For a periodic function \( f(t) \) with period \( T \), the Fourier series
 is written as:
 
-\( f(t) = a_0 + \sum_{n=1}^{\infty} \left( a_n \cos\left(\frac{2\pi n
-t}{T}\right) + b_n \sin\left(\frac{2\pi n t}{T}\right) \right) \)
+\[ f(t) = a_0 + \sum_{n=1}^{\infty} \left( a_n \cos\left(\frac{2\pi n
+t}{T}\right) + b_n \sin\left(\frac{2\pi n t}{T}\right) \right) \]
 
-Here, ( a_0 ) represents the average value of the function over one
-period, while ( a_n ) and ( b_n ) are the Fourier coefficients, which
+Here, \( a_0 \) represents the average value of the function over one
+period, while \( a_n \) and \( b_n \) are the Fourier coefficients, which
 quantify the amplitude of the cosine and sine terms, respectively.
 
-The coefficients ( a_n ) and ( b_n ) are determined using the following
+The coefficients \( a_n \) and \( b_n \) are determined using the following
 integrals:
 
-\( a_n = \frac{2}{T} \int_{0}^{T} f(t) \cos\left(\frac{2\pi n
-t}{T}\right) dt \)
+\[ a_n = \frac{2}{T} \int_{0}^{T} f(t) \cos\left(\frac{2\pi n
+t}{T}\right) dt \]
 
-\( b_n = \frac{2}{T} \int_{0}^{T} f(t) \sin\left(\frac{2\pi n
-t}{T}\right) dt \)
+\[ b_n = \frac{2}{T} \int_{0}^{T} f(t) \sin\left(\frac{2\pi n
+t}{T}\right) dt \]
 
 These integrals essentially project the function ( f(t) ) onto the basis
 functions (sines and cosines), allowing us to extract the amplitude of
 each harmonic component.
 
-** Visualization with Python
+*** Visualization with Python
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
 To cement our understanding, let's visualize the process of constructing
 a Fourier series using Python.
 
-1. Generating a Periodic Signal:
+**** Generating a Periodic Signal:
 
-```python import numpy as np import matplotlib.pyplot as plt
+#+BEGIN_SRC jupyter-python
+import numpy as np
+import matplotlib.pyplot as plt
 
-\# Define time parameters
-   T = 2 * np.pi  \# Period
-   t = np.linspace(0, T, 500)
+# Define time parameters
+T = 2 * np.pi # Period
+t = np.linspace(0, T, 500)
 
-\# Define the periodic function
-   def f(t):
-       return np.sin(t) + 0.5 * np.sin(2 * t)
+# Define the periodic function
+def f(t):
+    return np.sin(t) + 0.5 * np.sin(2 * t)
 
-\# Plot the original function
-   signal = f(t)
-   plt.figure(figsize=(10, 5))
-   plt.plot(t, signal, label='Original Signal')
-   plt.title('Original Periodic Signal')
-   plt.xlabel('Time (t)')
-   plt.ylabel('Amplitude')
-   plt.grid(True)
-   plt.legend()
-   plt.show()
+# Plot the original function
+signal = f(t)
+# plt.figure(figsize=(10, 5))
+plt.plot(t, signal, label='Original Signal')
+plt.title('Original Periodic Signal')
+plt.xlabel('Time (t)')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.show()
+#+END_SRC
+#+RESULTS:
+[[./.ob-jupyter/6e3928e25a6c1f795968340d7407ded879ba8211.png]]
 
-```
+**** Calculating Fourier Coefficients:
 
-1. Calculating Fourier Coefficients:
+#+BEGIN_SRC jupyter-python
+# Define a function to calculate Fourier coefficients
+def calculate_fourier_coefficients(f, T, N):
+    a_0 = (2 / T) * np.trapezoid(f(t),t)
+    a_n = np.array([(2 / T) * np.trapezoid(f(t) * np.cos(2 * np.pi * n * t /T), t)
+    for n in range(1, N + 1)])
+    b_n = np.array([(2 / T) *np.trapezoid(f(t) * np.sin(2 * np.pi * n * t / T), t)
+    for n in range(1, N +1)])
+    return a_0, a_n, b_n
 
-```python # Define a function to calculate Fourier coefficients def
-calculate_fourier_coefficients(f, T, N): a_0 = (2 / T) * np.trapz(f(t),
-t) a_n = np.array(\((2 / T) * np.trapz(f(t) * np.cos(2 * np.pi * n * t /
-T), t) for n in range(1, N + 1)\)) b_n = np.array(\((2 / T) *
-np.trapz(f(t) * np.sin(2 * np.pi * n * t / T), t) for n in range(1, N +
-1)\)) return a_0, a_n, b_n
+# Calculate coefficients for the first 10 harmonics
+a_0, a_n, b_n = calculate_fourier_coefficients(f, T, 10)
+#+END_SRC
+#+RESULTS:
 
-\# Calculate coefficients for the first 10 harmonics
-   a_0, a_n, b_n = calculate_fourier_coefficients(f, T, 10)
+**** Reconstructing the Signal:
 
-```
+#+BEGIN_SRC jupyter-python
+# Function to reconstruct the signal using Fourier series
+def fourier_series(t, a_0, a_n, b_n, T):
+    result = a_0 / 2
+    for n in range(1,len(a_n) + 1):
+        result += a_n[n - 1] * np.cos(2 * np.pi * n * t / T) \
+            + b_n[n - 1] * np.sin(2 * np.pi * n * t / T)
+    return result
 
-1. Reconstructing the Signal:
+# Reconstruct the signal
+reconstructed_signal = fourier_series(t, a_0, a_n, b_n, T)
 
-```python # Function to reconstruct the signal using Fourier series def
-fourier_series(t, a_0, a_n, b_n, T): result = a_0 / 2 for n in range(1,
-len(a_n) + 1): result += a_n\(n - 1\) * np.cos(2 * np.pi * n * t / T) +
-b_n\(n - 1\) * np.sin(2 * np.pi * n * t / T) return result
+# Plot the reconstructed signal
+plt.figure(figsize=(10, 5))
+plt.plot(t, signal, label='Original Signal')
+plt.plot(t, reconstructed_signal,
+         label='Reconstructed Signal (Fourier Series)',
+         linestyle='--')
+plt.title('Fourier Series Reconstruction')
+plt.xlabel('Time (t)')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.show()
+#+END_SRC
+#+RESULTS:
+[[./.ob-jupyter/bbbafce09ed0bdd574e94545bb89a3edb7fcee8a.png]]
 
-\# Reconstruct the signal
-   reconstructed_signal = fourier_series(t, a_0, a_n, b_n, T)
-
-\# Plot the reconstructed signal
-   plt.figure(figsize=(10, 5))
-   plt.plot(t, signal, label='Original Signal')
-   plt.plot(t, reconstructed_signal, label='Reconstructed Signal
-(Fourier Series)', linestyle='--')
-   plt.title('Fourier Series Reconstruction')
-   plt.xlabel('Time (t)')
-   plt.ylabel('Amplitude')
-   plt.grid(True)
-   plt.legend()
-   plt.show()
-
-```
-
-** Properties and Convergence of Fourier Series
+*** Properties and Convergence of Fourier Series
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
 The Fourier series has several important properties that make it
-<<part0005.xhtml#page_84>>a versatile tool in signal processing.
+a versatile tool in signal processing.
 
-1. Orthogonality:
-2. The sine and cosine functions used in the Fourier series are
-   orthogonal over any interval of length ( T ). This orthogonality is
-   crucial for isolating individual frequency components.
-3. Linearity:
-4. The Fourier series is a linear representation, meaning that the
-   Fourier series of a sum of functions is the sum of their individual
-   series.
-5. Uniform Convergence:
-6. For functions that are piecewise continuous and have a finite number
-   of discontinuities, the Fourier series converges uniformly to the
-   function itself. This property ensures that the series accurately
-   represents the original function.
-7. Parseval's Theorem:
-8. Parseval's theorem states that the total energy of a signal in the
-   time domain is equal to the total energy in the frequency domain.
-   Mathematically, it is expressed as: \( \int_{0}^{T} |f(t)|^2 dt =
-   \frac{a_0^2}{2} + \sum_{n=1}^{\infty} \left( a_n^2 + b_n^2 \right) \)
+**** Orthogonality:
++ The sine and cosine functions used in the Fourier series are orthogonal over any interval of length \( T \). This orthogonality is crucial for isolating individual frequency components.
+**** Linearity:
++ The Fourier series is a linear representation, meaning that the Fourier series of a sum of functions is the sum of their individual series.
+**** Uniform Convergence:
++ For functions that are piecewise continuous and have a finite number of discontinuities, the Fourier series converges uniformly to the function itself. This property ensures that the series accurately represents the original function.
+**** Parseval's Theorem:
++ Parseval's theorem states that the total energy of a signal in the time domain is equal to the total energy in the frequency domain. Mathematically, it is expressed as:
+  + \[ \int_{0}^{T} |f(t)|^2 dt =\frac{a_0^2}{2} + \sum_{n=1}^{\infty} \left( a_n^2 + b_n^2 \right) \]
 
-** Practical Applications of Fourier Series
+*** Practical Applications of Fourier Series
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
 The Fourier series finds applications in various fields due to its
 ability to decompose complex signals into simpler harmonic components.
 
-1. Signal Processing:
-2. In signal processing, the Fourier series is used to filter, compress,
-   and analyze signals. It helps in identifying
-   <<part0005.xhtml#page_85>>the frequency components present in a
-   signal and manipulating them as needed.
-3. Audio Analysis:
-4. Fourier series play a vital role in audio analysis and synthesis.
-5. Electrical Engineering:
-6. In electrical engineering, the Fourier series is used to analyze and
-   design circuits. It helps in understanding the behavior of circuits
-   in the frequency domain and optimizing their performance.
-7. Mechanical Vibrations:
-8. Harmonic analysis of mechanical vibrations using Fourier series helps
-   in studying the dynamic behavior of structures and machinery. It aids
-   in identifying resonant frequencies and preventing potential
-   failures.
+**** Signal Processing:
++ In signal processing, the Fourier series is used to filter, compress, and analyze signals. It helps in identifying the frequency components present in a signal and manipulating them as needed.
+**** Audio Analysis:
++ Fourier series play a vital role in audio analysis and synthesis.
+**** Electrical Engineering:
++ In electrical engineering, the Fourier series is used to analyze and design circuits. It helps in understanding the behavior of circuits in the frequency domain and optimizing their performance.
+**** Mechanical Vibrations:
++ Harmonic analysis of mechanical vibrations using Fourier series helps in studying the dynamic behavior of structures and machinery. It aids in identifying resonant frequencies and preventing potential failures.
 
 The Fourier series provides a powerful framework for analyzing and
 representing periodic functions. Understanding the mathematical
@@ -2618,7 +2535,7 @@ leveraging its full potential in practical applications.
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** Types of Convergence
+*** Types of Convergence
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -2626,53 +2543,34 @@ The convergence of a Fourier series can be understood in several ways,
 each with different implications for the accuracy and utility of the
 series.
 
-1. Pointwise Convergence:
-2. A Fourier series converges pointwise to a function ( f(t) ) if, for
-   each ( t ), the partial sums of the series approach ( f(t) ) as the
-   number of terms increases. <<part0005.xhtml#page_86>>Formally, if (
-   S_N(t) ) is the ( N )-th partial sum of the Fourier series of ( f(t)
-   ), pointwise convergence means: \( \lim_{N \to \infty} S_N(t) = f(t),
-   \quad \forall t \in \(0, T\) \)
-3. Uniform Convergence:
-4. Uniform convergence ensures that the Fourier series converges to (
-   f(t) ) uniformly over the entire interval. This means the maximum
-   difference between the partial sum ( S_N(t) ) and the function (
-   f(t) ) becomes arbitrarily small for all ( t ) as ( N ) increases: \(
-   \sup_{t \in \(0, T\)} |S_N(t) - f(t)| \to 0 \quad \text{as} \quad N \to
-   \infty \)
-5. Mean Square Convergence:
-6. Also known as convergence in the ( L^2 ) sense, mean square
-   convergence means that the integral of the squared difference between
-   ( f(t) ) and ( S_N(t) ) over one period approaches zero as ( N )
-   increases: \( \lim_{N \to \infty} \int_{0}^{T} |f(t) - S_N(t)|^2 dt =
-   0 \)
+**** Pointwise Convergence:
++ A Fourier series converges pointwise to a function \( f(t) \) if, for each \(t \), the partial sums of the series approach \( f(t) \) as the number of terms increases. Formally, if \( S_N(t) \) is the \( N \)-th partial sum of the Fourier series of \( f(t) \), pointwise convergence means:
+  + \[ \lim_{N \to \infty} S_N(t) = f(t), \quad \forall t \in \(0, T\) \]
+**** Uniform Convergence:
++ Uniform convergence ensures that the Fourier series converges to \(f(t) \) uniformly over the entire interval. This means the maximum difference between the partial sum \( S_N(t) \) and the function \(
+   f(t) \) becomes arbitrarily small for all \( t \) as \( N \) increases:
+  + \[ \sup_{t \in [0, T]} |S_N(t) - f(t)| \to 0 \quad \text{as} \quad N \to \infty \]
+**** Mean Square Convergence:
++ Also known as convergence in the \( L^2 \) sense, mean square convergence means that the integral of the squared difference between \( f(t) \) and \(
+   S_N(t)\) over one period approaches zero as \( N \) increases:
+  + \[ \lim_{N \to \infty} \int_{0}^{T} |f(t) - S_N(t)|^2 dt = 0 \]
 
-** Conditions for Convergence
+*** Conditions for Convergence
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
 The convergence of a Fourier series depends on the properties of the
-original function ( f(t) ). Several important theorems provide insight
+original function \( f(t) \). Several important theorems provide insight
 into the conditions under which different types of convergence occur.
 
-1. Dirichlet's Conditions:
-2. Dirichlet's conditions state that if a function ( f(t) ) is periodic,
-   piecewise continuous, and has a finite number of maxima and minima
-   within one period, then its Fourier series converges pointwise to (
-   f(t) ) at all points where ( f(t) ) is continuous. At
-   <<part0005.xhtml#page_87>>discontinuities, the series converges to
-   the average of the left-hand and right-hand limits.
-3. Dini's Theorem:
-4. Dini's theorem guarantees uniform convergence if a function ( f(t) )
-   is periodic, continuous, and its first derivative is piecewise
-   continuous. Under these conditions, the Fourier series converges
-   uniformly to ( f(t) ).
-5. Parseval's Theorem:
-6. Parseval's theorem provides a condition for mean square convergence.
-   It states that if ( f(t) ) is square-integrable over one period, then
-   the Fourier series converges to ( f(t) ) in the mean square sense.
+**** Dirichlet's Conditions:
++ Dirichlet's conditions state that if a function \( f(t) \) is periodic, piecewise continuous, and has a finite number of maxima and minima within one period, then its Fourier series converges pointwise to \( f(t) \) at all points where \( f(t) \) is continuous. At discontinuities, the series converges to the average of the left-hand and right-hand limits.
+**** Dini's Theorem:
++ Dini's theorem guarantees uniform convergence if a function \( f(t) \) is periodic, continuous, and its first derivative is piecewise continuous. Under these conditions, the Fourier series converges uniformly to \( f(t) \).
+**** Parseval's Theorem:
++ Parseval's theorem provides a condition for mean square convergence. It states that if \( f(t) \) is square-integrable over one period, then the Fourier series converges to \( f(t) \) in the mean square sense.
 
-** Practical Implications
+*** Practical Implications
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -2683,7 +2581,7 @@ in signal processing, we need to ensure that the Fourier series
 converges sufficiently to capture the essential characteristics of the
 signal without introducing significant errors.
 
-** Visualization with Python
+*** Visualization with Python
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -2691,69 +2589,80 @@ To illustrate the concepts of convergence, let's employ Python to
 visualize how the Fourier series of a function converges as we increase
 the number of terms in the series.
 
-1. Pointwise Convergence:
+**** Pointwise Convergence:
 
-```python import numpy as np import matplotlib.pyplot as plt
+#+BEGIN_SRC jupyter-python
+import numpy as np
+import matplotlib.pyplot as plt
 
-\# Define time parameters
-   T = 2 * np.pi  \# Period
-   t = np.linspace(0, T, 500)
+# Define time parameters
+T = 2 * np.pi # Period
+t = np.linspace(0, T, 500)
 
-\# Define the periodic function with a known discontinuity
-   def f(t):
-       return np.where(t < np.pi, t, 2 * np.pi - t)
+# Define the periodic function with a known discontinuity
+def f(t):
+    return np.where(t < np.pi, t, 2 * np.pi - t)
 
-\# Plot the original function
-   original_signal = f(t)
-   plt.figure(figsize=(10, 5))
-   plt.plot(t, original_signal, label='Original Function')
-   plt.title('Original Periodic Function')
-   plt.xlabel('Time (t)')
-   plt.ylabel('Amplitude')
-   plt.grid(True)
-   plt.legend()
-   plt.show()
+# Plot the original function
+original_signal = f(t)
+# plt.figure(figsize=(10, 5))
+plt.plot(t, original_signal, label='Original Function')
+plt.title('Original Periodic Function')
+plt.xlabel('Time (t)')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.show()
+#+END_SRC
+#+RESULTS:
+[[./.ob-jupyter/54d4fccde032fa744c4d7db2b7885b2641a2bd37.png]]
 
-```
+**** Calculating Fourier Coefficients:
 
-1. Calculating Fourier Coefficients:
+#+BEGIN_SRC jupyter-python
+# Define a function to calculate Fourier coefficients
+def calculate_fourier_coefficients(f, T, N):
+    a_0 = (2 / T) * np.trapezoid(f(t),t)
+    a_n = np.array([(2/T) * np.trapezoid(f(t) * np.cos(2*np.pi*n*t/T), t)
+                    for n in range(1, N + 1)])
+    b_n = np.array([(2/T) * np.trapezoid(f(t) * np.sin(2*np.pi*n*t/T), t)
+                    for n in range(1, N + 1)])
+    return a_0, a_n, b_n
 
-```python # Define a function to calculate Fourier coefficients def
-calculate_fourier_coefficients(f, T, N): a_0 = (2 / T) * np.trapz(f(t),
-t) a_n = np.array(\((2 / T) * np.trapz(f(t) * np.cos(2 * np.pi * n * t /
-T), t) for n in range(1, N + 1)\)) b_n = np.array(\((2 / T) *
-np.trapz(f(t) * np.sin(2 * np.pi * n * t / T), t) for n in range(1, N +
-1)\)) return a_0, a_n, b_n
+# Calculate coefficients for the first 20 harmonics
+a_0, a_n, b_n = calculate_fourier_coefficients(f, T, 20)
+#+END_SRC
+#+RESULTS:
 
-\# Calculate coefficients for the first 20 harmonics
-   a_0, a_n, b_n = calculate_fourier_coefficients(f, T, 20)
+**** Reconstructing the Signal:
 
-```
+#+BEGIN_SRC jupyter-python
+# Function to reconstruct the signal using Fourier series
+def fourier_series(t, a_0, a_n, b_n, T):
+    result = a_0 / 2
+    for n in range(1,len(a_n) + 1):
+        result += a_n[n - 1] * np.cos(2 * np.pi * n * t / T)
+                  + b_n[n - 1] * np.sin(2 * np.pi * n * t / T)
+    return result
 
-1. Reconstructing the Signal:
+# Reconstruct the signal with different numbers of terms
+# plt.figure(figsize=(10, 5))
+for N in (1, 5, 10, 20):
+    a_0, a_n, b_n = calculate_fourier_coefficients(f, T, N)
+    reconstructed_signal = fourier_series(t, a_0, a_n, b_n, T)
+    plt.plot(t, reconstructed_signal, label=f'{N} terms')
 
-```python # Function to reconstruct the signal using Fourier series def
-fourier_series(t, a_0, a_n, b_n, T): result = a_0 / 2 for n in range(1,
-len(a_n) + 1): result += a_n\(n - 1\) * np.cos(2 * np.pi * n * t / T) +
-b_n\(n - 1\) * np.sin(2 * np.pi * n * t / T) return result
-
-\# Reconstruct the signal with different numbers of terms
-   plt.figure(figsize=(10, 5))
-   for N in \(1, 5, 10, 20\):
-       a_0, a_n, b_n = calculate_fourier_coefficients(f, T, N)
-       reconstructed_signal = fourier_series(t, a_0, a_n, b_n, T)
-       plt.plot(t, reconstructed_signal, label=f'{N} terms')
-
-plt.plot(t, original_signal, label='Original Function', linestyle='--',
-color='black')
-   plt.title('Fourier Series Convergence')
-   plt.xlabel('Time (t)')
-   plt.ylabel('Amplitude')
-   plt.grid(True)
-   plt.legend()
-   plt.show()
-
-```
+plt.plot(t, original_signal, label='Original Function',
+         linestyle='--', color='black')
+plt.title('Fourier Series Convergence')
+plt.xlabel('Time (t)')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.show()
+#+END_SRC
+#+RESULTS:
+[[./.ob-jupyter/18d7099d4439fbf10bf4f796f98a69328d188eab.png]]
 
 The plotted graphs show how the Fourier series approximates the original
 function more accurately as the number of terms increases, demonstrating
@@ -2769,54 +2678,53 @@ function.
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** Understanding Delta Functions
+*** Understanding Delta Functions
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-A delta function, often denoted as ( \delta(t) ), is an idealized
-<<part0005.xhtml#page_90>>construct used extensively in engineering and
+A delta function, often denoted as \( \delta(t) \), is an idealized
+construct used extensively in engineering and
 physics. Its primary characteristic is that it is zero everywhere except
-at ( t = 0 ), where it is infinitely high such that its integral over
+at \( t = 0 \), where it is infinitely high such that its integral over
 the entire real line is equal to one. Formally, the delta function is
 defined as:
 
-\( \delta(t) = \begin{cases} \infty & \text{if } t = 0 \ 0 & \text{if } t
-\neq 0 \end{cases} \)
+\[ \delta(t) = \begin{cases} \infty & \text{if } t = 0 \ 0 & \text{if } t
+\neq 0 \end{cases} \]
 
 and
 
-\( \int_{-\infty}^{\infty} \delta(t) \, dt = 1 \)
+\[ \int_{-\infty}^{\infty} \delta(t) \, dt = 1 \]
 
 The delta function is not a function in the traditional sense but a
 distribution or generalized function. Its utility lies in its ability to
 "pick out" the value of a function at a specific point.
 
-** Properties of Delta Functions
+*** Properties of Delta Functions
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
 To fully appreciate the delta function, it's essential to understand its
 key properties:
 
-1. Sifting Property:
-2. The delta function has a unique "sifting" or "sampling" property. For
-   any continuous function ( f(t) ): \( \int_{-\infty}^{\infty} f(\tau)
-   \delta(\tau - t) \, d\tau = f(t) \)
-3. This property is crucial in signal processing, where it allows us to
-   isolate the value of ( f(t) ) at a specific point.
-4. Scaling Property:
-5. If the delta function is scaled by a factor ( a ), its amplitude
+**** Sifting Property:
++ The delta function has a unique "sifting" or "sampling" property. For
+   any continuous function \( f(t) \): \[ \int_{-\infty}^{\infty} f(\tau)
+   \delta(\tau - t) \, d\tau = f(t) \]
++ This property is crucial in signal processing, where it allows us to
+   isolate the value of \( f(t) \) at a specific point.
+**** Scaling Property:
++ If the delta function is scaled by a factor \( a \), its amplitude
    changes inversely with the scaling factor: \( \delta(a t) =
    \frac{1}{|a|} \delta(t) \)
-6. Shift Property:
-7. Shifting the delta function by ( t_0 ) translates it to ( t_0 ): \(
+**** Shift Property:
++ Shifting the delta function by \( t_0 \) translates it to \( t_0 \): \(
    \delta(t - t_0) \)
-8. Derivative:
-9. The derivative of the delta function can be used to model impulses
-   with different characteristics: \( \frac{d}{dt} \delta(t) = \delta'(t)
-   \)
+**** Derivative:
++ The derivative of the delta function can be used to model impulses
+   with different characteristics: \( \frac{d}{dt} \delta(t) = \delta'(t) \)
 
-** Impulse Sampling
+*** Impulse Sampling
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -2826,112 +2734,119 @@ process is foundational in converting continuous-time signals to
 discrete-time signals, which can then be processed using digital
 systems.
 
-** Mathematical Representation of Impulse Sampling
+**** Mathematical Representation of Impulse Sampling
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-Suppose we have a continuous-time signal ( x(t) ). Impulse sampling the
-signal at intervals ( T ) can be represented as:
+Suppose we have a continuous-time signal \( x(t) \). Impulse sampling the
+signal at intervals \( T \) can be represented as:
 
-\( x_s(t) = x(t) \cdot \sum_{n=-\infty}^{\infty} \delta(t - nT) \)
+\[ x_s(t) = x(t) \cdot \sum_{n=-\infty}^{\infty} \delta(t - nT) \]
 
-Here, ( x_s(t) ) is the impulse-sampled signal, and ( T ) is the
+Here, \( x_s(t) \) is the impulse-sampled signal, and \( T \) is the
 sampling period. The sampled signal is a series of impulses, each scaled
 by the value of the original signal at the sampling points.
 
-** Practical Applications of Delta Functions and Impulse Sampling
+**** Practical Applications of Delta Functions and Impulse Sampling
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-1. Signal Reconstruction:
-2. Delta functions are central to the theory of signal reconstruction,
+***** Signal Reconstruction:
++ Delta functions are central to the theory of signal reconstruction,
    where the original continuous signal can be reconstructed from its
    samples using interpolation techniques.
-3. Fourier Transform Properties:
-4. In the frequency domain, the Fourier transform of a delta function is
+***** Fourier Transform Properties:
++ In the frequency domain, the Fourier transform of a delta function is
    a constant, reflecting its wide-band nature. This property is
    leveraged in various signal processing applications.
-5. Modulation and Demodulation:
-6. Delta functions facilitate the analysis of modulation schemes,
+***** Modulation and Demodulation:
++ Delta functions facilitate the analysis of modulation schemes,
    particularly in communication systems where signals are modulated
    onto carrier frequencies.
 
-** Visualization with Python
+**** Visualization with Python
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
 To gain a deeper understanding, let's use Python to visualize impulse
 sampling and the effect of delta functions on a signal.
 
-1. Defining the Continuous Signal:
+***** Defining the Continuous Signal:
 
-```python import numpy as np import matplotlib.pyplot as plt
+#+BEGIN_SRC jupyter-python
+import numpy as np
+import matplotlib.pyplot as plt
 
-\# Define time parameters
-   T = 2 * np.pi  \# Period of the signal
-   t = np.linspace(0, T, 1000)
+# Define time parameters
+T = 2 * np.pi # Period of the signal
+t = np.linspace(0, T, 1000)
 
-\# Define a continuous signal, for example, a sine wave
-   def continuous_signal(t):
-       return np.sin(t)
+# Define a continuous signal, for example, a sine wave
+def continuous_signal(t):
+    return np.sin(t)
 
-\# Plot the original continuous signal
-   plt.figure(figsize=(10, 5))
-   plt.plot(t, continuous_signal(t), label='Continuous Signal')
-   plt.title('Continuous Signal')
-   plt.xlabel('Time (t)')
-   plt.ylabel('Amplitude')
-   plt.grid(True)
-   plt.legend()
-   plt.show()
+# Plot the original continuous signal
+# plt.figure(figsize=(10, 5))
+plt.plot(t, continuous_signal(t), label='Continuous Signal')
+plt.title('Continuous Signal')
+plt.xlabel('Time (t)')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.show()
+#+END_SRC
+#+RESULTS:
+[[./.ob-jupyter/e06cc1b05d9a92238a4476a6d3c07c8acd238e86.png]]
 
-```
+***** Impulse Sampling:
 
-1. Impulse Sampling:
-
-```python # Define sampling period sampling_period = T / 10
+#+BEGIN_SRC jupyter-python
+# Define sampling period
+sampling_period = T / 10
 sampling_points = np.arange(0, T, sampling_period)
 
-\# Sample the signal at discrete intervals
-   sampled_signal = continuous_signal(sampling_points)
+# Sample the signal at discrete intervals
+sampled_signal = continuous_signal(sampling_points)
 
-\# Plot the sampled signal
-   plt.figure(figsize=(10, 5))
-   plt.stem(sampling_points, sampled_signal, use_line_collection=True,
-label='Sampled Signal')
-   plt.plot(t, continuous_signal(t), label='Continuous Signal',
+# Plot the sampled signal
+# plt.figure(figsize=(10, 5))
+plt.stem(sampling_points, sampled_signal, label='Sampled Signal')
+plt.plot(t, continuous_signal(t), label='Continuous Signal',
 linestyle='--', color='gray')
-   plt.title('Impulse Sampling')
-   plt.xlabel('Time (t)')
-   plt.ylabel('Amplitude')
-   plt.grid(True)
-   plt.legend()
-   plt.show()
+plt.title('Impulse Sampling')
+plt.xlabel('Time (t)')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.show()
+#+END_SRC
+#+RESULTS:
+[[./.ob-jupyter/dd521eb92265115b1b69cbccfcfbd9bfcec4b78b.png]]
 
-```
+***** Reconstructing the Continuous Signal:
 
-1. Reconstructing the Continuous Signal:
+#+BEGIN_SRC jupyter-python
+from scipy.interpolate import interp1d
 
-```python from scipy.interpolate import interp1d
+# Interpolate the sampled signal to reconstruct the continuous signal
+interpolation_function = interp1d(sampling_points, sampled_signal,
+                                  kind='linear', fill_value="extrapolate")
+reconstructed_signal = interpolation_function(t)
 
-\# Interpolate the sampled signal to reconstruct the continuous signal
-   interpolation_function = interp1d(sampling_points, sampled_signal,
-kind='linear', fill_value="extrapolate")
-   reconstructed_signal = interpolation_function(t)
-
-\# Plot the reconstructed signal
-   plt.figure(figsize=(10, 5))
-   plt.plot(t, reconstructed_signal, label='Reconstructed Signal')
-   plt.plot(t, continuous_signal(t), label='Original Continuous Signal',
-linestyle='--', color='gray')
-   plt.title('Reconstructed Signal from Impulse Sampling')
-   plt.xlabel('Time (t)')
-   plt.ylabel('Amplitude')
-   plt.grid(True)
-   <<part0005.xhtml#page_94>>plt.legend()
-   plt.show()
-
-```
+# Plot the reconstructed signal
+# plt.figure(figsize=(10, 5))
+plt.plot(t, reconstructed_signal, label='Reconstructed Signal')
+plt.plot(t, continuous_signal(t), label='Original Continuous Signal',
+         linestyle='--', color='gray')
+plt.title('Reconstructed Signal from Impulse Sampling')
+plt.xlabel('Time (t)')
+plt.ylabel('Amplitude')
+plt.grid(True)
+plt.legend()
+plt.show()
+#+END_SRC
+#+RESULTS:
+[[./.ob-jupyter/f3a538c8b68bd83417c1c390be623b91fd87e4c5.png]]
 
 The visualizations clearly depict how impulse sampling captures the
 essential characteristics of the continuous signal and how interpolation
@@ -2954,7 +2869,7 @@ mathematician Marc-Antoine Parseval, this theorem provides profound
 insights that are essential for understanding and analyzing signals
 effectively.
 
-** Understanding Parseval's Theorem
+*** Understanding Parseval's Theorem
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -2966,21 +2881,19 @@ content when transforming between domains.
 
 Mathematically, Parseval's Theorem can be expressed as:
 
-\( \sum_{n=-\infty}^{\infty} |x\(n\)|^2 = \frac{1}{N} \sum_{k=0}^{N-1}
-|X\(k\)|^2 \)
+\[ \sum_{n=-\infty}^{\infty} |x\(n\)|^2 = \frac{1}{N} \sum_{k=0}^{N-1}|X\(k\)|^2 \]
 
-where ( x\(n\) ) is the discrete signal in the time domain, and ( X\(k\) )
+where \( x(n) \) is the discrete signal in the time domain, and \( X(k) \)
 is its Discrete Fourier Transform (DFT).
 
 For continuous signals, it is represented as:
 
-\( \int_{-\infty}^{\infty} |x(t)|^2 \, dt = \int_{-\infty}^{\infty}
-|X(f)|^2 \, df \)
+\[ \int_{-\infty}^{\infty} |x(t)|^2 \, dt = \int_{-\infty}^{\infty}|X(f)|^2 \, df \]
 
-where ( x(t) ) is the continuous time signal, and ( X(f) ) is its
+where ( x(t) ) is the continuous time signal, and \( X(f) \) is its
 Continuous Fourier Transform (CFT).
 
-** Practical Implications
+*** Practical Implications
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -2994,7 +2907,7 @@ signal enhancement, knowing that the energy remains conserved across
 domains helps validate the transformations and ensures that no
 unintended distortions are introduced.
 
-** Example: Energy Conservation in Audio Signals
+*** Example: Energy Conservation in Audio Signals
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -3002,81 +2915,74 @@ Consider an audio signal sampled at a rate of 44.1 kHz. To illustrate
 Parseval's Theorem, let's compute the energy of this signal in both the
 time and frequency domains using Python.
 
-** Step-by-Step Guide:
+**** Step-by-Step Guide:
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
-1. Import the Necessary Libraries: ```python import numpy as np import
-   matplotlib.pyplot as plt from scipy.fft import fft, ifft
+***** Import the Necessary Libraries:
+#+BEGIN_SRC jupyter-python
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.fft import fft, ifft
+#+END_SRC
 
-```
+***** Generate a Sample Audio Signal:
+#+BEGIN_SRC jupyter-python
+# Define the sampling rate and duration
+fs = 44100 # Sampling rate
+t = np.arange(0, 1, 1/fs) # Time vector for 1 second
+# Generate a sample audio signal (sine wave)
+f = 1000 # Frequency of the sine wave
+x = 0.5 * np.sin(2 * np.pi * f * t) # Audio signal
+#+END_SRC
 
-1. Generate a Sample Audio Signal: ```python # Define the sampling rate
-   and duration fs = 44100 # <<part0005.xhtml#page_96>>Sampling rate t =
-   np.arange(0, 1, 1/fs) # Time vector for 1 second
+***** Compute Energy in Time Domain: 
+#+BEGIN_SRC jupyter-python
+# Calculate energy in time
+domain energy_time = np.sum(np.abs(x) ** 2)
+print(f'Energy in time domain: {energy_time}')
+#+END_SRC
 
-\# Generate a sample audio signal (sine wave)
-f = 1000  \# Frequency of the sine wave
-x = 0.5 * np.sin(2 * np.pi * f * t)  \# Audio signal
+***** Transform to Frequency Domain: 
+#+BEGIN_SRC jupyter-python
+# Perform FFT
+X = fft(x)
+#+END_SRC
 
-```
+***** Compute Energy in Frequency Domain: 
+#+BEGIN_SRC jupyter-python
+# Calculate energy in frequency domain
+energy_freq = np.sum(np.abs(X) ** 2) / len(X)
+print(f'Energy in frequency domain: {energy_freq}')
+#+END_SRC
 
-1. Compute Energy in Time Domain: ```python # Calculate energy in time
-   domain energy_time = np.sum(np.abs(x) ** 2) print(f'Energy in time
-   domain: {energy_time}')
+***** Verify Parseval's Theorem: 
+#+BEGIN_SRC jupyter-python
+# Compare the energies
+assert np.isclose(energy_time, energy_freq), "Parseval's theorem validation failed"
+print("Parseval's theorem validated successfully!")
+#+END_SRC
 
-```
-
-1. Transform to Frequency Domain: ```python # Perform FFT X = fft(x)
-
-```
-
-1. Compute Energy in Frequency Domain: ```python # Calculate energy in
-   frequency domain energy_freq = np.sum(np.abs(X) ** 2) / len(X)
-   print(f'Energy in frequency domain: {energy_freq}')
-
-```
-
-1. Verify Parseval's Theorem: ```python # Compare the energies assert
-   np.isclose(energy_time, energy_freq), "Parseval's theorem validation
-   failed" print("Parseval's theorem validated successfully!")
-
-```
-
-** Explanation:
+**** Explanation:
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
-- Step 1: We import necessary libraries for numerical computations and
-  plotting.
-- Step 2: A sample audio signal (a simple sine wave) is generated, which
-  serves as our test signal.
-- Step 3: The energy of the signal in the time domain is computed by
-  summing the squares of the amplitude values.
-- Step 4: The signal is transformed to the frequency domain using the
-  Fast Fourier Transform (FFT).
-- Step 5: The energy in the frequency domain is calculated by summing
-  the squares of the magnitudes of the Fourier coefficients, normalized
-  by the length of the signal.
-- Step 6: A comparison is made to validate Parseval's Theorem. If the
-  computed energies in both domains are close, the theorem is validated.
++ Step 1 :: We import necessary libraries for numerical computations and plotting.
++ Step 2 :: A sample audio signal (a simple sine wave) is generated, which serves as our test signal.
++ Step 3 :: The energy of the signal in the time domain is computed by summing the squares of the amplitude values.
++ Step 4 :: The signal is transformed to the frequency domain using the Fast Fourier Transform (FFT).
++ Step 5 :: The energy in the frequency domain is calculated by summing the squares of the magnitudes of the Fourier coefficients, normalized by the length of the signal.
++ Step 6 :: A comparison is made to validate Parseval's Theorem. If the computed energies in both domains are close, the theorem is validated.
 
-** Applications and Insights
+**** Applications and Insights
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-Parseval's Theorem is not just a theoretical construct; it finds
-applications in numerous fields:
+Parseval's Theorem is not just a theoretical construct; it finds applications in numerous fields:
 
-1. Communications: In digital communications, ensuring that the
-   transmitted and received signal energies are equivalent helps in
-   maintaining signal integrity and quality.
-2. Image Processing: For image compression and reconstruction,
-   Parseval's Theorem ensures that the energy distribution remains
-   consistent, leading to better quality images post-transformation.
-3. Biomedical Engineering: When analyzing biomedical signals like ECG or
-   EEG, the theorem helps in comparing signal energies before and after
-   processing, ensuring that no vital information is lost.
++ Communications :: In digital communications, ensuring that the transmitted and received signal energies are equivalent helps in maintaining signal integrity and quality.
++ Image Processing :: For image compression and reconstruction, Parseval's Theorem ensures that the energy distribution remains consistent, leading to better quality images post-transformation.
++ Biomedical Engineering :: When analyzing biomedical signals like ECG or EEG, the theorem helps in comparing signal energies before and after processing, ensuring that no vital information is lost.
 
 Parseval's Theorem is a fundamental principle that bridges the time and
 frequency domains, ensuring energy consistency across transformations.
@@ -3095,7 +3001,7 @@ signal processing. Here, it speaks to the intrinsic trade-off between
 the precision of a signal's representation in the time domain and its
 representation in the frequency domain.
 
-** Understanding Heisenberg's Uncertainty Principle
+*** Understanding Heisenberg's Uncertainty Principle
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -3106,7 +3012,7 @@ event, and vice versa. Mathematically, it's formulated as:
 
 \( \Delta t \cdot \Delta f \geq \frac{1}{4\pi} \)
 
-where ( \Delta t ) denotes the uncertainty in time, and ( \Delta f )
+where \( \Delta t \) denotes the uncertainty in time, and \( \Delta f \)
 signifies the uncertainty in frequency.
 
 This inequality underscores a fundamental trade-off that cannot be
@@ -3115,7 +3021,7 @@ increased uncertainty in the other. This principle is not merely of
 theoretical interest; it has practical implications that impact how we
 analyze and process signals.
 
-** Practical Implications
+*** Practical Implications
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -3131,83 +3037,72 @@ This, however, limits the frequency resolution, making it difficult to
 identify exact pitches. Conversely, a longer time window enhances
 frequency resolution but blurs temporal details.
 
-** Example: Short-Time Fourier Transform (STFT)
+*** Example: Short-Time Fourier Transform (STFT)
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
 The Short-Time Fourier Transform (STFT) provides a practical approach to
 navigating the trade-off imposed by Heisenberg's Uncertainty Principle.
 
-** Step-by-Step Guide:
+**** Step-by-Step Guide:
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
-1. Import the Necessary Libraries: ```python import numpy as np import
-   matplotlib.pyplot as plt from scipy.signal import stft
+***** Import the Necessary Libraries: 
+#+BEGIN_SRC jupyter-python
+import numpy as np import
+matplotlib.pyplot as plt
+from scipy.signal import stft
+#+END_SRC
 
-```
+***** Generate a Sample Signal: 
+#+BEGIN_SRC jupyter-python
+# Define the sampling rate and
+duration fs = 1000 # Sampling rate in Hz
+t = np.linspace(0, 1, fs, endpoint=False) # Time vector for 1 second
 
-1. Generate a Sample Signal: ```python # Define the sampling rate and
-   duration fs = 1000 # Sampling rate in Hz t = np.linspace(0, 1, fs,
-   endpoint=False) # Time vector for 1 second
+# Generate a sample signal (chirp signal)
+f0 = 5 # Start frequency of the chirp
+f1 = 50 # End frequency of the chirp
+x = np.sin(2 * np.pi * t * (f0 + (f1 - f0) * t)) # Chirp signal
+#+END_SRC
 
-\# Generate a sample signal (chirp signal)
-f0 = 5  \# Start frequency of the chirp
-f1 = 50  \# End frequency of the chirp
-x = np.sin(2 * np.pi * t * (f0 + (f1 - f0) * t))  \# Chirp signal
+***** Compute STFT: 
+#+BEGIN_SRC jupyter-python
+# Perform STFT
+f, t, Zxx = stft(x, fs, nperseg=100)
+#+END_SRC
 
-```
+***** Visualize the STFT: 
+#+BEGIN_SRC jupyter-python
+plt.figure(figsize=(10, 6))
+plt.pcolormesh(t, f, np.abs(Zxx), shading='gouraud')
+plt.title('STFT Magnitude') plt.ylabel('Frequency (Hz)')
+plt.xlabel('Time \(sec\)')
+plt.colorbar(label='Magnitude')
+plt.show()
+#+END_SRC
 
-1. Compute STFT: ```python # Perform STFT f, t, Zxx = stft(x, fs,
-   nperseg=100)
-
-```
-
-1. Visualize the STFT: ```python plt.figure(figsize=(10, 6))
-   plt.pcolormesh(t, <<part0005.xhtml#page_100>>f, np.abs(Zxx),
-   shading='gouraud') plt.title('STFT Magnitude') plt.ylabel('Frequency
-   \(Hz\)') plt.xlabel('Time \(sec\)') plt.colorbar(label='Magnitude')
-   plt.show()
-
-```
-
-** Explanation:
+**** Explanation:
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
-- Step 1: Import necessary libraries for numerical computations and
-  plotting.
-- Step 2: Generate a sample chirp signal, which starts at a low
-  frequency and sweeps to a higher frequency. This serves as an ideal
-  test signal for illustrating time-frequency analysis.
-- Step 3: Compute the Short-Time Fourier Transform (STFT) of the signal
-  using a specific window length, balancing temporal and frequency
-  resolutions.
-- Step 4: Visualize the STFT, displaying how the frequency content of
-  the signal evolves over time. This visualization provides a clear
-  representation of the trade-off between time and frequency precision.
++ Step 1 :: Import necessary libraries for numerical computations and plotting.
++ Step 2 :: Generate a sample chirp signal, which starts at a low frequency and sweeps to a higher frequency. This serves as an ideal test signal for illustrating time-frequency analysis.
++ Step 3 :: Compute the Short-Time Fourier Transform (STFT) of the signal using a specific window length, balancing temporal and frequency resolutions.
++ Step 4 :: Visualize the STFT, displaying how the frequency content of the signal evolves over time. This visualization provides a clear representation of the trade-off between time and frequency precision.
 
-** Applications and Insights
+*** Applications and Insights
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
 Heisenberg's Uncertainty Principle and its implications are pervasive
 across various domains:
 
-1. Audio Signal Processing: In music analysis, balancing the trade-off
-   is crucial for tasks like pitch detection and rhythm analysis.
-   Musicians and sound engineers utilize tools like STFT to analyze and
-   modify audio signals without losing critical information.
-2. Financial Time Series Analysis: In finance, understanding the
-   precision trade-off helps in analyzing market trends and price
-   movements. Tools like wavelet transforms, which offer adaptive
-   time-<<part0005.xhtml#page_101>>frequency resolution, are used to
-   capture transient market behaviors.
-3. Biomedical Signal Analysis: When analyzing physiological signals like
-   EEG or ECG, maintaining a balance between time and frequency
-   resolution is essential for accurate diagnosis and monitoring.
-   Techniques such as time-frequency analysis enable detailed
-   examination of these signals.
++ Audio Signal Processing :: In music analysis, balancing the trade-off is crucial for tasks like pitch detection and rhythm analysis. Musicians and sound engineers utilize tools like STFT to analyze and
+    modify audio signals without losing critical information.
++ Financial Time Series Analysis :: In finance, understanding the precision trade-off helps in analyzing market trends and price movements. Tools like wavelet transforms, which offer adaptive    time-frequency resolution, are used to capture transient market behaviors.
++ Biomedical Signal Analysis :: When analyzing physiological signals like EEG or ECG, maintaining a balance between time and frequency resolution is essential for accurate diagnosis and monitoring.  Techniques such as time-frequency analysis enable detailed examination of these signals.
 
 In the upcoming sections, we will delve deeper into advanced topics,
 exploring the nuances and applications of Fourier Transforms across

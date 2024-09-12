@@ -8,13 +8,15 @@
 
 ;; * Set Faces, etc...
 (set-face-attribute 'default nil :height 130)
-(setq text-scale-mode-step 1.1)
+(setq text-scale-mode-step 1.05)
+(setq org-indent-indentation-per-level 0)
 (global-visual-line-mode t)
 (global-display-fill-column-indicator-mode t)
 (add-hook 'text-mode-hook 'turn-on-auto-fill)
 (add-hook 'text-mode-hook
 	  (lambda() (set-fill-column 80)))
 (column-number-mode)
+(add-hook 'org-mode-hook 'org-indent-mode)
 
 ;; * Custom Keyboard Shortcut
 (global-set-key (kbd "M-p") 'scroll-up-line)
@@ -113,9 +115,8 @@
 
 ;; * Latex and preview pane
 (latex-preview-pane-enable)
-(setq org-format-latex-options
-      (plist-put org-format-latex-options :scale 1.25))
 (setq org-preview-latex-default-process 'dvisvgm)
+;; ** Scale Latex Preview Size
 (defun my/text-scale-adjust-latex-previews ()
   "Adjust the size of latex preview fragments when changing the
 buffer's text scale."
@@ -131,13 +132,16 @@ buffer's text scale."
                'org-latex-overlay)
            (my/text-scale--resize-fragment ov))))))
 (defun my/text-scale--resize-fragment (ov)
-  (overlay-put
-   ov 'display
-   (cons 'image
-         (plist-put
-          (cdr (overlay-get ov 'display))
-          :scale (+ 1.0 (* 0.15 text-scale-mode-amount))))))
+  (overlay-put ov 'display
+	       (cons 'image
+		     (plist-put
+		      (cdr (overlay-get ov 'display))
+		      :scale (+ 1.0 (* 0.15 text-scale-mode-amount))
+		      ;; :scale  (* +org-latex-preview-scale (expt text-scale-mode-step text-scale-mode-amount))
+		      ))))
 (add-hook 'text-scale-mode-hook #'my/text-scale-adjust-latex-previews)
+(advice-add 'org-fragtog--post-cmd :after #'my/text-scale-adjust-latex-previews)
+
 
 ;; * etc
 ;; (setq nb-notebook-directory "~/mountdir/Projects")

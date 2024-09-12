@@ -68,7 +68,7 @@
 	srcery-theme
 	nov
 	markdown-mode
-	mixed-pitch ;;disable org-block-begin-line, org-block-end-line
+	mixed-pitch ;;disable org-block-begin-line, org-block-end-line in .el file
 	))
 (package-install-selected-packages)
 
