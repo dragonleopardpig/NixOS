@@ -69,6 +69,7 @@
 	nov
 	markdown-mode
 	mixed-pitch ;;disable org-block-begin-line, org-block-end-line in .el file
+	smartparens
 	))
 (package-install-selected-packages)
 

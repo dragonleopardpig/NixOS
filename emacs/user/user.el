@@ -78,13 +78,19 @@
 (setq neo-smart-open t)
 (setq projectile-switch-project-action 'neotree-projectile-action)
 
+;; * Smartparens
+(require 'smartparens-config)
+(add-hook 'org-mode-hook #'smartparens-mode)
+(sp-pair "$" "$")
+(global-set-key (kbd "C-.") 'sp-rewrap-sexp)
+
 ;; * Electric Pair Mode
-(electric-pair-mode t)
-;; ** disable "<" pairing
-(add-hook 'org-mode-hook (lambda ()
-			   (setq-local electric-pair-inhibit-predicate
-				       `(lambda (c)
-					  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+;; (electric-pair-mode t)
+;; ;; ** disable "<" pairing
+;; (add-hook 'org-mode-hook (lambda ()
+;; 			   (setq-local electric-pair-inhibit-predicate
+;; 				       `(lambda (c)
+;; 					  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 
 
 ;; * Org Agenda
