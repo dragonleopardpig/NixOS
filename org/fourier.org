@@ -3080,7 +3080,6 @@ Let's compare the CFT and DFT using a practical example to illustrate
 their differences and similarities.
 
 **** Step-by-Step Guide:
-
 ***** Generate a Continuous-Time Signal:
 #+begin_src jupyter-python
 import numpy as np
@@ -3212,7 +3211,6 @@ Mathematically, if \(f_{max}\) is the highest frequency in the signal, the sampl
 To truly appreciate the impact of aliasing, let's visualize it through Python coding examples. We'll generate a continuous signal, sample it at different rates, and examine the resulting frequency spectrum.
 
 **** Example:
-
 ***** Generate a Continuous-Time Signal:
 #+begin_src jupyter-python
 import numpy as np
@@ -3238,7 +3236,6 @@ x1 = np.sin(2 * np.pi * f1 * t1) + np.sin(2 * np.pi * f2 * t1)
 x2 = np.sin(2 * np.pi * f1 * t2) + np.sin(2 * np.pi * f2 * t2)
 #+end_src
 #+RESULTS:
-
 
 ***** Compute and Plot the Frequency Spectrum:
 
@@ -3318,6 +3315,7 @@ from scipy.signal import butter, lfilter
 def butter_lowpass(cutoff, fs, order=5):
     nyq = 0.5 * fs
     normal_cutoff = cutoff / nyq
+    print(f"Wn =", normal_cutoff)
     b, a = butter(order, normal_cutoff, btype='low', analog=False)
     return b, a
 
@@ -3328,7 +3326,7 @@ def lowpass_filter(data, cutoff, fs, order=5):
 
 # Define filter parameters
 cutoff = 100 # Cutoff frequency
-fs = 200 # Sampling rate
+fs = 201 # Sampling rate
 #+end_src
 #+RESULTS:
 
@@ -3338,48 +3336,7 @@ fs = 200 # Sampling rate
 x_t_filtered = lowpass_filter(x_t, cutoff, fs)
 #+end_src
 #+RESULTS:
-:RESULTS:
-# [goto error]
-: ---------------------------------------------------------------------------
-: ValueError                                Traceback (most recent call last)
-: Cell In[49], line 2
-:       1 # Apply low-pass filter to the continuous signal
-: ----> 2 x_t_filtered = lowpass_filter(x_t, cutoff, fs)
-: 
-: Cell In[48], line 11, in lowpass_filter(data, cutoff, fs, order)
-:      10 def lowpass_filter(data, cutoff, fs, order=5):
-: ---> 11     b, a = butter_lowpass(cutoff, fs, order=order)
-:      12     y = lfilter(b, a, data)
-:      13     return y
-: 
-: Cell In[48], line 7, in butter_lowpass(cutoff, fs, order)
-:       5 nyq = 0.5 * fs
-:       6 normal_cutoff = cutoff / nyq
-: ----> 7 b, a = butter(order, normal_cutoff, btype='low', analog=False)
-:       8 return b, a
-: 
-: File ~/.virtualenvs/tf/lib/python3.11/site-packages/scipy/signal/_filter_design.py:3230, in butter(N, Wn, btype, analog, output, fs)
-:    3109 def butter(N, Wn, btype='low', analog=False, output='ba', fs=None):
-:    3110     """
-:    3111     Butterworth digital and analog filter design.
-:    3112 
-:    (...)
-:    3228     >>> plt.show()
-:    3229     """
-: -> 3230     return iirfilter(N, Wn, btype=btype, analog=analog,
-:    3231                      output=output, ftype='butter', fs=fs)
-: 
-: File ~/.virtualenvs/tf/lib/python3.11/site-packages/scipy/signal/_filter_design.py:2624, in iirfilter(N, Wn, rp, rs, btype, analog, ftype, output, fs)
-:    2621     if fs is not None:
-:    2622         raise ValueError("Digital filter critical frequencies must "
-:    2623                          f"be 0 < Wn < fs/2 (fs={fs} -> fs/2={fs/2})")
-: -> 2624     raise ValueError("Digital filter critical frequencies "
-:    2625                      "must be 0 < Wn < 1")
-:    2626 fs = 2.0
-:    2627 warped = 2 * fs * tan(pi * Wn / fs)
-: 
-: ValueError: Digital filter critical frequencies must be 0 < Wn < 1
-:END:
+: Wn = 0.9950248756218906
 
 ***** Sample and Visualize the Filtered Signal:
 #+begin_src jupyter-python
@@ -3408,6 +3365,8 @@ plt.ylabel('Magnitude')
 plt.tight_layout()
 plt.show()
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/30d294b97713c6a04148707a10adc6c126eb9b0d.png]]
 
 **** Explanation:
   :PROPERTIES:
@@ -4409,7 +4368,7 @@ To understand FFT, it is crucial to grasp some fundamental concepts:
 + Radix-2 Algorithm :: The most common form of FFT, the Radix-2 algorithm, requires the number of data points to be a power of two.  This constraint ensures that the data can be recursively split into even and odd indexed elements, facilitating efficient computation.
 + Bit-Reversal Permutation :: Before applying the FFT, data points are often reordered using a bit-reversal permutation. This permutation aligns the data in a way that simplifies the recursive computation process.
 
-** Mathematical Formulation
+*** Mathematical Formulation
   :PROPERTIES:
   :CLASS: heading_s151
   :END:
@@ -4424,7 +4383,7 @@ Specifically, it decomposes the DFT into smaller DFTs of even and odd
 indexed elements:\[ X[k] = \sum_{n=0}^{N/2 - 1} x[2n]e^{-j(2\pi/N)2nk} +
 e^{-j(2\pi/N)k} \sum_{n=0}^{N/2 - 1} x[2n+1]e^{-j(2\pi/N)2nk}\]
 
-** Practical Implementation
+*** Practical Implementation
   :PROPERTIES:
   :CUSTOM_ID: part0007.xhtml#page_158
   :CLASS: heading_s1W
@@ -4474,7 +4433,7 @@ frequency domain, revealing its constituent frequencies. This
 visualization is crucial for understanding the frequency components of
 the signal.
 
-** Applications and Advantages
+*** Applications and Advantages
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -4498,7 +4457,7 @@ wide range of applications:
   :PROPERTIES:
   :CLASS: heading_s1TF
   :END:
-** The Need for Efficiency
+*** The Need for Efficiency
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -4510,7 +4469,7 @@ real-time applications. Cooley and Tukey's innovation reduced the
 computational cost to (O(N \log N)), making it feasible to perform
 Fourier analysis on large-scale data efficiently.
 
-** The Divide-and-Conquer Approach
+*** The Divide-and-Conquer Approach
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -4533,7 +4492,7 @@ solutions to solve the original problem.
    This step ensures that the data is processed in the correct order
    during each stage of recursion.
 
-** Mathematical Formulation
+*** Mathematical Formulation
   :PROPERTIES:
   :CLASS: heading_s151
   :END:
@@ -4560,7 +4519,7 @@ This decomposition leverages the symmetry and periodicity properties of
 the exponential functions, significantly reducing the number of
 calculations required.
 
-** Practical Implementation
+*** Practical Implementation
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -4623,7 +4582,7 @@ combines the results to obtain the final DFT. Visualizing the original
 signal and its frequency components provides an intuitive understanding
 of the algorithm's effectiveness.
 
-** Applications of the Cooley-Tukey Algorithm
+*** Applications of the Cooley-Tukey Algorithm
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -4658,7 +4617,7 @@ their practical implementations.
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** Theoretical Foundations
+*** Theoretical Foundations
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -4669,7 +4628,7 @@ more manageable DFTs, recursively. This approach significantly reduces
 the computational complexity from (O(N^2)) to (O(N \log N)), making it
 feasible to process large datasets efficiently.
 
-** Recursive Decomposition
+*** Recursive Decomposition
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
@@ -4692,7 +4651,7 @@ This decomposition leverages the periodicity and symmetry properties of
 the exponential functions, thus reducing the number of arithmetic
 operations required.
 
-** Bit-Reversal Permutation
+*** Bit-Reversal Permutation
   :PROPERTIES:
   :CUSTOM_ID: part0007.xhtml#page_165
   :CLASS: heading_sW8
@@ -4704,7 +4663,7 @@ example, for (N = 8), the index 3 (binary 011) is swapped with index 6
 (binary 110). This reordering aligns the data with the recursive
 structure of the algorithm, ensuring efficient processing.
 
-** Practical Implementation
+*** Practical Implementation
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -4789,7 +4748,7 @@ reveals the frequency components of the signal. Visualizing both the
 original signal and its frequency spectrum provides a clear
 understanding of the algorithm's effectiveness.
 
-** Applications of Radix-2 FFT
+*** Applications of Radix-2 FFT
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -4828,7 +4787,7 @@ Now, we delve into the Radix-4 and Mixed-Radix FFT algorithms, which
 further enhance the efficiency of Fourier Transform calculations,
 especially for specific data lengths and applications.
 
-** Theoretical Foundations
+*** Theoretical Foundations
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -4840,7 +4799,7 @@ the other hand, combines different radices (e.g., 2, 3, 4, etc.) to
 handle <<part0007.xhtml#page_169>>sequences of arbitrary lengths, making
 it versatile for various practical scenarios.
 
-** Radix-4 FFT
+*** Radix-4 FFT
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
@@ -4870,7 +4829,7 @@ original DFT.
    indices. This step ensures that the data is properly aligned for
    efficient recursive computation.
 
-** Mixed-Radix FFT
+*** Mixed-Radix FFT
   :PROPERTIES:
   :CLASS: heading_s1W8
   :END:
@@ -4887,7 +4846,7 @@ radices, optimizing the computation for any sequence length.
    twiddle factors, similar to the Radix-2 and Radix-4 approaches,
    ensuring efficient computation.
 
-** Practical Implementation
+*** Practical Implementation
   :PROPERTIES:
   :CLASS: heading_s151
   :END:
@@ -5036,7 +4995,7 @@ combining different radices. The input signal is similar to the Radix-4
 example, showcasing the algorithm's flexibility and effectiveness in
 revealing the frequency components of the signal.
 
-** Applications of Radix-4 and Mixed-Radix FFT
+*** Applications of Radix-4 and Mixed-Radix FFT
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -5074,7 +5033,7 @@ boundaries of what is possible with Fourier Transforms.
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** Theoretical Foundations
+*** Theoretical Foundations
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -5083,7 +5042,7 @@ time domain to the frequency domain. The core difference between real
 and complex FFT algorithms pertains to the nature of the input signal
 and the resulting frequency components.
 
-** Real FFT
+*** Real FFT
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
@@ -5102,7 +5061,7 @@ other.
   reduces computational complexity, effectively halving the number of
   required calculations compared to a complex FFT.
 
-** Complex FFT
+*** Complex FFT
   :PROPERTIES:
   :CLASS: heading_s16N
   :END:
@@ -5121,7 +5080,7 @@ complex modulation schemes.
   information is critical, and in advanced signal processing techniques
   involving quadrature components.
 
-** Practical Implementation
+*** Practical Implementation
   :PROPERTIES:
   :CLASS: heading_s151
   :END:
@@ -5213,7 +5172,7 @@ function. The resulting frequency spectrum captures both the amplitude
 and phase information, demonstrating the comprehensive nature of the
 complex FFT.
 
-** Applications of Real and Complex FFT
+*** Applications of Real and Complex FFT
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -5257,7 +5216,7 @@ field.
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** The Importance of Optimization
+*** The Importance of Optimization
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -5266,7 +5225,7 @@ large datasets or real-time processing requirements. Optimized libraries
 leverage advanced algorithms and hardware capabilities to accelerate
 computation, reduce memory usage, and enhance performance.
 
-** NumPy
+*** NumPy
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
@@ -5304,7 +5263,7 @@ plt.show()
 
 #+end_src
 
-** SciPy
+*** SciPy
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
@@ -5342,7 +5301,7 @@ plt.show()
 
 #+end_src
 
-** PyFFTW
+*** PyFFTW
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
@@ -5383,7 +5342,7 @@ plt.show()
 
 #+end_src
 
-** CuPy
+*** CuPy
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
@@ -5424,7 +5383,7 @@ plt.show()
 
 #+end_src
 
-** TensorFlow
+*** TensorFlow
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
@@ -5464,7 +5423,7 @@ plt.show()
 
 #+end_src
 
-** Choosing the Right Library
+*** Choosing the Right Library
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -5498,7 +5457,7 @@ Transforms in Python.
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** Introduction to Time Complexity
+*** Introduction to Time Complexity
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -5515,7 +5474,7 @@ complexity of (O(N^2)), where (N) is the number of data points, the FFT
 brings this down dramatically to (O(N \log N)). This reduction is
 crucial for handling large datasets and real-time applications.
 
-** Analyzing the FFT Algorithm
+*** Analyzing the FFT Algorithm
   :PROPERTIES:
   :CUSTOM_ID: part0007.xhtml#page_187
   :CLASS: heading_s1W
@@ -5526,7 +5485,7 @@ FFT algorithm, works by recursively breaking down a DFT of any composite
 size (N = N_1 \cdot N_2) into many smaller DFTs. This divide-and-conquer
 approach is what enables the (O(N \log N)) performance.
 
-** Step-by-Step Breakdown
+*** Step-by-Step Breakdown
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
@@ -5543,7 +5502,7 @@ This recursive breakdown and efficient combination define the (O(N \log
 N)) time complexity, making the FFT algorithm significantly faster than
 the naive DFT approach.
 
-** Implementing FFT in Python
+*** Implementing FFT in Python
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -5591,7 +5550,7 @@ compute its FFT, and visualize both the original signal and its
 frequency components. NumPy's optimized FFT implementation ensures
 efficient computation, even for large datasets.
 
-** Optimizing Performance
+*** Optimizing Performance
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -5610,7 +5569,7 @@ optimizations can enhance performance:
    Radix-4, and mixed-radix FFTs, which can offer performance benefits
    depending on your data characteristics.
 
-** Practical Considerations
+*** Practical Considerations
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -5634,7 +5593,7 @@ performance, driving both your projects and your expertise forward.
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** Introduction to Multidimensional FFT
+*** Introduction to Multidimensional FFT
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -5651,7 +5610,7 @@ temporal data into its frequency components. However, the complexity
 increases with each added dimension, necessitating efficient algorithms
 and robust computational practices.
 
-** Mathematical Foundation
+*** Mathematical Foundation
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -5676,7 +5635,7 @@ y, z) e^{-2\pi i \left\(\frac{ux}{N} + \frac{vy}{M} + \frac{wz}{L}
 This sequential approach ensures that the multidimensional FFT remains
 computationally efficient.
 
-** Implementing Multidimensional FFT in Python
+*** Implementing Multidimensional FFT in Python
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -5724,7 +5683,7 @@ SciPy, and then visualize the magnitude spectrum. The fftshift function
 is used to center the zero frequency component, making the spectrum more
 interpretable.
 
-** Practical Applications of Multidimensional FFT
+*** Practical Applications of Multidimensional FFT
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -5748,7 +5707,7 @@ interpretable.
    components of fluid flows, aiding in the study of turbulence and
    other complex fluid behaviors.
 
-** Optimizing Multidimensional FFT Performance
+*** Optimizing Multidimensional FFT Performance
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -5773,7 +5732,7 @@ effective and efficient.
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** Introduction to Image Processing with FFT
+*** Introduction to Image Processing with FFT
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -5786,7 +5745,7 @@ revealing the different frequency components that make up the image.
 This transformation facilitates various processing techniques that are
 challenging or inefficient to accomplish in the spatial domain.
 
-** Mathematical Foundation
+*** Mathematical Foundation
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -5810,7 +5769,7 @@ e^{2\pi i \left\(\frac{ux}{N} + \frac{vy}{M} \right)}\]
 The IFFT effectively transforms the frequency components back into the
 spatial domain, recovering the original image.
 
-** Practical Applications of FFT in Image Processing
+*** Practical Applications of FFT in Image Processing
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -5929,7 +5888,7 @@ frequency components. Different patterns have unique frequency
 signatures, making it easier to detect and classify them in complex
 datasets.
 
-** Real-World Applications
+*** Real-World Applications
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -5949,7 +5908,7 @@ datasets.
 9. Image Enhancement: Forensic analysts use FFT to enhance and analyze
    images from surveillance cameras, aiding in criminal investigations.
 
-** Optimizing FFT for Image Processing
+*** Optimizing FFT for Image Processing
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -5993,7 +5952,7 @@ NumPy is a cornerstone in the Python scientific stack, providing support
 for large multi-dimensional arrays and matrices, along with a collection
 of mathematical functions to operate on these arrays.
 
-** Example 1: Basic FFT on a 1D Signal
+*** Example 1: Basic FFT on a 1D Signal
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -6052,7 +6011,7 @@ This code snippet generates a sinusoidal signal and computes its FFT.
 The resulting frequency spectrum reveals the presence of a peak at the
 signal's frequency (50 Hz).
 
-** Example 2: 2D FFT on an Image
+*** Example 2: 2D FFT on an Image
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -6100,7 +6059,7 @@ This example demonstrates how to compute the 2D FFT of an image and
 visualize its frequency components. The magnitude spectrum typically
 shows high-frequency details near the edges of the image.
 
-** Example 3: Image Filtering with FFT
+*** Example 3: Image Filtering with FFT
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -6155,7 +6114,7 @@ filters in the frequency domain. The low-pass filter smooths the image,
 reducing noise and high-frequency details, while the high-pass filter
 enhances edges and sharp features.
 
-** Example 4: Image Compression using FFT
+*** Example 4: Image Compression using FFT
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -6239,7 +6198,7 @@ plt.show()
 
 In this plot, the sinusoidal waveform reveals its periodic nature, with
 clear peaks and troughs corresponding to different moments in time.
-** Frequency Domain Representation
+*** Frequency Domain Representation
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -6279,7 +6238,7 @@ plt.show()
 The plot will show a peak at the signal's frequency of 5 Hz, indicating
 its dominant frequency component.
 
-** Connecting Time and Frequency Domains
+*** Connecting Time and Frequency Domains
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -6303,7 +6262,7 @@ kn/N}\]\[ x[n] = \frac{1}{N} \sum_{k=0}^{N-1} X[k] e^{j2\pi kn/N}\]
 These transformations allow us to move seamlessly between the time and
 frequency domains, leveraging the strengths of each representation.
 
-** Practical Examples
+*** Practical Examples
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -6418,7 +6377,7 @@ challenges.
   :PROPERTIES:
   :CLASS: heading_s28R
   :END:
-** Understanding the Sampling Theorem
+*** Understanding the Sampling Theorem
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -6443,7 +6402,7 @@ frequency component in the signal.
 This minimum sampling rate is known as the Nyquist rate, and twice the
 maximum frequency is called the Nyquist frequency.
 
-** Time and Frequency Domains Connection
+*** Time and Frequency Domains Connection
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
@@ -6463,7 +6422,7 @@ than \(2f\). If sampled at a lower rate, the reconstructed signal will
 not accurately represent the original signal, leading to misleading
 interpretations.
 
-** Practical Implications of Sampling
+*** Practical Implications of Sampling
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
@@ -6474,7 +6433,7 @@ signal integrity. In real-world applications, engineers often sample at
 a rate slightly higher than the Nyquist rate to account for
 non-idealities and ensure robust reconstruction.
 
-** Python Implementation and Visualization
+*** Python Implementation and Visualization
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
@@ -6482,7 +6441,7 @@ Let's use Python to illustrate the effects of sampling and the
 importance of the Nyquist rate. We will generate a continuous-time
 signal, sample it at different rates, and observe the results.
 
-** Example: Sampling a Sinusoidal Signal
+*** Example: Sampling a Sinusoidal Signal
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -6562,7 +6521,7 @@ interpretation and processing.
 To visualize aliasing, let's create a higher-frequency signal and sample
 it below the Nyquist rate.
 
-** Example: Aliasing Effect
+*** Example: Aliasing Effect
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -6613,7 +6572,7 @@ In the aliased plot, the sampled signal does not match the original 50
 Hz signal, illustrating how under-sampling can distort the true
 frequency content.
 
-** Practical Applications
+*** Practical Applications
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
@@ -6637,7 +6596,7 @@ telecommunications, and beyond.
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** The Role of Windowing in Signal Processing
+*** The Role of Windowing in Signal Processing
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -6668,7 +6627,7 @@ Common Window Functions:
 8. Provides greater attenuation of the sidelobes, ideal for
    high-precision applications.
 
-** Applying Window Functions in Python
+*** Applying Window Functions in Python
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -6728,7 +6687,7 @@ spectral leakage. The Hann, Hamming, and Blackman windows progressively
 improve the frequency resolution by reducing sidelobe levels at the
 expense of slightly wider main lobes.
 
-** The Fundamentals of Filtering
+*** The Fundamentals of Filtering
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -6767,7 +6726,7 @@ Filter Design Techniques:
   infinite duration of response, more efficient but can introduce phase
   distortions.
 
-** Designing Filters with Python
+*** Designing Filters with Python
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -6821,7 +6780,7 @@ point. The filtered signal, when compared to the original, exhibits the
 smoothing effect of the low-pass filter, effectively reducing
 high-frequency components.
 
-** Practical Applications
+*** Practical Applications
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -6844,7 +6803,7 @@ applications across multiple domains. Here are a few examples:
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
-** Understanding Spectral Analysis
+*** Understanding Spectral Analysis
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -6864,7 +6823,7 @@ distribution of a signal as a function of frequency. - Harmonics and
 Overtones: Higher frequency components that are integer multiples of a
 fundamental frequency.
 
-** Practical Importance of Spectral Analysis
+*** Practical Importance of Spectral Analysis
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -6883,7 +6842,7 @@ and diagnosing faults in rotating machinery through vibration
 analysis. - Market Analysis: Detecting periodicities in financial time
 series for better trading strategies.
 
-** The Fourier Transform in Spectral Analysis
+*** The Fourier Transform in Spectral Analysis
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -6898,7 +6857,7 @@ the frequency bin index.
 The result, \(X[k]\), is a complex number containing both amplitude and
 phase information of the \(k\)-th frequency component.
 
-** Performing Spectral Analysis in Python
+*** Performing Spectral Analysis in Python
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -6948,7 +6907,7 @@ frequency spectrum. The peaks at 50 Hz and 120 Hz in the spectrum
 confirm the presence of these frequency components in the original
 signal.
 
-** Advanced Spectral Analysis Techniques
+*** Advanced Spectral Analysis Techniques
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -7001,7 +6960,7 @@ f, Pxx = welch(x, fs, nperseg=1024)
 
 #+end_src
 
-** Practical Applications
+*** Practical Applications
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -7024,7 +6983,7 @@ numerous fields and industries. Here are a few specific examples:
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
-** Understanding Noise in Signals
+*** Understanding Noise in Signals
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -7041,7 +7000,7 @@ Noise: Sharp, sudden disturbances that can significantly distort the
 signal. - Colored Noise: Noise with a power spectral density that
 changes with frequency, such as pink noise or brown noise.
 
-** Techniques for Noise Reduction
+*** Techniques for Noise Reduction
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -7130,7 +7089,7 @@ kf = KalmanFilter(initial_state_mean=0, n_dim_obs=1)
 
 #+end_src
 
-** Signal Enhancement Techniques
+*** Signal Enhancement Techniques
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -7184,7 +7143,7 @@ enhanced_signal = wavelet_denoising(x)
 
 #+end_src
 
-** Practical Application: Noise Reduction in Audio Signals
+*** Practical Application: Noise Reduction in Audio Signals
   :PROPERTIES:
   :CUSTOM_ID: part0008.xhtml#page_231
   :CLASS: heading_sEA
@@ -7306,11 +7265,11 @@ towards clearer and more insightful signal analysis.
   :CUSTOM_ID: part0008.xhtml#page_234
   :CLASS: heading_sEA
   :END:
-** Introduction
+*** Introduction
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-** Understanding Modulation
+*** Understanding Modulation
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -7319,7 +7278,7 @@ information. This concept is pivotal in communications, comprising
 techniques such as AM and FM, which modulate amplitude and frequency,
 respectively.
 
-** Amplitude Modulation (AM)
+*** Amplitude Modulation (AM)
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -7336,7 +7295,7 @@ wave.
 In AM, the carrier frequency remains constant, while the amplitude
 changes according to the message signal, encoding the information.
 
-** Frequency Modulation (FM)
+*** Frequency Modulation (FM)
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -7354,7 +7313,7 @@ In FM, the amplitude of the carrier remains constant, but the frequency
 varies, making it more robust against noise and signal degradation
 compared to AM.
 
-** Fourier Analysis of AM and FM
+*** Fourier Analysis of AM and FM
   :PROPERTIES:
   :CUSTOM_ID: part0008.xhtml#page_235
   :CLASS: heading_s1W
@@ -7373,7 +7332,7 @@ a series of sidebands at frequencies that are integer multiples of the
 message frequency. The amplitude of these sidebands is influenced by the
 modulation index \(\beta\).
 
-** Practical Analysis using Python
+*** Practical Analysis using Python
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -7468,11 +7427,11 @@ plt.show()
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-** Introduction
+*** Introduction
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-** Fundamentals of Audio Signal Processing
+*** Fundamentals of Audio Signal Processing
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -7482,7 +7441,7 @@ Transforms. This fundamental shift from time
 <<part0008.xhtml#page_238>>to frequency domain allows for a multitude of
 applications, including filtering, compression, and enhancement.
 
-** Noise Reduction
+*** Noise Reduction
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -7539,7 +7498,7 @@ plt.show()
 
 #+end_src
 
-** Sound Synthesis
+*** Sound Synthesis
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -7591,7 +7550,7 @@ plt.show()
 
 #+end_src
 
-** Audio Compression
+*** Audio Compression
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -7608,7 +7567,7 @@ representation and manipulation of the audio spectrum.
 3. Encoding and Compression: Use encoding techniques to compress the
    quantized frequency components.
 
-** Practical Considerations and Challenges
+*** Practical Considerations and Challenges
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -7638,11 +7597,11 @@ skill set and understanding of this transformative mathematical tool.
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-** Introduction
+*** Introduction
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-** Basics of Speech Signal Processing
+*** Basics of Speech Signal Processing
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -7662,7 +7621,7 @@ Fourier Transform comes in.
    representation, such as formants and pitch, is essential for accurate
    speech recognition.
 
-** Fourier Transform in Speech Recognition
+*** Fourier Transform in Speech Recognition
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -7681,7 +7640,7 @@ leveraging the power of Fourier analysis to decode spoken words:
 4. Pattern Matching: Use machine learning algorithms to match the
    extracted features against a known database of speech patterns.
 
-** Practical Example: Speech Recognition in Python
+*** Practical Example: Speech Recognition in Python
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -7768,7 +7727,7 @@ plt.show()
 
 #+end_src
 
-** Speech Recognition Systems
+*** Speech Recognition Systems
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -7788,7 +7747,7 @@ Networks (RNNs), to enhance accuracy and robustness. These models
 benefit from the rich feature set provided by Fourier-based transforms
 like MFCCs.
 
-** Challenges in Speech Recognition
+*** Challenges in Speech Recognition
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -7810,11 +7769,11 @@ possibilities in signal processing.
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-** Introduction
+*** Introduction
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-** Key Python Libraries for Signal Processing
+*** Key Python Libraries for Signal Processing
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -7896,7 +7855,7 @@ resampled_df = df.resample('50L', on='Time').mean()
 
 #+end_src
 
-** Practical Application: Signal Filtering with SciPy
+*** Practical Application: Signal Filtering with SciPy
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -7940,7 +7899,7 @@ This code snippet demonstrates the power of SciPy in filtering out noise
 from a signal, showcasing how a few lines of code can significantly
 enhance signal clarity.
 
-** Comprehensive Example: Speech Enhancement with Librosa and SciPy
+*** Comprehensive Example: Speech Enhancement with Librosa and SciPy
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -8004,11 +7963,11 @@ facilitates the handling of time-series data.
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-** Introduction
+*** Introduction
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-** Real-World Example 1: Audio Signal Filtering
+*** Real-World Example 1: Audio Signal Filtering
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -8076,7 +8035,7 @@ sf.write('filtered_live_concert.wav', y_filtered, sr)
 This example demonstrates how SciPy can be utilized to significantly
 improve audio quality by removing unwanted frequencies.
 
-** Real-World Example 2: Spectral Analysis of Financial Data
+*** Real-World Example 2: Spectral Analysis of Financial Data
   :PROPERTIES:
   :CUSTOM_ID: part0008.xhtml#page_253
   :CLASS: heading_s1W
@@ -8156,7 +8115,7 @@ np.fft.ifft(fft_values)
 This example showcases how Fourier Transforms can be applied to
 financial data to uncover underlying periodicities.
 
-** Comprehensive Example: Image Denoising and Enhancement
+*** Comprehensive Example: Image Denoising and Enhancement
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -8268,7 +8227,7 @@ desired outcome, whether it is for enhancement, analysis, or
 manipulation. The myriad of techniques available allow us to filter,
 compress, restore, and enhance images, unlocking the potential to
 extract meaningful information from visual data.
-** The Role of Fourier Transforms in Image Processing
+*** The Role of Fourier Transforms in Image Processing
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -8278,7 +8237,7 @@ This transformation is crucial for many image processing tasks, as it
 allows for the manipulation of frequency components that are not easily
 accessible in the spatial domain.
 
-** Understanding the Frequency Domain
+*** Understanding the Frequency Domain
   :PROPERTIES:
   :CUSTOM_ID: part0009.xhtml#page_259
   :CLASS: heading_s1W
@@ -8301,7 +8260,7 @@ the ebb and flow of pedestrians and vehicles. When transformed into the
 frequency domain, the repetitive patterns of movement are isolated,
 offering insights into the underlying dynamics.
 
-** Basic Image Transformation Techniques
+*** Basic Image Transformation Techniques
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -8341,7 +8300,7 @@ utilize Fourier Transforms:
      particularly useful in scenarios like recovering a clear image of
      the Shibuya Crossing captured through a foggy lens.
 
-** Practical Example: Applying Fourier Transform for Image Filtering
+*** Practical Example: Applying Fourier Transform for Image Filtering
   :PROPERTIES:
   :CUSTOM_ID: part0009.xhtml#page_261
   :CLASS: heading_s151
@@ -8444,7 +8403,7 @@ plt.show()
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-** Introduction to 2D Fourier Transform
+*** Introduction to 2D Fourier Transform
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -8454,7 +8413,7 @@ transformation is pivotal in image processing, as it allows us to
 isolate frequency components of an image, facilitating various
 operations such as filtering, compression, and enhancement.
 
-** Mathematical Foundation
+*** Mathematical Foundation
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -8475,7 +8434,7 @@ These equations highlight how the 2D Fourier Transform decomposes an
 image into its constituent frequencies, represented as sinusoidal basis
 functions.
 
-** Practical Implementation with Python
+*** Practical Implementation with Python
   :PROPERTIES:
   :CUSTOM_ID: part0009.xhtml#page_264
   :CLASS: heading_s1W
@@ -8554,7 +8513,7 @@ This step reconstructs the image from its frequency domain
 representation, demonstrating the invertibility of the Fourier
 Transform.
 
-** Applications of 2D Fourier Transform
+*** Applications of 2D Fourier Transform
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -8579,7 +8538,7 @@ Techniques such as deblurring and denoising often leverage the frequency
 domain to enhance image quality, restoring clarity to images affected by
 various forms of distortion.
 
-** Practical Example: High-Pass Filtering
+*** Practical Example: High-Pass Filtering
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -8649,7 +8608,7 @@ unveiling <<part0009.xhtml#page_268>>these hidden treasures, allowing us
 to enhance or suppress specific aspects of an image for clearer analysis
 and interpretation.
 
-** Introduction to Image Filtering
+*** Introduction to Image Filtering
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -8660,7 +8619,7 @@ spatial domain. This method is particularly effective for tasks that
 require precision in isolating specific frequencies, such as noise
 reduction, edge enhancement, and texture analysis.
 
-** The Fundamentals of Frequency Domain Filtering
+*** The Fundamentals of Frequency Domain Filtering
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -8680,7 +8639,7 @@ The filters commonly used in this process include low-pass filters,
 high-pass filters, and band-pass filters. Each type serves a unique
 purpose in modifying the image's frequency content.
 
-** Practical Implementation with Python
+*** Practical Implementation with Python
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -8781,7 +8740,7 @@ np.uint8) mask[crow-30:crow+30, ccol-30:ccol+30] = 0
 
 #+end_src
 
-** Observing the Results
+*** Observing the Results
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -8791,7 +8750,7 @@ filter smooths the image, reducing noise but potentially blurring fine
 details. The high-pass filter, on the other hand, sharpens edges and
 highlights intricate features, albeit at the risk of amplifying noise.
 
-** Advanced Filtering Techniques
+*** Advanced Filtering Techniques
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -8856,7 +8815,7 @@ Image of Kinkaku-ji')
 
 #+end_src
 
-** Practical Applications in Frequency Domain Filtering
+*** Practical Applications in Frequency Domain Filtering
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -8895,7 +8854,7 @@ Similarly, in the world of image processing, edge detection and
 enhancement are crucial techniques that <<part0009.xhtml#page_274>>help
 us delineate and understand the structure within digital images.
 
-** The Importance of Edge Detection
+*** The Importance of Edge Detection
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -8910,7 +8869,7 @@ streets. Accurate edge detection allows the vehicle to identify lane
 boundaries, traffic signs, and pedestrians, ensuring safe and efficient
 navigation.
 
-** Mathematical Foundations
+*** Mathematical Foundations
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -8932,7 +8891,7 @@ operations with specific kernels, such as the Sobel, Prewitt, or Roberts
 operators. These kernels highlight the intensity changes in horizontal
 and vertical directions, making edges more pronounced.
 
-** Implementing Edge Detection in Python
+*** Implementing Edge Detection in Python
   :PROPERTIES:
   :CUSTOM_ID: part0009.xhtml#page_275
   :CLASS: heading_s1W
@@ -8981,7 +8940,7 @@ the Sobel operator to detect edges. The result is a highlighted
 representation of the edges in the image, allowing us to visualize the
 significant intensity changes.
 
-** Enhancing Detected Edges
+*** Enhancing Detected Edges
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -9003,7 +8962,7 @@ connect the detected edge points based on their spatial proximity and
 gradient direction. This step is crucial for forming coherent and
 interpretable edge structures.
 
-** Practical Example: Enhancing Edges in Python
+*** Practical Example: Enhancing Edges in Python
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
@@ -9075,7 +9034,7 @@ strongest responses and suppressing non-maximum values. The result is a
 more refined and interpretable edge map, suitable for further analysis
 and processing.
 
-** Real-World Applications
+*** Real-World Applications
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -9107,7 +9066,7 @@ challenge. Similarly, in the realm of digital image processing, image
 compression techniques serve the vital purpose of reducing the file size
 while preserving the visual quality as much as possible.
 
-** The Need for Image Compression
+*** The Need for Image Compression
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -9120,7 +9079,7 @@ storage space, and reducing bandwidth usage. This is especially critical
 in applications ranging from web development and social media to medical
 imaging and satellite imagery.
 
-** Types of Image Compression
+*** Types of Image Compression
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -9142,7 +9101,7 @@ and lossless compression. Each has its unique advantages and use cases.
    requiring high fidelity, such as medical images or technical
    drawings.
 
-** Mathematical Foundations of Compression
+*** Mathematical Foundations of Compression
   :PROPERTIES:
   :CLASS: heading_s151
   :END:
@@ -9174,7 +9133,7 @@ Huffman coding or Arithmetic coding are used to further compress the
 data by encoding frequently occurring patterns with shorter codes and
 less frequent patterns with longer codes.
 
-** Implementing Image Compression in Python
+*** Implementing Image Compression in Python
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -9249,7 +9208,7 @@ inverse DCT steps reconstruct the image. Notice the trade-off between
 compression and quality, which can be adjusted by modifying the
 quantization matrix.
 
-** Advanced Compression Techniques
+*** Advanced Compression Techniques
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -9270,7 +9229,7 @@ convolutional autoencoders and Generative Adversarial Networks (GANs)
 learn to encode and decode images efficiently, achieving high
 compression ratios with minimal quality loss.
 
-** Real-World Applications
+*** Real-World Applications
   :PROPERTIES:
   :CUSTOM_ID: part0009.xhtml#page_284
   :CLASS: heading_s1W
@@ -9298,7 +9257,7 @@ the science of data reduction.
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** The Importance of Restoration and Reconstruction
+*** The Importance of Restoration and Reconstruction
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -9312,7 +9271,7 @@ enhancing MRI scans can lead to better diagnosis and treatment planning,
 while in astronomy, reconstructing telescope images can reveal distant
 celestial phenomena with greater clarity.
 
-** Types of Image Degradation
+*** Types of Image Degradation
   :PROPERTIES:
   :CUSTOM_ID: part0009.xhtml#page_285
   :CLASS: heading_s1W
@@ -9330,7 +9289,7 @@ the common types of image degradation:
    sampling issues. This often requires sophisticated interpolation or
    inpainting techniques to recover the lost information.
 
-** Mathematical Foundations of Restoration
+*** Mathematical Foundations of Restoration
   :PROPERTIES:
   :CLASS: heading_s151
   :END:
@@ -9368,7 +9327,7 @@ Here, \(H^*(u, v)\) is the complex conjugate of \(H(u, v)\), and (
 S_n(u, v)\) and \(S_f(u, v)\) are the power spectra of the noise and
 original image, respectively.
 
-** Implementing Restoration Techniques in Python
+*** Implementing Restoration Techniques in Python
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -9419,7 +9378,7 @@ In this example, we simulate a degraded image by adding Gaussian noise.
 The Wiener filter is then applied, using a Gaussian kernel to model the
 PSF. The result is a restored image with significantly reduced noise.
 
-** Advanced Restoration Techniques
+*** Advanced Restoration Techniques
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -9441,7 +9400,7 @@ generator attempts to produce restored images, while the discriminator
 evaluates their authenticity. This adversarial training results in
 remarkably high-quality restorations.
 
-** Applications and Real-World Examples
+*** Applications and Real-World Examples
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -9469,7 +9428,7 @@ present and paving the way for future discoveries.
   :CUSTOM_ID: part0009.xhtml#page_289
   :CLASS: heading_sEA
   :END:
-** Understanding Color Spaces
+*** Understanding Color Spaces
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -9495,7 +9454,7 @@ YCbCr Color Space: Commonly used in video compression and broadcast. It
 separates luminance (Y) from chrominance (Cb and Cr), which is useful in
 reducing bandwidth while maintaining image quality.
 
-** Applying Fourier Transforms to Color Images
+*** Applying Fourier Transforms to Color Images
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -9565,7 +9524,7 @@ frequency representation. 5. Perform an inverse Fourier Transform to
 convert the filtered channels back to the spatial domain. 6. Merge the
 channels to obtain the final filtered image.
 
-** Color Restoration and Enhancement
+*** Color Restoration and Enhancement
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -9607,7 +9566,7 @@ Blue components. 2. Apply scaling factors to each channel to adjust the
 color balance. 3. Merge the channels back together to obtain the final
 adjusted image.
 
-** Advanced Techniques: Deep Learning for Colorization
+*** Advanced Techniques: Deep Learning for Colorization
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -9694,7 +9653,7 @@ monitoring environmental changes to mapping urban growth, Fourier
 analysis enables <<part0009.xhtml#page_295>>us to decode the complex
 data collected by remote sensing technologies.
 
-** The Role of Fourier Transforms in Remote Sensing
+*** The Role of Fourier Transforms in Remote Sensing
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -9716,7 +9675,7 @@ Fourier Transforms facilitate the analysis of these spectral data,
 enabling the identification of specific materials, vegetation health,
 and atmospheric conditions.
 
-** Practical Applications of Fourier Transforms in Remote Sensing
+*** Practical Applications of Fourier Transforms in Remote Sensing
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -9853,7 +9812,7 @@ Fourier deconvolution can be applied to spectral data to remove
 atmospheric distortions, enabling more accurate analysis of surface
 properties and composition.
 
-** Integrating Python and Remote Sensing Libraries
+*** Integrating Python and Remote Sensing Libraries
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -9915,7 +9874,7 @@ These techniques enable us to visualize the internal structures of
 objects, providing critical insights in fields ranging from medicine to
 archaeology.
 
-** The Role of Fourier Transforms in Computational Imaging
+*** The Role of Fourier Transforms in Computational Imaging
   :PROPERTIES:
   :CUSTOM_ID: part0009.xhtml#page_301
   :CLASS: heading_s1W
@@ -9936,7 +9895,7 @@ on Fourier analysis are used to remove blurring and enhance image
 resolution. This is particularly useful in applications like
 astronomical imaging and microscopy.
 
-** Practical Applications in Tomography
+*** Practical Applications in Tomography
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10045,7 +10004,7 @@ Example: Industrial CT for Material Inspection
 Fourier analysis helps identify internal defects, such as cracks or
 voids, in industrial components.
 
-** Integrating Python and Tomography Libraries
+*** Integrating Python and Tomography Libraries
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10100,7 +10059,7 @@ guided by the transformative capabilities of Fourier analysis.
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** Introduction to OpenCV and Scikit-image
+*** Introduction to OpenCV and Scikit-image
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -10111,7 +10070,7 @@ Scikit-image excels in providing easy-to-use functions for complex image
 manipulation tasks. Both libraries support Fourier Transforms, making
 them indispensable tools for computational imaging.
 
-** Practical Example 1: Image Filtering using Fourier Transforms in
+*** Practical Example 1: Image Filtering using Fourier Transforms in
 OpenCV
   :PROPERTIES:
   :CUSTOM_ID: part0009.xhtml#page_306
@@ -10191,7 +10150,7 @@ visualized the magnitude spectrum. - Designed a low-pass filter to
 remove high-frequency noise. - Applied the filter and performed the
 inverse FFT to reconstruct the filtered image.
 
-** Practical Example 2: Edge Detection using Scikit-image
+*** Practical Example 2: Edge Detection using Scikit-image
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10311,7 +10270,7 @@ functions called wavelets. These wavelets are derived from a single
 prototype function, known as the mother wavelet, through scaling
 (dilations) and translations (shifts).
 
-** Mathematical Foundation
+*** Mathematical Foundation
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10334,7 +10293,7 @@ where: - \(j\) and \(k\) represent the scale and translation indices,
 respectively. - \(\psi_{j,k}\) is the discrete wavelet function obtained
 from the mother wavelet.
 
-** Key Concepts and Properties
+*** Key Concepts and Properties
   :PROPERTIES:
   :CLASS: heading_s1FZ
   :END:
@@ -10352,7 +10311,7 @@ from the mother wavelet.
    coefficients are uncorrelated, simplifying the reconstruction of the
    original signal from its wavelet coefficients.
 
-** Practical Example: Wavelet Transform using Python's PyWavelets Library
+*** Practical Example: Wavelet Transform using Python's PyWavelets Library
   :PROPERTIES:
   :CLASS: heading_s151
   :END:
@@ -10430,7 +10389,7 @@ Wavelet Transform. - Analyzed the approximation and detail
 coefficients. - Reconstructed the original signal from the wavelet
 coefficients.
 
-** Applications of Wavelet Transforms
+*** Applications of Wavelet Transforms
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10476,7 +10435,7 @@ invaluable for applications where the signal characteristics evolve over
 time, such as speech analysis, music processing, and biomedical signal
 analysis.
 
-** Understanding the STFT Framework
+*** Understanding the STFT Framework
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10495,7 +10454,7 @@ that is non-zero only for a short duration around \(t = 0\). The choice
 of window function and its parameters---like width and shape---plays a
 pivotal role in balancing time and frequency resolution.
 
-** Practical Applications of STFT
+*** Practical Applications of STFT
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10510,7 +10469,7 @@ strategy. Similarly, in biomedical engineering, the analysis of
 electrocardiogram (ECG) signals benefits from STFT by identifying
 transient ischemic episodes or arrhythmias.
 
-** Implementing STFT in Python
+*** Implementing STFT in Python
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10548,7 +10507,7 @@ STFT, visualizing the magnitude of the STFT coefficients. The resulting
 spectrogram highlights how the frequency content of the signal varies
 over time.
 
-** Choosing the Right Window Function
+*** Choosing the Right Window Function
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10561,7 +10520,7 @@ trade-off suitable for general applications. - Gaussian Window: Best for
 minimizing leakage with a smooth window shape, ideal for high-precision
 applications.
 
-** Advanced Techniques and Improvements
+*** Advanced Techniques and Improvements
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10575,7 +10534,7 @@ varying signal components. - Multi-Resolution Analysis: Combining STFT
 with wavelet transforms allows for multi-scale analysis, capturing both
 high-frequency details and low-frequency trends.
 
-** Real-World Example: Audio Signal Analysis
+*** Real-World Example: Audio Signal Analysis
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10622,7 +10581,7 @@ mathematical foundation and practical implementations have made it
 indispensable in fields ranging from speech processing to financial
 econometrics and image analysis.
 
-** The Essence of the Gabor Transform
+*** The Essence of the Gabor Transform
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10648,7 +10607,7 @@ e^{-\pi (\tau - t)^2}\) represents the Gaussian window centered around (
 t\), which modulates the signal \(x(t)\) before applying the Fourier
 Transform.
 
-** Practical Applications of the Gabor Transform
+*** Practical Applications of the Gabor Transform
   :PROPERTIES:
   :CUSTOM_ID: part0010.xhtml#page_321
   :CLASS: heading_s1W
@@ -10669,7 +10628,7 @@ practical examples:
   is employed for texture analysis and edge detection, enhancing the
   ability to extract meaningful features from images.
 
-** Implementing the Gabor Transform in Python
+*** Implementing the Gabor Transform in Python
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -10708,7 +10667,7 @@ provides a clear visualization of how the frequency content evolves,
 demonstrating the Gabor Transform's effectiveness in capturing transient
 frequency changes.
 
-** Choosing the Gaussian Window Parameters
+*** Choosing the Gaussian Window Parameters
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10724,7 +10683,7 @@ of the signal in question. For instance, in speech processing, where
 rapid phoneme transitions are critical, a narrower window might be
 preferable.
 
-** Advanced Techniques and Enhancements
+*** Advanced Techniques and Enhancements
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10739,7 +10698,7 @@ Filtering: In image processing, applying Gabor filters can highlight
 specific textures and edges, improving feature extraction and pattern
 recognition.
 
-** Real-World Example: Financial Time Series Analysis
+*** Real-World Example: Financial Time Series Analysis
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10789,7 +10748,7 @@ practical necessity, the FrFT has found applications in diverse fields
 ranging from quantum mechanics to signal processing and financial
 analytics.
 
-** The Concept and Mathematics of FrFT
+*** The Concept and Mathematics of FrFT
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10812,7 +10771,7 @@ of the FrFT, given by:\[ K_{\alpha}(t, u) = \begin{cases} \sqrt{1 - j
 \end{cases}\] Here, \(\delta\) represents the Dirac delta function, and
 \(j\) denotes the imaginary unit.
 
-** Practical Applications of FrFT
+*** Practical Applications of FrFT
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10831,7 +10790,7 @@ indispensable:
   trends in financial data, aiding in more accurate forecasting and
   trading strategies.
 
-** Implementing the Fractional Fourier Transform in Python
+*** Implementing the Fractional Fourier Transform in Python
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -10881,7 +10840,7 @@ resulting plot showcases how the FrFT transforms the signal, revealing
 intricate details not easily discernible with a standard Fourier
 Transform.
 
-** Choosing the Order of FrFT
+*** Choosing the Order of FrFT
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10898,7 +10857,7 @@ For instance, in financial analytics, a fractional order might be chosen
 based on the periodicity of market cycles, whereas, in optics, it could
 be determined by the phase shifts in the optical system.
 
-** Advanced Techniques and Enhancements
+*** Advanced Techniques and Enhancements
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10911,7 +10870,7 @@ short-term and long-term features. - FrFT-Based Filtering: Designing
 filters in the fractional Fourier domain can provide more flexible and
 efficient signal processing, particularly for non-stationary signals.
 
-** Real-World Example: Financial Time Series Analysis
+*** Real-World Example: Financial Time Series Analysis
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -10951,7 +10910,7 @@ trends, aiding in more informed decision-making for trading strategies.
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** Concept and Mathematics of Multidimensional Fourier Transforms
+*** Concept and Mathematics of Multidimensional Fourier Transforms
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -10966,7 +10925,7 @@ F(u, v)\) of a function \(f(x, y)\) is given by:\[ F(u, v) =
 \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} f(x, y) e^{-j2\pi(ux +
 vy)} \, dx \, dy\]
 
-** Properties of the Multidimensional Fourier Transform
+*** Properties of the Multidimensional Fourier Transform
   :PROPERTIES:
   :CUSTOM_ID: part0010.xhtml#page_329
   :CLASS: heading_s1W
@@ -10983,7 +10942,7 @@ application. Some key properties include:
 - Rotation: Rotating a function in the spatial domain rotates its
   frequency spectrum by the same angle.
 
-** Practical Applications of Multidimensional Fourier Transforms
+*** Practical Applications of Multidimensional Fourier Transforms
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -11001,7 +10960,7 @@ fields:
 - Audio Processing: MDFT can separate different audio channels or
   spatial components in multi-channel recordings.
 
-** Implementing Multidimensional Fourier Transforms in Python
+*** Implementing Multidimensional Fourier Transforms in Python
   :PROPERTIES:
   :CUSTOM_ID: part0010.xhtml#page_330
   :CLASS: heading_sEC
@@ -11043,7 +11002,7 @@ used to center the low frequencies in the Fourier spectrum, making it
 easier to interpret. The resulting plot shows the original image and its
 frequency representation, revealing the underlying frequency components.
 
-** Advanced Techniques in Multidimensional Fourier Transforms
+*** Advanced Techniques in Multidimensional Fourier Transforms
   :PROPERTIES:
   :CUSTOM_ID: part0010.xhtml#page_331
   :CLASS: heading_s1W
@@ -11061,7 +11020,7 @@ applied:
   representation techniques can enhance the efficiency and accuracy of
   MDFT in data-scarce situations.
 
-** Real-World Example: Image Denoising with MDFT
+*** Real-World Example: Image Denoising with MDFT
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -11125,7 +11084,7 @@ for extracting and enhancing information in multidimensional data.
   :PROPERTIES:
   :CLASS: heading_s28R
   :END:
-** Concept and Mathematics of Non-Linear Fourier Transforms
+*** Concept and Mathematics of Non-Linear Fourier Transforms
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -11148,7 +11107,7 @@ spectral data obtained from the scattering problem. 3. Inverse
 Scattering Problem: Reconstruct the original non-linear solution from
 the spectral data.
 
-** Properties of Non-Linear Fourier Transforms
+*** Properties of Non-Linear Fourier Transforms
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
@@ -11165,7 +11124,7 @@ effectively. Some key properties include:
 - Localized Spectral Components: NLFT often reveals localized structures
   or solitons that are not apparent in linear Fourier analysis.
 
-** Practical Applications of Non-Linear Fourier Transforms
+*** Practical Applications of Non-Linear Fourier Transforms
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -11186,7 +11145,7 @@ encounter non-linear phenomena:
   imaging, benefit from NLFT for enhanced image reconstruction and
   analysis.
 
-** Implementing Non-Linear Fourier Transforms in Python
+*** Implementing Non-Linear Fourier Transforms in Python
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -11245,7 +11204,7 @@ library to integrate the equation over time. The resulting plots show
 the initial and final states of the wave function, illustrating the
 evolution of the non-linear system.
 
-** Advanced Techniques in Non-Linear Fourier Transforms
+*** Advanced Techniques in Non-Linear Fourier Transforms
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
@@ -11263,7 +11222,7 @@ can handle more complex non-linear interactions:
   transforms that generalize the IST to broader classes of non-linear
   equations.
 
-** Real-World Example: Non-Linear Signal Propagation in Optical Fibers
+*** Real-World Example: Non-Linear Signal Propagation in Optical Fibers
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -11330,11 +11289,11 @@ problems.
   :PROPERTIES:
   :CLASS: heading_s28R
   :END:
-** Concept and Mathematics of Pseudo and Quasi-Fourier Transforms
+*** Concept and Mathematics of Pseudo and Quasi-Fourier Transforms
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
-** Pseudo-Fourier Transforms
+*** Pseudo-Fourier Transforms
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -11357,7 +11316,7 @@ transformation to better suit the signal. The choice of kernel (K(t, u))
 depends on the specific properties and requirements of the signal and
 the application.
 
-** Quasi-Fourier Transforms
+*** Quasi-Fourier Transforms
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -11378,7 +11337,7 @@ In this formulation, the window function (w(t)) plays a crucial role in
 balancing the time-frequency resolution, making QFT suitable for
 analyzing non-stationary signals with varying frequency content.
 
-** Properties of Pseudo and Quasi-Fourier Transforms
+*** Properties of Pseudo and Quasi-Fourier Transforms
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
@@ -11398,7 +11357,7 @@ properties include:
   QFT can achieve enhanced resolution and accuracy in specific
   applications.
 
-** Practical Applications of Pseudo and Quasi-Fourier Transforms
+*** Practical Applications of Pseudo and Quasi-Fourier Transforms
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -11419,7 +11378,7 @@ techniques:
 - Image Processing: PFT and QFT are used in image processing
   applications, particularly for texture analysis and image compression.
 
-** Implementing Pseudo and Quasi-Fourier Transforms in Python
+*** Implementing Pseudo and Quasi-Fourier Transforms in Python
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -11478,7 +11437,7 @@ performs the transformation. The resulting plots show the original
 time-<<part0010.xhtml#page_343>>domain signal and the magnitude of its
 STFT, illustrating the localized frequency content over time.
 
-** Advanced Techniques in Pseudo and Quasi-Fourier Transforms
+*** Advanced Techniques in Pseudo and Quasi-Fourier Transforms
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
@@ -11496,7 +11455,7 @@ advanced techniques and variations can be applied:
   to optimize the parameters and improve the performance of Pseudo and
   Quasi-Fourier Transforms.
 
-** Real-World Example: Speech Signal Analysis with Quasi-Fourier
+*** Real-World Example: Speech Signal Analysis with Quasi-Fourier
 Transforms
   :PROPERTIES:
   :CLASS: heading_s6
@@ -11557,7 +11516,7 @@ analysis and processing.
   :PROPERTIES:
   :CLASS: heading_s28R
   :END:
-** Concept and Mathematics of DCT
+*** Concept and Mathematics of DCT
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -11567,7 +11526,7 @@ Fourier Transform (DFT). However, DCT uses only real numbers, which
 simplifies calculations and reduces computational load, making it highly
 suitable for compression algorithms.
 
-** Mathematical Definition
+*** Mathematical Definition
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -11587,7 +11546,7 @@ DCT coefficients, is given by:
 
 for \(n = 0, 1, 2, \ldots, N-1\).
 
-** Types of DCT
+*** Types of DCT
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -11600,7 +11559,7 @@ applications. The most common types are:
 - DCT-III: The inverse of DCT-II.
 - DCT-IV: Often used in signal processing alongside DCT-II and DCT-III.
 
-** Properties of DCT
+*** Properties of DCT
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -11619,7 +11578,7 @@ leveraging its capabilities:
   mutually independent. This property ensures that each transform
   coefficient contributes unique information about the signal.
 
-** Practical Applications of DCT
+*** Practical Applications of DCT
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -11636,7 +11595,7 @@ DCT is a versatile tool with applications spanning various domains:
   recognition and machine learning tasks, improving the accuracy and
   efficiency of algorithms.
 
-** Implementing DCT in Python
+*** Implementing DCT in Python
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -11644,7 +11603,7 @@ Python, with its extensive library ecosystem, provides a robust platform
 for implementing DCT. Below, we present a practical example of applying
 DCT to compress an image.
 
-** Example: Image Compression Using DCT
+*** Example: Image Compression Using DCT
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -11693,7 +11652,7 @@ apply a 2D DCT to transform it into the frequency domain. Finally, the
 inverse DCT reconstructs the compressed image, demonstrating the power
 of DCT for efficient image compression.
 
-** Advanced Techniques in DCT
+*** Advanced Techniques in DCT
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
@@ -11711,7 +11670,7 @@ be applied:
   Discrete Wavelet Transform (DWT), for enhanced compression
   performance.
 
-** Real-World Example: Audio Compression with DCT
+*** Real-World Example: Audio Compression with DCT
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -11780,11 +11739,11 @@ applications.
   :PROPERTIES:
   :CLASS: heading_s28R
   :END:
-** Concept and Mathematics of the Z-Transform
+*** Concept and Mathematics of the Z-Transform
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
-** Mathematical Definition
+*** Mathematical Definition
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -11803,7 +11762,7 @@ For practical applications, the One-Sided Z-Transform is commonly used:
 This formulation is particularly useful for causal signals, where \(x[n]
 = 0\) for \(n < 0\).
 
-** Region of Convergence (ROC)
+*** Region of Convergence (ROC)
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -11819,7 +11778,7 @@ depends on the nature of the signal \(x[n]\):
 - Left-Sided Signals: The ROC is inside a circle centered at the origin.
 - Two-Sided Signals: The ROC is an annular ring in the z-plane.
 
-** Properties of the Z-Transform
+*** Properties of the Z-Transform
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -11836,7 +11795,7 @@ effective application:
 - Differentiation in Z-Domain: The Z-Transform of \(nx[n]\) is \(-z
   \frac{dX(z)}{dz}\).
 
-** Practical Applications of the Z-Transform
+*** Practical Applications of the Z-Transform
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -11853,7 +11812,7 @@ processing and control systems:
 - Stability Analysis: The ROC provides insights into the stability of
   digital systems, ensuring reliable performance.
 
-** Implementing the Z-Transform in Python
+*** Implementing the Z-Transform in Python
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -11861,7 +11820,7 @@ Python, with its robust scientific libraries, offers an excellent
 platform for implementing the Z-Transform. Below, we present a practical
 example of using the Z-Transform to analyze a discrete-time signal.
 
-** Example: Analyzing a Discrete-Time Signal Using the Z-Transform
+*** Example: Analyzing a Discrete-Time Signal Using the Z-Transform
   :PROPERTIES:
   :CUSTOM_ID: part0010.xhtml#page_353
   :CLASS: heading_s1W
@@ -11906,7 +11865,7 @@ compute its Z-Transform. The plot illustrates the original signal and
 the magnitude and phase of its Z-Transform, providing insights into the
 signal's frequency components.
 
-** Advanced Techniques in Z-Transform
+*** Advanced Techniques in Z-Transform
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
@@ -11922,7 +11881,7 @@ Several advanced techniques enhance the utility of the Z-Transform:
 - Bilinear Transform: Used to convert analog filters to digital filters
   by mapping the s-plane to the z-plane.
 
-** Real-World Example: Digital Filter Design Using Z-Transform
+*** Real-World Example: Digital Filter Design Using Z-Transform
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -11981,7 +11940,7 @@ proficiency in digital signal processing and control systems.
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-** The Hankel Transform
+*** The Hankel Transform
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -12056,7 +12015,7 @@ This code demonstrates how to compute the Hankel transform of a Gaussian
 function using numerical integration in Python. The plot visualizes the
 transformed function, providing insights into its frequency components.
 
-** The Mellin Transform
+*** The Mellin Transform
   :PROPERTIES:
   :CUSTOM_ID: part0010.xhtml#page_358
   :CLASS: heading_s1W
@@ -12233,7 +12192,7 @@ and its frequency spectrum. The frequency spectrum reveals the dominant
 frequencies and their <<part0011.xhtml#page_363>>amplitudes, providing
 insights into the periodic components of the stock prices.
 
-** Advanced Techniques in Time Series Analysis
+*** Advanced Techniques in Time Series Analysis
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -12275,7 +12234,7 @@ This code computes the STFT of the stock prices and plots the resulting
 time-frequency representation. The plot reveals how the frequency
 components of the stock prices change over time.
 
-** Case Study: Financial Time Series Analysis
+*** Case Study: Financial Time Series Analysis
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -12352,7 +12311,7 @@ seasonal patterns, and noise-free signals.
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-** The Importance of Periodic Components
+*** The Importance of Periodic Components
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -12371,7 +12330,7 @@ For instance, in finance, stock prices often exhibit weekly and monthly
 cycles due to market activities. Identifying these cycles helps
 investors make informed decisions.
 
-** Mathematical Foundation
+*** Mathematical Foundation
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -12393,7 +12352,7 @@ Key Properties:
 - Symmetry: For real-valued signals, the DFT exhibits conjugate
   symmetry.
 
-** Practical Steps for Periodic Component Extraction
+*** Practical Steps for Periodic Component Extraction
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -12410,7 +12369,7 @@ Key Properties:
 
 Let's walk through a detailed example using Python.
 
-** Example: Extracting Periodic Components from Energy Consumption Data
+*** Example: Extracting Periodic Components from Energy Consumption Data
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -12499,7 +12458,7 @@ detrended it to focus on periodic components. Finally, we reconstructed
 the periodic components using the inverse DFT, visualizing the results
 alongside the original data.
 
-** Advanced Techniques
+*** Advanced Techniques
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -12558,7 +12517,7 @@ cycles.
   :CUSTOM_ID: part0011.xhtml#page_371
   :CLASS: heading_s1W
   :END:
-** The Significance of Decomposition
+*** The Significance of Decomposition
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -12582,7 +12541,7 @@ For example, in retail sales data, trends may reflect long-term growth
 due to market expansion, while seasonality could capture holiday-driven
 spikes in sales.
 
-** Mathematical Foundation
+*** Mathematical Foundation
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -12601,7 +12560,7 @@ Seasonality Removal Using Fourier Transform: The Fourier Transform
 converts the time series into the frequency domain, where periodic
 components can be identified and isolated.
 
-** Practical Steps for Trend and Seasonality Removal
+*** Practical Steps for Trend and Seasonality Removal
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -12615,7 +12574,7 @@ components can be identified and isolated.
 5. Residual Analysis: Analyze the residual component for further
    insights.
 
-** Example: Decomposing Airline Passenger Data
+*** Example: Decomposing Airline Passenger Data
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -12716,7 +12675,7 @@ This example demonstrates how to load and inspect airline passenger
 data, remove the trend using moving averages, and apply Fourier
 Transform to remove seasonal components.
 
-** Advanced Techniques
+*** Advanced Techniques
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -12774,7 +12733,7 @@ allowing us to focus on the core patterns and anomalies within the data.
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-** The Importance of Filtering and Smoothing
+*** The Importance of Filtering and Smoothing
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -12792,7 +12751,7 @@ For instance, in financial data analysis, filtering can help in
 identifying market trends by removing short-term fluctuations and
 focusing on long-term patterns.
 
-** Mathematical Foundation
+*** Mathematical Foundation
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -12818,7 +12777,7 @@ the data, providing a clearer view of the underlying signal.
 - Gaussian Smoothing: Uses a Gaussian function to weight data points,
   effectively smoothing the signal based on the Gaussian distribution.
 
-** Practical Steps for Filtering and Smoothing
+*** Practical Steps for Filtering and Smoothing
   :PROPERTIES:
   :CUSTOM_ID: part0011.xhtml#page_378
   :CLASS: heading_sEC
@@ -12835,7 +12794,7 @@ the data, providing a clearer view of the underlying signal.
    time domain.
 6. Smoothing: Apply smoothing techniques to enhance the signal further.
 
-** Example: Filtering and Smoothing of Stock Market Data
+*** Example: Filtering and Smoothing of Stock Market Data
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -12913,7 +12872,7 @@ This example demonstrates how to load and inspect stock price data,
 design a low-pass filter, apply it to remove high-frequency noise, and
 smooth the filtered signal using a moving average.
 
-** Advanced Techniques
+*** Advanced Techniques
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -12967,7 +12926,7 @@ interpretability of the data.
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-** The Significance of Spectral Density Estimation
+*** The Significance of Spectral Density Estimation
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -12987,7 +12946,7 @@ periodic trends and cycles that are not immediately apparent in the time
 domain. Similarly, in environmental data, it can help in identifying
 seasonal patterns and trends.
 
-** Mathematical Foundation
+*** Mathematical Foundation
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -13020,7 +12979,7 @@ estimate.
   <<part0011.xhtml#page_383>>spectral estimate \(S_x(f)\) is obtained by
   averaging the periodograms of the tapered signals.
 
-** Practical Steps for Spectral Density Estimation
+*** Practical Steps for Spectral Density Estimation
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -13035,7 +12994,7 @@ estimate.
 5. Plot and Interpret Results: Visualize the spectral density estimate
    and interpret the frequency components.
 
-** Example: Spectral Density Estimation of Environmental Data
+*** Example: Spectral Density Estimation of Environmental Data
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -13112,7 +13071,7 @@ This example demonstrates how to load and inspect temperature data,
 compute the spectral density using the periodogram and Welch's method,
 and visualize the results.
 
-** Advanced Techniques
+*** Advanced Techniques
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -13158,7 +13117,7 @@ multitaper method to estimate the spectral density effectively.
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-** Importance of Principal Component Analysis
+*** Importance of Principal Component Analysis
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -13179,7 +13138,7 @@ In finance, PCA is used to identify the key factors driving stock
 prices. In biology, it helps in analyzing gene expression data. In image
 processing, it is used for image compression and recognition tasks.
 
-** Mathematical Foundation
+*** Mathematical Foundation
   :PROPERTIES:
   :CUSTOM_ID: part0011.xhtml#page_387
   :CLASS: heading_s1W
@@ -13223,7 +13182,7 @@ with reduced dimensions.
 where \(\mathbf{Y}\) is the transformed data matrix and \(\mathbf{V}\)
 is the matrix of eigenvectors.
 
-** Practical Steps for PCA
+*** Practical Steps for PCA
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -13238,7 +13197,7 @@ is the matrix of eigenvectors.
 5. Transform Data: Project the original data onto the selected principal
    components.
 
-** Example: PCA on Financial Data
+*** Example: PCA on Financial Data
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -13294,7 +13253,7 @@ This example demonstrates the process of loading and standardizing stock
 price data, applying PCA to identify the principal components, and
 visualizing the results.
 
-** Advanced Topics in PCA
+*** Advanced Topics in PCA
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -13369,7 +13328,7 @@ powerful tools for feature extraction, converting data from the time
 domain to the frequency domain, thereby revealing hidden patterns and
 structures.
 
-** Importance of Feature Extraction
+*** Importance of Feature Extraction
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -13391,7 +13350,7 @@ for stock price prediction. In image processing, it
 <<part0011.xhtml#page_392>>assists in detecting edges and textures. In
 audio processing, it helps in identifying frequencies and harmonics.
 
-** Fourier Transform-Based Feature Extraction
+*** Fourier Transform-Based Feature Extraction
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -13410,7 +13369,7 @@ Steps for Fourier Transform-Based Feature Extraction:
 4. Transform Back (if needed): For some applications, transform the
    selected features back to the time domain.
 
-** Example: Feature Extraction from Time Series Data
+*** Example: Feature Extraction from Time Series Data
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -13503,7 +13462,7 @@ This example demonstrates the process of extracting features from time
 series data using the Fourier Transform, and then using these features
 for predictive modeling.
 
-** Advanced Techniques in Feature Extraction
+*** Advanced Techniques in Feature Extraction
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -13548,11 +13507,11 @@ selected_stft_features = Zxx.mean(axis=1)
 These advanced techniques provide more nuanced insights and are
 particularly useful for non-stationary data.
 
-** Applications in Finance and Economics
+*** Applications in Finance and Economics
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** Identifying Cyclical Patterns
+*** Identifying Cyclical Patterns
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -13563,7 +13522,7 @@ market sentiment, and even seasonal effects. Fourier Transforms help
 decompose a time series into its frequency components, allowing analysts
 to identify these underlying cycles.
 
-** Practical Example: Stock Price Analysis
+*** Practical Example: Stock Price Analysis
   :PROPERTIES:
   :CUSTOM_ID: part0011.xhtml#page_396
   :CLASS: heading_s1W
@@ -13615,7 +13574,7 @@ extract meaningful information. Fourier Transforms offer a robust method
 for noise reduction by filtering out high-frequency noise components
 that do not contribute to the underlying trends.
 
-** Practical Example: Smoothing Stock Price Data
+*** Practical Example: Smoothing Stock Price Data
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -13664,7 +13623,7 @@ plt.show()
 This process significantly reduces noise, revealing the underlying trend
 more clearly.
 
-** Algorithmic Trading Strategies
+*** Algorithmic Trading Strategies
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -13673,7 +13632,7 @@ Fourier Transforms can enhance trading algorithms by filtering signals,
 identifying trends, and even predicting future price movements based on
 historical data.
 
-** Practical Example: Trend Prediction in Algorithmic Trading
+*** Practical Example: Trend Prediction in Algorithmic Trading
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -13726,7 +13685,7 @@ This example demonstrates how Fourier analysis can extend historical
 trends to predict future prices, enhancing the performance of trading
 algorithms.
 
-** Economic Analysis and Forecasting
+*** Economic Analysis and Forecasting
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -13736,7 +13695,7 @@ use these techniques to analyze macroeconomic indicators, such as GDP
 growth rates, inflation, and unemployment rates, identifying cyclical
 patterns that influence economic policy decisions.
 
-** Practical Example: Analyzing GDP Growth Rates
+*** Practical Example: Analyzing GDP Growth Rates
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -13782,7 +13741,7 @@ innovation lies.
   :PROPERTIES:
   :CLASS: heading_s28R
   :END:
-** Understanding Seismic Waves
+*** Understanding Seismic Waves
   :PROPERTIES:
   :CLASS: heading_s6
   :END:
@@ -13792,7 +13751,7 @@ artificial sources like explosions. These waves are categorized into
 different types based on their propagation characteristics: Primary (P)
 waves, Secondary (S) waves, and surface waves.
 
-** Practical Example: Visualizing Seismic Waves
+*** Practical Example: Visualizing Seismic Waves
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -13821,7 +13780,7 @@ plt.show()
 This simple visualization helps us understand the nature of seismic
 waves and sets the stage for applying Fourier analysis.
 
-** Fourier Transform for Seismic Data
+*** Fourier Transform for Seismic Data
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
@@ -13831,7 +13790,7 @@ allows geophysicists to analyze the frequency content of seismic waves,
 which is crucial for identifying underlying geological structures and
 seismic event characteristics.
 
-** Frequency Analysis of Seismic Signals
+*** Frequency Analysis of Seismic Signals
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -13875,7 +13834,7 @@ plt.show()
 By analyzing the frequency spectrum, geophysicists can identify the
 presence of different seismic events and their characteristics.
 
-** Seismic Data Filtering
+*** Seismic Data Filtering
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
@@ -13884,7 +13843,7 @@ challenging to extract meaningful information. Fourier-based filtering
 techniques help remove unwanted noise, enhancing the clarity of seismic
 signals.
 
-** Practical Example: Filtering Seismic Noise
+*** Practical Example: Filtering Seismic Noise
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -13905,8 +13864,7 @@ Here's how we can implement this in Python:
 
 # Sample data: synthetic noisy seismic wave amplitudes
 time = np.linspace(0, 10, 500)
-noisy_amplitudes = np.sin(2 * np.pi * 1 * time) + 0.5 * np.sin(2 * np.pi
-** 3 * time) + np.random.normal(0, 0.2, 500)
+noisy_amplitudes = np.sin(2 * np.pi * 1 * time) + 0.5 * np.sin(2 * np.pi** 3 * time) + np.random.normal(0, 0.2, 500)
 
 # Apply Fourier Transform
 ft = np.fft.fft(noisy_amplitudes)
@@ -13934,7 +13892,7 @@ plt.show()
 This technique significantly reduces noise, making it easier to analyze
 the seismic signal.
 
-** Seismic Tomography
+*** Seismic Tomography
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
@@ -13943,7 +13901,7 @@ waves to create images of the Earth's interior. It's
 <<part0011.xhtml#page_405>>analogous to medical tomography, where
 Fourier Transforms are used to reconstruct images from X-ray data.
 
-** Practical Example: Basic Seismic Tomography Simulation
+*** Practical Example: Basic Seismic Tomography Simulation
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -14000,14 +13958,14 @@ plt.show()
 This example illustrates how seismic tomography can be used to infer
 subsurface structures through Fourier analysis.
 
-** Earthquake Prediction
+*** Earthquake Prediction
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
 One of the most ambitious applications of Fourier Transforms in
 seismology is earthquake prediction.
 
-** Practical Example: Analyzing Seismic Precursors
+*** Practical Example: Analyzing Seismic Precursors
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -14071,11 +14029,11 @@ applications of Fourier Transforms, remember that the fusion of
 mathematical elegance with practical problem-solving is where true
 advancements occur.
 
-** Examples with Real-world Data Sets
+*** Examples with Real-world Data Sets
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-** Understanding the Importance of Real-world Data
+*** Understanding the Importance of Real-world Data
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
@@ -14086,7 +14044,7 @@ techniques. Working with such data not only enhances one's technical
 skills but also provides a realistic perspective on the applications and
 limitations of Fourier Transforms in seismology.
 
-** Example 1: Analyzing Earthquake Seismic Data
+*** Example 1: Analyzing Earthquake Seismic Data
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -14095,7 +14053,7 @@ data from a real-world data set. The objective is to identify and
 visualize the frequency components of seismic waves generated by an
 earthquake.
 
-** Step-by-Step Guide:
+**** Step-by-Step Guide:
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
@@ -14113,7 +14071,7 @@ earthquake.
 8. Analyze the frequency spectrum to identify the dominant frequencies
    and their corresponding amplitudes.
 
-** Practical Example:
+*** Practical Example:
   :PROPERTIES:
   :CLASS: heading_s1W8
   :END:
@@ -14158,7 +14116,7 @@ This example demonstrates how to visualize the raw seismic data and its
 frequency spectrum, allowing geophysicists to identify the
 characteristic frequencies of the earthquake.
 
-** Example 2: Detecting Seismic Anomalies
+*** Example 2: Detecting Seismic Anomalies
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -14166,7 +14124,7 @@ Seismic anomaly detection is crucial for identifying unusual or
 unexpected events within seismic data. Fourier analysis can highlight
 these anomalies by revealing changes in the frequency content over time.
 
-** Step-by-Step Guide:
+**** Step-by-Step Guide:
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
@@ -14182,7 +14140,7 @@ these anomalies by revealing changes in the frequency content over time.
 8. Identify segments with significant deviations from the normal
    frequency pattern.
 
-** Practical Example:
+*** Practical Example:
   :PROPERTIES:
   :CLASS: heading_s1W8
   :END:
@@ -14237,7 +14195,7 @@ plt.show()
 This example creates a spectrogram to visualize the frequency content of
 seismic data over time, helping to detect and analyze anomalies.
 
-** Example 3: Seismic Event Classification
+*** Example 3: Seismic Event Classification
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
@@ -14246,7 +14204,7 @@ valuable application of Fourier Transforms. For instance, different
 types of seismic events, such as earthquakes, explosions, and volcanic
 activities, exhibit distinct frequency patterns.
 
-** Step-by-Step Guide:
+**** Step-by-Step Guide:
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
