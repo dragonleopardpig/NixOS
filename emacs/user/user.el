@@ -11,12 +11,14 @@
 (setq text-scale-mode-step 1.05)
 (setq org-indent-indentation-per-level 0)
 (global-visual-line-mode t)
-(global-display-fill-column-indicator-mode t)
-(add-hook 'text-mode-hook 'turn-on-auto-fill)
-(add-hook 'text-mode-hook
-	  (lambda() (set-fill-column 80)))
+;; (global-display-fill-column-indicator-mode t)
+;; (add-hook 'text-mode-hook 'turn-on-auto-fill)
+;; (add-hook 'text-mode-hook
+;; 	  (lambda() (set-fill-column 80)))
 (column-number-mode)
 (add-hook 'org-mode-hook 'org-indent-mode)
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+(setopt display-fill-column-indicator-column 80)
 
 ;; * Custom Keyboard Shortcut
 (global-set-key (kbd "M-p") 'scroll-up-line)
@@ -116,8 +118,14 @@
    (lisp . t)
    (nix . t)
    ;; (jupyter . t)
-   ;; (racket . t)
+   (spice . t)
    ))
+
+;; * Spice
+(setq spice-simulator "Ngspice"
+      spice-waveform-viewer "ngplot")
+;; ngplot is a new custom viewer defined in elisp which uses gnuplot
+
 
 ;; * Latex and preview pane
 (latex-preview-pane-enable)

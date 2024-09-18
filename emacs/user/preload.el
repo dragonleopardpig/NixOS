@@ -70,6 +70,8 @@
 	markdown-mode
 	mixed-pitch ;;disable org-block-begin-line, org-block-end-line in .el file
 	smartparens
+	spice-mode
+	ob-spice
 	))
 (package-install-selected-packages)
 

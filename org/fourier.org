@@ -72,23 +72,11 @@ wavfile.write('cleaned_audio.wav', sample_rate,
 #+end_src
 
 
-- Image Processing :: In image processing, the 2D Fourier Transform
-  decomposes an image into its sine and cosine components. This is
-  crucial for tasks such as image compression (e.g., JPEG), edge
-  detection, and image enhancement.
+- Image Processing :: In image processing, the 2D Fourier Transform decomposes an image into its sine and cosine components. This is crucial for tasks such as image compression (e.g., JPEG), edge detection, and image enhancement.
 
-For example, in medical imaging, the Fourier Transform helps in the
-reconstruction of images from MRI data. Each slice of MRI data can be
-transformed to reveal underlying structures that are not immediately
-visible in the raw data. Similarly, the frequency domain representation
-is essential for filtering processes that enhance or suppress specific
-image features or patterns.
+For example, in medical imaging, the Fourier Transform helps in the reconstruction of images from MRI data. Each slice of MRI data can be transformed to reveal underlying structures that are not immediately visible in the raw data. Similarly, the frequency domain representation is essential for filtering processes that enhance or suppress specific image features or patterns.
 
-- Speech Recognition :: In speech recognition, converting time-domain
-  signals into the frequency domain using Fourier Transforms helps
-  isolate phonetic features that are critical for accurately
-  interpreting spoken words. This enables the development of systems
-  capable of translating spoken language into text with high accuracy.
+- Speech Recognition :: In speech recognition, converting time-domain signals into the frequency domain using Fourier Transforms helps isolate phonetic features that are critical for accurately interpreting spoken words. This enables the development of systems capable of translating spoken language into text with high accuracy.
 
 *** Communications
 
@@ -4372,30 +4360,24 @@ To understand FFT, it is crucial to grasp some fundamental concepts:
   :PROPERTIES:
   :CLASS: heading_s151
   :END:
-The DFT of a sequence (x[n]) is defined as:\[ X[k] = \sum_{n=0}^{N-1}
-x[n] \cdot e^{-j(2\pi/N)nk}\] where (X[k]) represents the frequency
-domain data and (n) and (k) are indices over the time and frequency
-domains, respectively.
+The DFT of a sequence (x[n]) is defined as:\[ X[k] = \sum_{n=0}^{N-1} x[n] \cdot e^{-j(2\pi/N)nk}\] where \(X[k]\) represents the frequency domain data and (n) and (k) are indices over the time and frequency domains, respectively.
 
 The FFT leverages the periodicity and symmetry properties of the complex
-exponentials to reduce the number of necessary calculations.
-Specifically, it decomposes the DFT into smaller DFTs of even and odd
-indexed elements:\[ X[k] = \sum_{n=0}^{N/2 - 1} x[2n]e^{-j(2\pi/N)2nk} +
-e^{-j(2\pi/N)k} \sum_{n=0}^{N/2 - 1} x[2n+1]e^{-j(2\pi/N)2nk}\]
+exponentials to reduce the number of necessary calculations.  Specifically, it
+decomposes the DFT into smaller DFTs of even and odd indexed elements:
+\[ X[k] = \sum_{n=0}^{N/2 - 1} x[2n]e^{-j(2\pi/N)2nk} + e^{-j(2\pi/N)k} \sum_{n=0}^{N/2 - 1} x[2n+1]e^{-j(2\pi/N)2nk}\]
 
 *** Practical Implementation
   :PROPERTIES:
   :CUSTOM_ID: part0007.xhtml#page_158
   :CLASS: heading_s1W
   :END:
-An efficient implementation of FFT can be achieved through popular
-Python libraries such as NumPy and SciPy. Below is a practical example
-demonstrating the calculation of FFT on a sample signal.
+An efficient implementation of FFT can be achieved through popular Python libraries such as NumPy and SciPy. Below is a practical example demonstrating the calculation of FFT on a sample signal.
 
-Practical Example: FFT in Python
-
+**** Practical Example: FFT in Python
 #+begin_src jupyter-python
- import numpy as np import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib.pyplot as plt
 
 # Generate a sample signal: a sum of two sinusoidal waves
 sampling_rate = 1000
@@ -4407,7 +4389,7 @@ fft_result = np.fft.fft(signal)
 frequencies = np.fft.fftfreq(len(signal), 1/sampling_rate)
 
 # Plot the original signal
-plt.figure(figsize=(12, 6))
+# plt.figure(figsize=(12, 6))
 plt.subplot(2, 1, 1)
 plt.plot(t, signal)
 plt.title('Original Signal')
@@ -4417,41 +4399,29 @@ plt.ylabel('Amplitude')
 # Plot the FFT result
 plt.subplot(2, 1, 2)
 plt.plot(frequencies[:len(frequencies)//2],
-np.abs(fft_result)[:len(frequencies)//2])
+         np.abs(fft_result)[:len(frequencies)//2])
 plt.title('FFT of the Signal')
 plt.xlabel('Frequency\[Hz]')
 plt.ylabel('Magnitude')
 plt.tight_layout()
 plt.show()
-
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/1cf5cf69ef5d2d57ffcf86ecae37acbf17ebf3a4.png]]
 
 
-In this example, a composite signal consisting of two sinusoidal waves
-is generated. The FFT is then performed to transform the signal into the
-frequency domain, revealing its constituent frequencies. This
-visualization is crucial for understanding the frequency components of
-the signal.
+In this example, a composite signal consisting of two sinusoidal waves is generated. The FFT is then performed to transform the signal into the frequency domain, revealing its constituent frequencies. This visualization is crucial for understanding the frequency components of the signal.
 
 *** Applications and Advantages
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-The FFT's enhanced efficiency and performance make it suitable for a
-wide range of applications:
+The FFT's enhanced efficiency and performance make it suitable for a wide range of applications:
 
-1. Real-Time Signal Processing: FFT enables real-time analysis and
-   manipulation of signals, critical in communication systems, radar,
-   and medical imaging.
-2. Audio and Speech Processing: FFT aids in tasks such as noise
-   reduction, audio compression, and pitch detection, making it vital in
-   audio engineering and music technology.
-3. Image Processing: Applying 2D FFT to images allows for sophisticated
-   filtering, edge detection, and compression techniques, significantly
-   enhancing image analysis capabilities.
-4. Financial Data Analysis: FFT is employed to analyze and predict
-   trends in time series data, providing insights for trading strategies
-   and economic research.
++ Real-Time Signal Processing :: FFT enables real-time analysis and manipulation of signals, critical in communication systems, radar, and medical imaging.
++ Audio and Speech Processing :: FFT aids in tasks such as noise reduction, audio compression, and pitch detection, making it vital in audio engineering and music technology.
++ Image Processing :: Applying 2D FFT to images allows for sophisticated filtering, edge detection, and compression techniques, significantly enhancing image analysis capabilities.
++ Financial Data Analysis :: FFT is employed to analyze and predict trends in time series data, providing insights for trading strategies and economic research.
 
 ** Cooley-Tukey Algorithm
   :PROPERTIES:
@@ -4461,63 +4431,38 @@ wide range of applications:
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-Before the advent of the Cooley-Tukey Algorithm, computing the DFT for a
-sequence of (N) data points required (O(N^2)) operations. This quadratic
-complexity was prohibitively <<part0007.xhtml#page_160>>expensive for
-large datasets, limiting the practical utility of Fourier Transforms in
-real-time applications. Cooley and Tukey's innovation reduced the
-computational cost to (O(N \log N)), making it feasible to perform
-Fourier analysis on large-scale data efficiently.
+Before the advent of the Cooley-Tukey Algorithm, computing the DFT for a sequence of \(N\) data points required \(O(N^2)\) operations. This quadratic complexity was prohibitively expensive for large datasets, limiting the practical utility of Fourier Transforms in real-time applications. Cooley and Tukey's innovation reduced the computational cost to \(O(N \log N)\), making it feasible to perform Fourier analysis on large-scale data efficiently.
 
 *** The Divide-and-Conquer Approach
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-At the heart of the Cooley-Tukey Algorithm lies the divide-and-conquer
-strategy, a technique that breaks down a complex problem into simpler
-subproblems, solves each subproblem independently, and combines their
-solutions to solve the original problem.
+At the heart of the Cooley-Tukey Algorithm lies the divide-and-conquer strategy, a technique that breaks down a complex problem into simpler subproblems, solves each subproblem independently, and combines their solutions to solve the original problem.
 
-1. Recursive Decomposition: The Cooley-Tukey Algorithm decomposes the
-   DFT of size (N) into two smaller DFTs of size (N/2). This process is
-   applied recursively until the DFTs are reduced to the smallest
-   possible size (typically (N = 2)).
-2. Radix-2 Decimation: The most common variant of the Cooley-Tukey
-   Algorithm is the Radix-2 algorithm, which works efficiently when (N)
-   is a power of two. The sequence is split into even-indexed and
-   odd-indexed elements, facilitating recursive calculations.
-3. Bit-Reversal Permutation: Before the recursive computation, the input
-   sequence undergoes a bit-reversal permutation, rearranging the data
-   in a way that aligns with the recursive structure of the algorithm.
-   This step ensures that the data is processed in the correct order
-   during each stage of recursion.
++ Recursive Decomposition :: The Cooley-Tukey Algorithm decomposes the DFT of size \(N\) into two smaller DFTs of size \(N/2\). This process is applied recursively until the DFTs are reduced to the smallest possible size (typically \(N = 2)\).
++ Radix-2 Decimation :: The most common variant of the Cooley-Tukey Algorithm is the Radix-2 algorithm, which works efficiently when (N) is a power of two. The sequence is split into even-indexed and odd-indexed elements, facilitating recursive calculations.
++ Bit-Reversal Permutation :: Before the recursive computation, the input sequence undergoes a bit-reversal permutation, rearranging the data in a way that aligns with the recursive structure of the algorithm.  This step ensures that the data is processed in the correct order during each stage of recursion.
 
 *** Mathematical Formulation
   :PROPERTIES:
   :CLASS: heading_s151
   :END:
-To understand the Cooley-Tukey Algorithm, let's start with the
-definition of the DFT:
+To understand the Cooley-Tukey Algorithm, let's start with the definition of the DFT:
 
-[ X[k] = \sum_{n=0}^{N-1} x[n] \cdot e^{-j(2\pi/N)nk}\]
+\[ X[k] = \sum_{n=0}^{N-1} x[n] \cdot e^{-j(2\pi/N)nk}\]
 
-For simplicity, consider (N) as a power of two. The algorithm decomposes
-the DFT into two smaller DFTs:
+For simplicity, consider \(N\) as a power of two. The algorithm decomposes the DFT into two smaller DFTs:
 
-1. Even-Indexed Elements:\[ X_{\text{even}}[k] = \sum_{n=0}^{N/2-1}
-   x[2n] \cdot e^{-j(2\pi/(N/2))nk}\]
-2. Odd-Indexed Elements:\[ X_{\text{odd}}[k] = \sum_{n=0}^{N/2-1}
-   x[2n+1] \cdot e^{-j(2\pi/(N/2))nk}\]
++ Even-Indexed Elements :: \[ X_{\text{even}}[k] = \sum_{n=0}^{N/2-1} x[2n] \cdot e^{-j(2\pi/(N/2))nk}\]
++ Odd-Indexed Elements :: \[ X_{\text{odd}}[k] = \sum_{n=0}^{N/2-1} x[2n+1] \cdot e^{-j(2\pi/(N/2))nk}\]
 
 Combining these:
 
-[ X[k] = X_{\text{even}}[k] + e^{-j(2\pi/N)k} \cdot X_{\text{odd}}[k]\]
-[ X[k+N/2] = X_{\text{even}}[k] - e^{-j(2\pi/N)k} \cdot
-X_{\text{odd}}[k]\]
+\[ X[k] = X_{\text{even}}[k] + e^{-j(2\pi/N)k} \cdot X_{\text{odd}}[k]\] 
 
-This decomposition leverages the symmetry and periodicity properties of
-the exponential functions, significantly reducing the number of
-calculations required.
+\[ X[k+N/2] = X_{\text{even}}[k] - e^{-j(2\pi/N)k} \cdot X_{\text{odd}}[k]\]
+
+This decomposition leverages the symmetry and periodicity properties of the exponential functions, significantly reducing the number of calculations required.
 
 *** Practical Implementation
   :PROPERTIES:
@@ -4528,21 +4473,22 @@ numpy library, which provides efficient and optimized FFT functions.
 Below is a practical example demonstrating the Cooley-Tukey Algorithm
 using NumPy.
 
-Practical Example: Cooley-Tukey Algorithm in Python
-
+**** Practical Example: Cooley-Tukey Algorithm in Python
 #+begin_src jupyter-python
- import numpy as np import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib.pyplot as plt
 
 # Custom FFT implementation using Cooley-Tukey Algorithm
 def cooley_tukey_fft(x):
-    N = len(x)
-    if N <= 1:
-        return x
-    even = cooley_tukey_fft(x[0::2])
-    <<part0007.xhtml#page_162>>odd = cooley_tukey_fft(x[1::2])
-    T =\[np.exp(-2j * np.pi * k / N) * odd[k] for k in range(N // 2)]
-    return\[even[k] + T[k] for k in range(N // 2)] +\[even[k] - T[k] for
-k in range(N // 2)]
+    N = len(x)
+    if N <= 1:
+        return x
+    even = cooley_tukey_fft(x[0::2])
+    odd = cooley_tukey_fft(x[1::2])
+    T = [np.exp(-2j * np.pi * k / N) * odd[k-1] for k in range(N // 2)]
+    return [even[k-1] + T[k] for k in range(N // 2)] + \
+        [even[k-1] - T[k] for k in range(N // 2)]
+# Changed to [k-1] due to out of range error - ChuPL
 
 # Generate a sample signal: a sum of two sinusoidal waves
 sampling_rate = 1000
@@ -4554,11 +4500,11 @@ fft_result = cooley_tukey_fft(signal)
 frequencies = np.fft.fftfreq(len(signal), 1/sampling_rate)
 
 # Plot the original signal
-plt.figure(figsize=(12, 6))
+# plt.figure(figsize=(12, 6))
 plt.subplot(2, 1, 1)
 plt.plot(t, signal)
 plt.title('Original Signal')
-plt.xlabel('Time\[s]')
+plt.xlabel('Time [s]')
 plt.ylabel('Amplitude')
 
 # Plot the FFT result
@@ -4570,48 +4516,26 @@ plt.xlabel('Frequency\[Hz]')
 plt.ylabel('Magnitude')
 plt.tight_layout()
 plt.show()
-
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/7b6847757dad45056dfdf31a189cdbe3f4ccf069.png]]
 
 
-In this example, we implement a simple version of the Cooley-Tukey
-Algorithm to perform FFT on a composite signal. The
-<<part0007.xhtml#page_163>>code recursively splits the input sequence
-into even and odd indexed elements, processes them independently, and
-combines the results to obtain the final DFT. Visualizing the original
-signal and its frequency components provides an intuitive understanding
-of the algorithm's effectiveness.
+In this example, we implement a simple version of the Cooley-Tukey Algorithm to perform FFT on a composite signal. The code recursively splits the input sequence into even and odd indexed elements, processes them independently, and combines the results to obtain the final DFT. Visualizing the original signal and its frequency components provides an intuitive understanding of the algorithm's effectiveness.
 
 *** Applications of the Cooley-Tukey Algorithm
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-The efficiency and versatility of the Cooley-Tukey Algorithm make it
-applicable in numerous fields:
+The efficiency and versatility of the Cooley-Tukey Algorithm make it applicable in numerous fields:
 
-1. Telecommunications: FFT is integral to modulation and demodulation
-   processes, enabling efficient data transmission and reception in
-   communication systems.
-2. Medical Imaging: Techniques such as MRI and CT scans rely on FFT for
-   reconstructing images from raw data, providing detailed insights into
-   the human body.
-3. Audio Compression: FFT aids in compressing audio files by
-   transforming time-domain signals into frequency-domain
-   representations, facilitating efficient storage and transmission.
-4. Spectral Analysis: In scientific research, FFT is used to analyze the
-   spectral content of signals, uncovering hidden patterns and
-   frequencies in data.
-5. Financial Time Series: FFT helps in analyzing and forecasting
-   financial data, identifying periodic trends and cycles that inform
-   trading strategies.
++ Telecommunications :: FFT is integral to modulation and demodulation processes, enabling efficient data transmission and reception in communication systems.
++ Medical Imaging :: Techniques such as MRI and CT scans rely on FFT for reconstructing images from raw data, providing detailed insights into the human body.
++ Audio Compression :: FFT aids in compressing audio files by transforming time-domain signals into frequency-domain representations, facilitating efficient storage and transmission.
++ Spectral Analysis: In scientific research, FFT is used to analyze the spectral content of signals, uncovering hidden patterns and frequencies in data.
++ Financial Time Series :: FFT helps in analyzing and forecasting financial data, identifying periodic trends and cycles that inform trading strategies.
 
-The Cooley-Tukey Algorithm stands as a cornerstone in the field of
-digital signal processing, offering unmatched efficiency and
-performance. As you continue your journey through this book, the
-knowledge and skills gained from understanding the Cooley-Tukey
-Algorithm will serve as a solid foundation for
-<<part0007.xhtml#page_164>>exploring more advanced FFT techniques and
-their practical implementations.
+The Cooley-Tukey Algorithm stands as a cornerstone in the field of digital signal processing, offering unmatched efficiency and performance. As you continue your journey through this book, the knowledge and skills gained from understanding the Cooley-Tukey Algorithm will serve as a solid foundation for exploring more advanced FFT techniques and their practical implementations.
 
 ** Radix-2 FFT
   :PROPERTIES:
@@ -4621,47 +4545,31 @@ their practical implementations.
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-The Radix-2 FFT is a specific case of the Cooley-Tukey algorithm,
-optimized for sequences whose length (N) is a power of two. It exploits
-the divide-and-conquer strategy to decompose a large DFT into smaller,
-more manageable DFTs, recursively. This approach significantly reduces
-the computational complexity from (O(N^2)) to (O(N \log N)), making it
-feasible to process large datasets efficiently.
+The Radix-2 FFT is a specific case of the Cooley-Tukey algorithm, optimized for sequences whose length \(N\) is a power of two. It exploits the divide-and-conquer strategy to decompose a large DFT into smaller, more manageable DFTs, recursively. This approach significantly reduces the computational complexity from \(O(N^2)\) to \(O(N \log N)\), making it feasible to process large datasets efficiently.
 
 *** Recursive Decomposition
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
-The essence of the Radix-2 FFT lies in its recursive decomposition of
-the DFT. For a sequence of length (N = 2^m), the DFT can be split into
-two smaller DFTs of length (N/2):
+The essence of the Radix-2 FFT lies in its recursive decomposition of the DFT. For a sequence of length \(N = 2^m\), the DFT can be split into two smaller DFTs of length \(N/2\):
 
-1. Even-Indexed Elements:\[ X_{\text{even}}[k] = \sum_{n=0}^{N/2-1}
-   x[2n] \cdot e^{-j(2\pi k n / (N/2))}\]
-2. Odd-Indexed Elements:\[ X_{\text{odd}}[k] = \sum_{n=0}^{N/2-1}
-   x[2n+1] \cdot e^{-j(2\pi k n / (N/2))}\]
++ Even-Indexed Elements :: \[ X_{\text{even}}[k] = \sum_{n=0}^{N/2-1} x[2n] \cdot e^{-j(2\pi k n / (N/2))}\]
++ Odd-Indexed Elements :: \[ X_{\text{odd}}[k] = \sum_{n=0}^{N/2-1} x[2n+1] \cdot e^{-j(2\pi k n / (N/2))}\]
 
 These smaller DFTs are then combined to form the original DFT:
 
-[ X[k] = X_{\text{even}}[k] + e^{-j(2\pi k / N)} \cdot X_{\text{odd}}[k]
-]\[ X[k+N/2] = X_{\text{even}}[k] - e^{-j(2\pi k / N)} \cdot
-X_{\text{odd}}[k]\]
+\[ X[k] = X_{\text{even}}[k] + e^{-j(2\pi k / N)} \cdot X_{\text{odd}}[k] \]
 
-This decomposition leverages the periodicity and symmetry properties of
-the exponential functions, thus reducing the number of arithmetic
-operations required.
+\[ X[k+N/2] = X_{\text{even}}[k] - e^{-j(2\pi k / N)} \cdot X_{\text{odd}}[k]\]
+
+This decomposition leverages the periodicity and symmetry properties of the exponential functions, thus reducing the number of arithmetic operations required.
 
 *** Bit-Reversal Permutation
   :PROPERTIES:
   :CUSTOM_ID: part0007.xhtml#page_165
   :CLASS: heading_sW8
   :END:
-Before recursive computation, the input sequence undergoes a
-bit-reversal permutation. This step rearranges the data indices in such
-a way that the binary representation of each index is reversed. For
-example, for (N = 8), the index 3 (binary 011) is swapped with index 6
-(binary 110). This reordering aligns the data with the recursive
-structure of the algorithm, ensuring efficient processing.
+Before recursive computation, the input sequence undergoes a bit-reversal permutation. This step rearranges the data indices in such a way that the binary representation of each index is reversed. For example, for \(N = 8\), the index 3 (binary 011) is swapped with index 6 (binary 110). This reordering aligns the data with the recursive structure of the algorithm, ensuring efficient processing.
 
 *** Practical Implementation
   :PROPERTIES:
@@ -4672,43 +4580,42 @@ library, which offers optimized and efficient FFT functions. However,
 for educational purposes, we will implement the Radix-2 FFT from scratch
 to better understand its mechanics.
 
-Practical Example: Radix-2 FFT in Python
-
+**** Practical Example: Radix-2 FFT in Python
 #+begin_src jupyter-python
- import numpy as np
+import numpy as np
 
 # Bit-reversal permutation
 def bit_reversal_permutation(x):
-    N = len(x)
-    j = 0
-    for i in range(1, N):
-        bit = N >> 1
-        while j >= bit:
-            j -= bit
-            bit >>= 1
-        j += bit
-        if i < j:
-            x[i], x[j] = x[j], x[i]
-    return x
+    N = len(x)
+    j = 0
+    for i in range(1, N):
+        bit = N >> 1
+        while j >= bit:
+            j -= bit
+            bit >>= 1
+            j += bit
+        if i < j:
+            x[i], x[j] = x[j], x[i]
+    return x
 
 # Radix-2 FFT implementation
 def radix2_fft(x):
-    x = bit_reversal_permutation(x)
-    N = len(x)
-    step = 2
-    while step <= N:
-        half_step = step // 2
-        theta = -2j * np.pi / step
-        w_m = np.exp(theta)
-        for k in range(0, N, step):
-            w = 1
-            for j in range(half_step):
-                t = w * x[k + j + half_step]
-                x[k + j + half_step] = x[k + j] - t
-                x[k + j] = x[k + j] + t
-                w *= w_m
-        step *= 2
-    return x
+    x = bit_reversal_permutation(x)
+    N = len(x)
+    step = 2
+    while step <= N:
+        half_step = step // 2
+        theta = -2j * np.pi / step
+        w_m = np.exp(theta)
+        for k in range(0, N, step):
+            w = 1
+            for j in range(half_step):
+                t = w * x[k + j + half_step]
+                x[k + j + half_step] = x[k + j] - t
+                x[k + j] = x[k + j] + t
+                w *= w_m
+            step *= 2
+    return x
 
 # Generate a sample signal: a sum of two sinusoidal waves
 sampling_rate = 1024
@@ -4722,171 +4629,123 @@ frequencies = np.fft.fftfreq(len(signal), 1/sampling_rate)
 # Plot the original signal and its FFT result
 import matplotlib.pyplot as plt
 
-plt.figure(figsize=(12, 6))
+# plt.figure(figsize=(12, 6))
 plt.subplot(2, 1, 1)
 plt.plot(t, signal)
 plt.title('Original Signal')
-<<part0007.xhtml#page_167>>plt.xlabel('Time\[s]')
+plt.xlabel('Time [s]')
 plt.ylabel('Amplitude')
 
 plt.subplot(2, 1, 2)
 plt.plot(frequencies[:len(frequencies)//2],
-np.abs(fft_result)[:len(frequencies)//2])
+         np.abs(fft_result)[:len(frequencies)//2])
 plt.title('FFT of the Signal')
 plt.xlabel('Frequency\[Hz]')
 plt.ylabel('Magnitude')
 plt.tight_layout()
 plt.show()
-
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/eb340e1c8cdd0f1c45553ebceb7b50117da73fef.png]]
 
 
-In this example, we implement the Radix-2 FFT algorithm, including the
-bit-reversal permutation and recursive decomposition steps. The input
-signal is a composite of two sinusoidal waves, and the FFT result
-reveals the frequency components of the signal. Visualizing both the
-original signal and its frequency spectrum provides a clear
-understanding of the algorithm's effectiveness.
+In this example, we implement the Radix-2 FFT algorithm, including the bit-reversal permutation and recursive decomposition steps. The input signal is a composite of two sinusoidal waves, and the FFT result reveals the frequency components of the signal. Visualizing both the original signal and its frequency spectrum provides a clear understanding of the algorithm's effectiveness.
 
 *** Applications of Radix-2 FFT
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-The efficiency and simplicity of the Radix-2 FFT make it suitable for a
-wide range of applications, including:
+The efficiency and simplicity of the Radix-2 FFT make it suitable for a wide range of applications, including:
 
-1. Digital Signal Processing: Radix-2 FFT is fundamental in digital
-   signal processing tasks, such as filtering, signal analysis, and
-   spectral estimation.
-2. Communication Systems: FFT is integral to modulation and demodulation
-   processes in communication systems, enabling efficient transmission
-   and reception of data.
-3. Image Processing: FFT is used for image filtering, compression, and
-   reconstruction, providing powerful tools for enhancing and analyzing
-   images.
-4. Audio Analysis: FFT helps in analyzing audio signals, identifying
-   frequency components, and performing tasks such as noise reduction
-   and audio compression.
-5. Biomedical Engineering: Techniques like MRI and EEG analysis rely on
-   FFT for processing and interpreting biomedical signals.
++ Digital Signal Processing :: Radix-2 FFT is fundamental in digital signal processing tasks, such as filtering, signal analysis, and spectral estimation.
++ Communication Systems :: FFT is integral to modulation and demodulation processes in communication systems, enabling efficient transmission and reception of data.
++ Image Processing :: FFT is used for image filtering, compression, and reconstruction, providing powerful tools for enhancing and analyzing images.
++ Audio Analysis :: FFT helps in analyzing audio signals, identifying frequency components, and performing tasks such as noise reduction and audio compression.
++ Biomedical Engineering :: Techniques like MRI and EEG analysis rely on FFT for processing and interpreting biomedical signals.
 
-The Radix-2 FFT algorithm is a cornerstone of digital signal processing,
-offering unparalleled efficiency for power-of-two sequences. As you
-continue your journey through this book, the insights and skills
-acquired from understanding the Radix-2 FFT will serve as a robust
-foundation for exploring more advanced FFT techniques and their
-practical applications.
+The Radix-2 FFT algorithm is a cornerstone of digital signal processing, offering unparalleled efficiency for power-of-two sequences. As you continue your journey through this book, the insights and skills acquired from understanding the Radix-2 FFT will serve as a robust foundation for exploring more advanced FFT techniques and their practical applications.
 
 ** Radix-4 and Mixed-Radix FFT
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-In the previous section, we explored the Radix-2 FFT algorithm, a
-fundamental building block in the realm of digital signal processing.
-Now, we delve into the Radix-4 and Mixed-Radix FFT algorithms, which
-further enhance the efficiency of Fourier Transform calculations,
-especially for specific data lengths and applications.
+In the previous section, we explored the Radix-2 FFT algorithm, a fundamental building block in the realm of digital signal processing.  Now, we delve into the Radix-4 and Mixed-Radix FFT algorithms, which further enhance the efficiency of Fourier Transform calculations, especially for specific data lengths and applications.
 
 *** Theoretical Foundations
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-While the Radix-2 FFT is optimized for sequences whose lengths are
-powers of two, the Radix-4 FFT extends this concept by decomposing the
-DFT into smaller DFTs of length four, exploiting the periodicity and
-symmetry of the twiddle factors even further. The Mixed-Radix FFT, on
-the other hand, combines different radices (e.g., 2, 3, 4, etc.) to
-handle <<part0007.xhtml#page_169>>sequences of arbitrary lengths, making
-it versatile for various practical scenarios.
+While the Radix-2 FFT is optimized for sequences whose lengths are powers of two, the Radix-4 FFT extends this concept by decomposing the DFT into smaller DFTs of length four, exploiting the periodicity and symmetry of the twiddle factors even further. The Mixed-Radix FFT, on the other hand, combines different radices (e.g., 2, 3, 4, etc.) to handle sequences of arbitrary lengths, making it versatile for various practical scenarios.
 
 *** Radix-4 FFT
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
-The Radix-4 FFT algorithm splits a DFT of length (N = 4^m) into four
-smaller DFTs, leveraging a divide-and-conquer approach. This reduces the
-number of computational steps compared to Radix-2 FFT by a considerable
-margin.
+The Radix-4 FFT algorithm splits a DFT of length (N = 4^m) into four smaller DFTs, leveraging a divide-and-conquer approach. This reduces the number of computational steps compared to Radix-2 FFT by a considerable margin.
 
-1. Recursive Decomposition: For a sequence of length (N), the DFT can be
-   expressed as:
++ Recursive Decomposition :: For a sequence of length (N), the DFT can be expressed as:
 
-[ X[k] = \sum_{n=0}^{N-1} x[n] \cdot e^{-j \frac{2\pi kn}{N}}\]
+\[ X[k] = \sum_{n=0}^{N-1} x[n] \cdot e^{-j \frac{2\pi kn}{N}}\]
 
 The sequence is divided into four parts:
 
-[ X[k] = \sum_{n_1=0}^{N/4-1} x[4n_1] \cdot e^{-j \frac{2\pi k
-(4n_1)}{N}} + \sum_{n_2=0}^{N/4-1} x[4n_2+1] \cdot e^{-j \frac{2\pi k
-(4n_2+1)}{N}} + \sum_{n_3=0}^{N/4-1} x[4n_3+2] \cdot e^{-j \frac{2\pi k
-(4n_3+2)}{N}} + \sum_{n_4=0}^{N/4-1} x[4n_4+3] \cdot e^{-j \frac{2\pi k
-(4n_4+3)}{N}}\]
+\[\begin{align*}
+X[k] =& \sum_{n_1=0}^{N/4-1} x[4n_1] \cdot e^{-j \frac{2\pi k (4n_1)}{N}} + 
+\sum_{n_2=0}^{N/4-1} x[4n_2+1] \cdot e^{-j \frac{2\pi k (4n_2+1)}{N}} + \\
+&\sum_{n_3=0}^{N/4-1} x[4n_3+2] \cdot e^{-j \frac{2\pi k (4n_3+2)}{N}} + 
+\sum_{n_4=0}^{N/4-1} x[4n_4+3] \cdot e^{-j \frac{2\pi k (4n_4+3)}{N}}
+\end{align*}\]
 
-These smaller DFTs are then combined using twiddle factors to form the
-original DFT.
+These smaller DFTs are then combined using twiddle factors to form the original DFT.
 
-1. Bit-Reversal Permutation: Similar to the Radix-2 FFT, the input
-   sequence undergoes a bit-reversal permutation based on base-4
-   indices. This step ensures that the data is properly aligned for
-   efficient recursive computation.
++ Bit-Reversal Permutation :: Similar to the Radix-2 FFT, the input sequence undergoes a bit-reversal permutation based on base-4 indices. This step ensures that the data is properly aligned for efficient recursive computation.
 
 *** Mixed-Radix FFT
   :PROPERTIES:
   :CLASS: heading_s1W8
   :END:
-The Mixed-Radix FFT algorithm adapts the principles of Radix-2 and
-Radix-4 FFTs to handle sequences of arbitrary lengths. It decomposes the
-DFT into smaller DFTs using <<part0007.xhtml#page_170>>different
-radices, optimizing the computation for any sequence length.
+The Mixed-Radix FFT algorithm adapts the principles of Radix-2 and Radix-4 FFTs to handle sequences of arbitrary lengths. It decomposes the DFT into smaller DFTs using different radices, optimizing the computation for any sequence length.
 
-1. Recursive Decomposition: The sequence is divided based on the chosen
-   radices, applying the appropriate recursive decomposition for each
-   section. For instance, a sequence of length (N = 12) can be
-   decomposed using Radix-3 and Radix-4 steps.
-2. Combining Results: The results of the smaller DFTs are combined using
-   twiddle factors, similar to the Radix-2 and Radix-4 approaches,
-   ensuring efficient computation.
++ Recursive Decomposition :: The sequence is divided based on the chosen radices, applying the appropriate recursive decomposition for each section. For instance, a sequence of length (N = 12) can be decomposed using Radix-3 and Radix-4 steps.
++ Combining Results :: The results of the smaller DFTs are combined using twiddle factors, similar to the Radix-2 and Radix-4 approaches, ensuring efficient computation.
 
 *** Practical Implementation
   :PROPERTIES:
   :CLASS: heading_s151
   :END:
-Implementing Radix-4 and Mixed-Radix FFT algorithms requires a nuanced
-understanding of the recursive decomposition and bit-reversal
-permutation steps. Python's numpy library provides optimized FFT
-functions, but implementing these algorithms from scratch enhances
-comprehension and problem-solving skills.
+Implementing Radix-4 and Mixed-Radix FFT algorithms requires a nuanced understanding of the recursive decomposition and bit-reversal permutation steps. Python's numpy library provides optimized FFT functions, but implementing these algorithms from scratch enhances comprehension and problem-solving skills.
 
-Practical Example: Radix-4 FFT in Python
-
+**** Practical Example: Radix-4 FFT in Python
 #+begin_src jupyter-python
- import numpy as np
+import numpy as np
 
 # Radix-4 FFT implementation
 def radix4_fft(x):
-    N = len(x)
-    if N <= 1:
-        return x
-    if N % 4 != 0:
-        raise ValueError("Length of x must be a power of 4")
+    N = len(x)
+    if N <= 1:
+        return x
+    if N % 4 != 0:
+        raise ValueError("Length of x must be a power of 4")
 
-# Recursive decomposition
-    x0 = radix4_fft(x[0:N:4])
-    x1 = radix4_fft(x[1:N:4])
-    <<part0007.xhtml#page_171>>x2 = radix4_fft(x[2:N:4])
-    x3 = radix4_fft(x[3:N:4])
+    # Recursive decomposition
+    x0 = radix4_fft(x[0:N:4])
+    x1 = radix4_fft(x[1:N:4])
+    x2 = radix4_fft(x[2:N:4])
+    x3 = radix4_fft(x[3:N:4])
 
-# Combine smaller FFTs
-    factor = np.exp(-2j * np.pi * np.arange(N) / N)
-    X = np.zeros(N, dtype=complex)
-    for k in range(N // 4):
-        X[k] = x0[k] + factor[k] * x1[k] + factor[2*k] * x2[k] +
-factor[3*k] * x3[k]
-        X[k + N // 4] = x0[k] - 1j * factor[k] * x1[k] - factor[2*k] *
-x2[k] + 1j * factor[3*k] * x3[k]
-        X[k + N // 2] = x0[k] - factor[k] * x1[k] + factor[2*k] *
-x2[k] - factor[3*k] * x3[k]
-        X[k + 3 * N // 4] = x0[k] + 1j * factor[k] * x1[k] - factor[2*k]* x2[k] - 1j * factor[3*k] * x3[k]
-    return X
+    # Combine smaller FFTs
+    factor = np.exp(-2j * np.pi * np.arange(N) / N)
+    X = np.zeros(N, dtype=complex)
+    for k in range(N // 4):
+        X[k] = x0[k] + factor[k] * x1[k] + factor[2*k] * x2[k] \
+            + factor[3*k] * x3[k]
+        X[k + N // 4] = x0[k] - 1j * factor[k] * x1[k] \
+            - factor[2*k] * x2[k] + 1j * factor[3*k] * x3[k]
+        X[k + N // 2] = x0[k] - factor[k] * x1[k] + factor[2*k] * x2[k] \
+            - factor[3*k] * x3[k]
+        X[k + 3 * N // 4] = x0[k] + 1j * factor[k] * x1[k] \
+            - factor[2*k]* x2[k] - 1j * factor[3*k] * x3[k]
+    return X
 
 # Generate a sample signal
 sampling_rate = 1024
@@ -4900,63 +4759,57 @@ frequencies = np.fft.fftfreq(len(signal), 1/sampling_rate)
 # Plot the original signal and its FFT result
 import matplotlib.pyplot as plt
 
-plt.figure(figsize=(12, 6))
+# plt.figure(figsize=(12, 6))
 plt.subplot(2, 1, 1)
 plt.plot(t, signal)
 plt.title('Original Signal')
-plt.xlabel('Time\[s]')
+plt.xlabel('Time [s]')
 plt.ylabel('Amplitude')
 
 plt.subplot(2, 1, 2)
 plt.plot(frequencies[:len(frequencies)//2],
-np.abs(fft_result)[:len(frequencies)//2])
+         np.abs(fft_result)[:len(frequencies)//2])
 plt.title('FFT of the Signal')
-plt.xlabel('Frequency\[Hz]')
+plt.xlabel('Frequency [Hz]')
 plt.ylabel('Magnitude')
 plt.tight_layout()
 plt.show()
-
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/129d9b806c2ee94cc2b79a69f5af4305e6811e83.png]]
 
 
-In this example, we implement the Radix-4 FFT algorithm from scratch,
-including the recursive decomposition and combination steps. The input
-signal is a composite of two sinusoidal waves, and the FFT result
-reveals the frequency components of the signal. Visualizing both the
-original signal and its frequency spectrum provides a clear
-understanding of the algorithm's effectiveness.
+In this example, we implement the Radix-4 FFT algorithm from scratch, including the recursive decomposition and combination steps. The input signal is a composite of two sinusoidal waves, and the FFT result reveals the frequency components of the signal. Visualizing both the original signal and its frequency spectrum provides a clear understanding of the algorithm's effectiveness.
 
-Practical Example: Mixed-Radix FFT in Python
-
+**** Practical Example: Mixed-Radix FFT in Python
 #+begin_src jupyter-python
- import numpy as np
+import numpy as np
 
 # Mixed-Radix FFT implementation
 def mixed_radix_fft(x, radices):
-    N = len(x)
-    if N <= 1:
-        return x
+    N = len(x)
+    if N <= 1:
+        return x
 
-for radix in radices:
-        if N % radix != 0:
-            raise ValueError("Length of x must be divisible by the
-chosen radices")
+    for radix in radices:
+        # if N % radix != 0:
+        #     raise ValueError("Length of x must be divisible by the chosen radices")
 
-# Recursive decomposition
-        sub_len = N // radix
-        <<part0007.xhtml#page_173>>sub_results =
-[mixed_radix_fft(x[i::radix], radices) for i in range(radix)]
+        # Recursive decomposition
+        sub_len = N // radix
+        sub_results = [mixed_radix_fft(x[i::radix], radices) \
+                       for i in range(radix)]
 
-# Combine smaller FFTs
-        factor = np.exp(-2j * np.pi * np.arange(N) / N)
-        X = np.zeros(N, dtype=complex)
-        for k in range(sub_len):
-            for r in range(radix):
-                X[k + r * sub_len] = sum(sub_results[j][k] *
-factor[(r*j*N//radix)%N] for j in range(radix))
-        x = X
-
-return x
+        # Combine smaller FFTs
+        factor = np.exp(-2j * np.pi * np.arange(N) / N)
+        X = np.zeros(N, dtype=complex)
+        for k in range(sub_len):
+            for r in range(radix):
+                X[k + r * sub_len] = sum(sub_results[j][k] * \
+                                         factor[(r*j*N//radix)%N] \
+                                         for j in range(radix))
+            x = X
+    return x
 
 # Generate a sample signal
 sampling_rate = 1024
@@ -4964,70 +4817,47 @@ t = np.linspace(0, 1, sampling_rate, endpoint=False)
 signal = 0.5 * np.sin(2 * np.pi * 50 * t) + 0.3 * np.sin(2 * np.pi * 120* t)
 
 # Perform FFT using the custom implementation
-fft_result = mixed_radix_fft(signal,\[4, 3])
+fft_result = mixed_radix_fft(signal, [4, 3])
 frequencies = np.fft.fftfreq(len(signal), 1/sampling_rate)
 
 # Plot the original signal and its FFT result
 import matplotlib.pyplot as plt
 
-plt.figure(figsize=(12, 6))
+# plt.figure(figsize=(12, 6))
 plt.subplot(2, 1, 1)
 plt.plot(t, signal)
 plt.title('Original Signal')
-plt.xlabel('Time\[s]')
+plt.xlabel('Time [s]')
 plt.ylabel('Amplitude')
 
 plt.subplot(2, 1, 2)
 plt.plot(frequencies[:len(frequencies)//2],
 np.abs(fft_result)[:len(frequencies)//2])
-<<part0007.xhtml#page_174>>plt.title('FFT of the Signal')
-plt.xlabel('Frequency\[Hz]')
+plt.title('FFT of the Signal')
+plt.xlabel('Frequency [Hz]')
 plt.ylabel('Magnitude')
 plt.tight_layout()
 plt.show()
-
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/f212b6d49860787fcc52cfb2d83f52d07f04189a.png]]
 
 
-This example demonstrates the implementation of a Mixed-Radix FFT
-algorithm, capable of handling sequences of arbitrary lengths by
-combining different radices. The input signal is similar to the Radix-4
-example, showcasing the algorithm's flexibility and effectiveness in
-revealing the frequency components of the signal.
+This example demonstrates the implementation of a Mixed-Radix FFT algorithm, capable of handling sequences of arbitrary lengths by combining different radices. The input signal is similar to the Radix-4 example, showcasing the algorithm's flexibility and effectiveness in revealing the frequency components of the signal.
 
 *** Applications of Radix-4 and Mixed-Radix FFT
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-The Radix-4 and Mixed-Radix FFT algorithms find applications in various
-fields where efficient computation of Fourier Transforms is crucial:
+The Radix-4 and Mixed-Radix FFT algorithms find applications in various fields where efficient computation of Fourier Transforms is crucial:
 
-1. High-Speed Digital Signal Processing: Radix-4 FFT is particularly
-   effective in applications requiring high-speed processing of large
-   datasets, such as radar and sonar systems.
-2. Telecommunications: Mixed-Radix FFT is used in advanced
-   telecommunication systems, where data lengths are not always powers
-   of two, ensuring efficient modulation and demodulation processes.
-3. Medical Imaging: Techniques like MRI and CT scans benefit from the
-   enhanced speed and flexibility of Radix-4 and Mixed-Radix FFTs,
-   enabling rapid image reconstruction and analysis.
-4. Audio and Video Compression: These algorithms play a vital role in
-   audio and video compression <<part0007.xhtml#page_175>>techniques,
-   reducing the amount of data without compromising quality.
-5. Scientific Research: Researchers use Radix-4 and Mixed-Radix FFTs to
-   analyze large experimental datasets efficiently, uncovering hidden
-   patterns and insights.
++ High-Speed Digital Signal Processing :: Radix-4 FFT is particularly effective in applications requiring high-speed processing of large datasets, such as radar and sonar systems.
++ Telecommunications :: Mixed-Radix FFT is used in advanced telecommunication systems, where data lengths are not always powers of two, ensuring efficient modulation and demodulation processes.
++ Medical Imaging :: Techniques like MRI and CT scans benefit from the enhanced speed and flexibility of Radix-4 and Mixed-Radix FFTs, enabling rapid image reconstruction and analysis.
++ Audio and Video Compression :: These algorithms play a vital role in audio and video compression techniques, reducing the amount of data without compromising quality.
++ Scientific Research :: Researchers use Radix-4 and Mixed-Radix FFTs to analyze large experimental datasets efficiently, uncovering hidden patterns and insights.
 
-The Radix-4 and Mixed-Radix FFT algorithms build upon the foundational
-principles of the Radix-2 FFT, offering enhanced efficiency and
-flexibility for a wide range of applications. Understanding and
-implementing these algorithms not only deepens your comprehension of
-Fourier analysis but also equips you with powerful tools to tackle
-complex real-world problems in digital signal processing,
-telecommunications, medical imaging, and beyond. As you continue to
-explore the intricacies of FFT, these advanced techniques will serve as
-invaluable assets in your analytical toolkit, enabling you to push the
-boundaries of what is possible with Fourier Transforms.
+The Radix-4 and Mixed-Radix FFT algorithms build upon the foundational principles of the Radix-2 FFT, offering enhanced efficiency and flexibility for a wide range of applications. Understanding and implementing these algorithms not only deepens your comprehension of Fourier analysis but also equips you with powerful tools to tackle complex real-world problems in digital signal processing, telecommunications, medical imaging, and beyond. As you continue to explore the intricacies of FFT, these advanced techniques will serve as invaluable assets in your analytical toolkit, enabling you to push the boundaries of what is possible with Fourier Transforms.
 
 ** Real vs. Complex FFT
   :PROPERTIES:
@@ -5037,63 +4867,36 @@ boundaries of what is possible with Fourier Transforms.
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-At the heart of the FFT lies the transformation of a signal from the
-time domain to the frequency domain. The core difference between real
-and complex FFT algorithms pertains to the nature of the input signal
-and the resulting frequency components.
+At the heart of the FFT lies the transformation of a signal from the time domain to the frequency domain. The core difference between real and complex FFT algorithms pertains to the nature of the input signal and the resulting frequency components.
 
 *** Real FFT
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
-When dealing with real-valued signals, which are common in many
-practical applications such as audio processing, the FFT can be
-optimized to leverage the symmetry properties of the Fourier Transform.
-A real-valued signal results in a symmetric frequency spectrum, meaning
-the positive and negative frequency components are mirror images of each
-other.
+When dealing with real-valued signals, which are common in many practical applications such as audio processing, the FFT can be optimized to leverage the symmetry properties of the Fourier Transform.  A real-valued signal results in a symmetric frequency spectrum, meaning the positive and negative frequency components are mirror images of each other.
 
-- Symmetry Property: For a real-valued time-domain signal \(x[n]\), the
-  Fourier Transform exhibits the following symmetry:\[ X[k] = X^*[N-k]\]
-  where \(X[k]\) represents the Fourier coefficients, \(N\) is the
-  length of the signal, and \(*\) denotes the complex conjugate.
-- Efficiency: By exploiting this symmetry, the real FFT algorithm
-  reduces computational complexity, effectively halving the number of
-  required calculations compared to a complex FFT.
+- Symmetry Property :: For a real-valued time-domain signal \(x[n]\), the Fourier Transform exhibits the following symmetry:\[ X[k] = X^*[N-k]\] where \(X[k]\) represents the Fourier coefficients, \(N\) is the length of the signal, and \(*\) denotes the complex conjugate.
+- Efficiency :: By exploiting this symmetry, the real FFT algorithm reduces computational complexity, effectively halving the number of required calculations compared to a complex FFT.
 
 *** Complex FFT
   :PROPERTIES:
   :CLASS: heading_s16N
   :END:
-In contrast, complex FFT algorithms are designed to handle
-complex-valued signals, where both the real and imaginary parts of the
-signal contribute to the frequency spectrum. Complex FFTs do not assume
-any symmetry in the frequency domain, making them suitable for a broader
-range of applications, including those involving phase information and
-complex modulation schemes.
+In contrast, complex FFT algorithms are designed to handle complex-valued signals, where both the real and imaginary parts of the signal contribute to the frequency spectrum. Complex FFTs do not assume any symmetry in the frequency domain, making them suitable for a broader range of applications, including those involving phase information and complex modulation schemes.
 
-- Comprehensive Analysis: Complex FFTs provide a complete representation
-  of the frequency spectrum, capturing both amplitude and phase
-  information without any assumptions of symmetry.
-- Versatility: The ability to process complex signals makes complex FFTs
-  indispensable in fields such as communications, where phase
-  information is critical, and in advanced signal processing techniques
-  involving quadrature components.
+- Comprehensive Analysis :: Complex FFTs provide a complete representation of the frequency spectrum, capturing both amplitude and phase information without any assumptions of symmetry.
+- Versatility :: The ability to process complex signals makes complex FFTs indispensable in fields such as communications, where phase information is critical, and in advanced signal processing techniques involving quadrature components.
 
 *** Practical Implementation
   :PROPERTIES:
   :CLASS: heading_s151
   :END:
-The implementation of real and complex FFTs in Python is facilitated by
-libraries such as numpy and scipy, which offer
-<<part0007.xhtml#page_177>>optimized functions for both types of
-transformations. Below, we explore practical examples of real and
-complex FFT implementations.
+The implementation of real and complex FFTs in Python is facilitated by libraries such as numpy and scipy, which offer optimized functions for both types of transformations. Below, we explore practical examples of real and complex FFT implementations.
 
-Practical Example: Real FFT in Python
-
+**** Practical Example: Real FFT in Python
 #+begin_src jupyter-python
- import numpy as np import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib.pyplot as plt
 
 # Generate a sample real-valued signal
 sampling_rate = 1024
@@ -5105,34 +4908,31 @@ fft_result = np.fft.rfft(signal)
 frequencies = np.fft.rfftfreq(len(signal), 1/sampling_rate)
 
 # Plot the original signal and its FFT result
-plt.figure(figsize=(12, 6))
+# plt.figure(figsize=(12, 6))
 plt.subplot(2, 1, 1)
 plt.plot(t, signal)
 plt.title('Original Signal')
-plt.xlabel('Time\[s]')
+plt.xlabel('Time [s]')
 plt.ylabel('Amplitude')
 
 plt.subplot(2, 1, 2)
 plt.plot(frequencies, np.abs(fft_result))
 plt.title('Real FFT of the Signal')
-plt.xlabel('Frequency\[Hz]')
+plt.xlabel('Frequency [Hz]')
 plt.ylabel('Magnitude')
 plt.tight_layout()
 plt.show()
-
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/22fac4d48a0c10124ef2ff185145e99a5cdc4a8d.png]]
 
 
-In this example, we generate a real-valued signal composed of two
-sinusoidal waves and perform a real FFT using the
-<<part0007.xhtml#page_178>>np.fft.rfft function. The resulting frequency
-spectrum reveals the magnitudes of the signal's frequency components,
-illustrating the efficiency and effectiveness of the real FFT algorithm.
+In this example, we generate a real-valued signal composed of two sinusoidal waves and perform a real FFT using the /np.fft.rfft/ function. The resulting frequency spectrum reveals the magnitudes of the signal's frequency components, illustrating the efficiency and effectiveness of the real FFT algorithm.
 
-Practical Example: Complex FFT in Python
-
+**** Practical Example: Complex FFT in Python
 #+begin_src jupyter-python
- import numpy as np import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib.pyplot as plt
 
 # Generate a sample complex-valued signal
 sampling_rate = 1024
@@ -5146,71 +4946,42 @@ fft_result = np.fft.fft(signal)
 frequencies = np.fft.fftfreq(len(signal), 1/sampling_rate)
 
 # Plot the original signal and its FFT result
-plt.figure(figsize=(12, 6))
+# plt.figure(figsize=(12, 6))
 plt.subplot(2, 1, 1)
 plt.plot(t, np.real(signal), label='Real Part')
 plt.plot(t, np.imag(signal), label='Imaginary Part')
 plt.title('Original Signal')
-plt.xlabel('Time\[s]')
+plt.xlabel('Time [s]')
 plt.ylabel('Amplitude')
 plt.legend()
 
 plt.subplot(2, 1, 2)
 plt.plot(frequencies, np.abs(fft_result))
 plt.title('Complex FFT of the Signal')
-plt.xlabel('Frequency\[Hz]')
+plt.xlabel('Frequency [Hz]')
 plt.ylabel('Magnitude')
 plt.tight_layout()
 plt.show()
-
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/92c0730133a27588c46279e3a3edc103ea9501fd.png]]
 
 
-In this example, we create a complex-valued signal with distinct real
-and imaginary parts and perform a complex FFT using the np.fft.fft
-function. The resulting frequency spectrum captures both the amplitude
-and phase information, demonstrating the comprehensive nature of the
-complex FFT.
+In this example, we create a complex-valued signal with distinct real and imaginary parts and perform a complex FFT using the np.fft.fft function. The resulting frequency spectrum captures both the amplitude and phase information, demonstrating the comprehensive nature of the complex FFT.
 
 *** Applications of Real and Complex FFT
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-Both real and complex FFTs have specific applications, each suited to
-different types of signal processing tasks.
+Both real and complex FFTs have specific applications, each suited to different types of signal processing tasks.
 
-1. Audio Processing: Real FFT is commonly used in audio processing,
-   where the signals are typically real-valued. Applications include
-   spectral analysis, noise reduction, and feature extraction for
-   machine learning.
-2. Communications: Complex FFT is essential in telecommunications, where
-   signals often have complex representations. Applications include
-   modulation and demodulation, channel estimation, and adaptive
-   filtering.
-3. Image Processing: Both real and complex FFTs are used in image
-   processing. Real FFT can be applied to grayscale images, while
-   complex FFT is used for color images and in advanced techniques such
-   as phase correlation.
-4. Biomedical Signal Analysis: Real FFT is used in analyzing biomedical
-   signals like ECG and EEG, focusing on frequency components and
-   rhythms. Complex FFT can handle more sophisticated analyses involving
-   phase and coherence.
-5. Scientific Research: Researchers use FFTs to analyze experimental
-   data across various fields, including physics, astronomy, and
-   environmental science. Real FFT is used for time-domain signals,
-   while complex FFT is applied to multidimensional and complex-valued
-   data.
++ Audio Processing :: Real FFT is commonly used in audio processing, where the signals are typically real-valued. Applications include spectral analysis, noise reduction, and feature extraction for machine learning.
++ Communications :: Complex FFT is essential in telecommunications, where signals often have complex representations. Applications include modulation and demodulation, channel estimation, and adaptive filtering.
++ Image Processing :: Both real and complex FFTs are used in image processing. Real FFT can be applied to grayscale images, while complex FFT is used for color images and in advanced techniques such as phase correlation.
++ Biomedical Signal Analysis :: Real FFT is used in analyzing biomedical signals like ECG and EEG, focusing on frequency components and rhythms. Complex FFT can handle more sophisticated analyses involving phase and coherence.
++ Scientific Research :: Researchers use FFTs to analyze experimental data across various fields, including physics, astronomy, and environmental science. Real FFT is used for time-domain signals, while complex FFT is applied to multidimensional and complex-valued data.
 
-Understanding the differences between real and complex FFTs is
-fundamental for selecting the appropriate algorithm for your signal
-processing tasks. Real FFT optimizes computational efficiency for
-real-valued signals, leveraging symmetry to reduce complexity. In
-contrast, complex FFT provides a complete representation of the
-frequency spectrum, capturing both amplitude and phase information for
-complex-valued signals. The practical examples provided illustrate the
-implementation and benefits of each approach, equipping you with the
-knowledge and skills to apply Fourier analysis effectively in your
-field.
+Understanding the differences between real and complex FFTs is fundamental for selecting the appropriate algorithm for your signal processing tasks. Real FFT optimizes computational efficiency for real-valued signals, leveraging symmetry to reduce complexity. In contrast, complex FFT provides a complete representation of the frequency spectrum, capturing both amplitude and phase information for complex-valued signals. The practical examples provided illustrate the implementation and benefits of each approach, equipping you with the knowledge and skills to apply Fourier analysis effectively in your field.
 
 ** Optimized FFT Libraries in Python
   :PROPERTIES:
@@ -5220,35 +4991,28 @@ field.
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-Performing FFTs efficiently is crucial, particularly when dealing with
-large datasets or real-time processing requirements. Optimized libraries
-leverage advanced algorithms and hardware capabilities to accelerate
-computation, reduce memory usage, and enhance performance.
+Performing FFTs efficiently is crucial, particularly when dealing with large datasets or real-time processing requirements. Optimized libraries leverage advanced algorithms and hardware capabilities to accelerate computation, reduce memory usage, and enhance performance.
 
 *** NumPy
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
-NumPy, short for Numerical Python, is perhaps the most widely used
-library for numerical computations. It provides robust support for FFT
-through its numpy.fft module, which includes functions for both real and
-complex FFT.
+NumPy, short for Numerical Python, is perhaps the most widely used library for numerical computations. It provides robust support for FFT through its numpy.fft module, which includes functions for both real and complex FFT.
 
-Key Features: - Ease of Use: Simple and intuitive API for performing
-FFTs. - Performance: Leverages efficient
-<<part0007.xhtml#page_181>>algorithms for quick computation. -
-Versatility: Handles both real and complex FFTs, as well as
-multi-dimensional transforms.
+Key Features: 
 
-Example:
+- Ease of Use :: Simple and intuitive API for performing FFTs.
+- Performance :: Leverages efficient algorithms for quick computation.
+- Versatility :: Handles both real and complex FFTs, as well as multi-dimensional transforms.
 
+**** Example:
 #+begin_src jupyter-python
- import numpy as np import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib.pyplot as plt
 
 # Generate a sample signal
 t = np.linspace(0, 1, 1024, endpoint=False)
-signal = np.sin(2 * np.pi * 50 * t) + 0.5 * np.sin(2 * np.pi * 120 *
-t)
+signal = np.sin(2 * np.pi * 50 * t) + 0.5 * np.sin(2 * np.pi * 120 * t)
 
 # Perform FFT using NumPy
 fft_result = np.fft.fft(signal)
@@ -5257,36 +5021,30 @@ frequencies = np.fft.fftfreq(len(signal), 1/1024)
 # Plot the FFT result
 plt.plot(frequencies, np.abs(fft_result))
 plt.title('FFT using NumPy')
-plt.xlabel('Frequency\[Hz]')
+plt.xlabel('Frequency [Hz]')
 plt.ylabel('Magnitude')
 plt.show()
-
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/8c3ef94471da875c6385840f549c32ce37d64900.png]]
 
 *** SciPy
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
-SciPy builds on NumPy's capabilities by providing additional
-functionality for scientific computing. The scipy.fft module offers FFT
-functions with enhanced features, including support for different
-transform types and optimal performance.
+SciPy builds on NumPy's capabilities by providing additional functionality for scientific computing. The scipy.fft module offers FFT functions with enhanced features, including support for different transform types and optimal performance.
 
-Key Features: - Advanced Algorithms: Utilizes the latest algorithms for
-improved speed and accuracy. - Additional Functions: Includes support
-for discrete cosine transforms (DCT), shift operations, and more. -
-Compatibility: Integrates seamlessly with NumPy arrays for ease of use.
+Key Features: - Advanced Algorithms: Utilizes the latest algorithms for improved speed and accuracy. - Additional Functions: Includes support for discrete cosine transforms (DCT), shift operations, and more. - Compatibility: Integrates seamlessly with NumPy arrays for ease of use.
 
-Example:
-
+**** Example:
 #+begin_src jupyter-python
- import numpy as np from scipy.fft import fft, fftfreq import
-matplotlib.pyplot as plt
+import numpy as np
+from scipy.fft import fft, fftfreq
+import matplotlib.pyplot as plt
 
 # Generate a sample signal
 t = np.linspace(0, 1, 1024, endpoint=False)
-signal = np.sin(2 * np.pi * 50 * t) + 0.5 * np.sin(2 * np.pi * 120 *
-t)
+signal = np.sin(2 * np.pi * 50 * t) + 0.5 * np.sin(2 * np.pi * 120 * t)
 
 # Perform FFT using SciPy
 fft_result = fft(signal)
@@ -5295,36 +5053,34 @@ frequencies = fftfreq(len(signal), 1/1024)
 # Plot the FFT result
 plt.plot(frequencies, np.abs(fft_result))
 plt.title('FFT using SciPy')
-plt.xlabel('Frequency\[Hz]')
+plt.xlabel('Frequency [Hz]')
 plt.ylabel('Magnitude')
 plt.show()
-
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/18d9393f13fd193ce993f0e23821dc5eceef60fb.png]]
 
 *** PyFFTW
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
-PyFFTW is a Python wrapper for the FFTW library, which is renowned for
-its high performance and flexibility. FFTW (Fastest Fourier Transform in
-the West) is a C library designed to compute FFTs as quickly as
-possible.
+PyFFTW is a Python wrapper for the FFTW library, which is renowned for its high performance and flexibility. FFTW (Fastest Fourier Transform in the West) is a C library designed to compute FFTs as quickly as possible.
 
-Key Features: - High Performance: Optimized for speed with support for
-multi-threading. - Flexibility: Provides extensive customization options
-and supports various FFT types. - Integration: Works seamlessly with
-NumPy arrays, allowing for easy incorporation into existing workflows.
+Key Features: 
 
-Example:
+- High Performance :: Optimized for speed with support for multi-threading.
+- Flexibility :: Provides extensive customization options and supports various FFT types.
+- Integration :: Works seamlessly with NumPy arrays, allowing for easy incorporation into existing workflows.
 
+**** Example:
 #+begin_src jupyter-python
- import numpy as np import pyfftw import matplotlib.pyplot as
-plt
+import numpy as np
+import pyfftw
+import matplotlib.pyplot as plt
 
 # Generate a sample signal
 t = np.linspace(0, 1, 1024, endpoint=False)
-signal = np.sin(2 * np.pi * 50 * t) + 0.5 * np.sin(2 * np.pi * 120 *
-t)
+signal = np.sin(2 * np.pi * 50 * t) + 0.5 * np.sin(2 * np.pi * 120 * t)
 
 # Create FFTW object and perform FFT
 fft_obj = pyfftw.builders.fft(signal)
@@ -5336,35 +5092,34 @@ frequencies = np.fft.fftfreq(len(signal), 1/1024)
 # Plot the FFT result
 plt.plot(frequencies, np.abs(fft_result))
 plt.title('FFT using PyFFTW')
-plt.xlabel('Frequency\[Hz]')
+plt.xlabel('Frequency [Hz]')
 plt.ylabel('Magnitude')
 plt.show()
 
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/bbc45ec6f583ae92bf036ae1e686ce17e8c6154a.png]]
 
 *** CuPy
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
-CuPy is a library that brings the power of GPU acceleration to numerical
-computations in Python. It mirrors the API of NumPy but performs
-computations on NVIDIA GPUs, greatly enhancing performance for
-large-scale FFT operations.
+CuPy is a library that brings the power of GPU acceleration to numerical computations in Python. It mirrors the API of NumPy but performs computations on NVIDIA GPUs, greatly enhancing performance for large-scale FFT operations.
 
-Key Features: - GPU Acceleration: Utilizes CUDA for fast and efficient
-computations. - Compatibility: Mimics NumPy's API, making it easy to
-switch between CPU and GPU code. - Scalability: Ideal for handling large
-datasets and real-time processing.
+Key Features: 
 
-Example:
+- GPU Acceleration :: Utilizes CUDA for fast and efficient computations.
+- Compatibility :: Mimics NumPy's API, making it easy to switch between CPU and GPU code.
+- Scalability :: Ideal for handling large datasets and real-time processing.
 
+**** Example:
 #+begin_src jupyter-python
- import cupy as cp import matplotlib.pyplot as plt
+import cupy as cp
+import matplotlib.pyplot as plt
 
 # Generate a sample signal on GPU
 t = cp.linspace(0, 1, 1024, endpoint=False)
-signal = cp.sin(2 * cp.pi * 50 * t) + 0.5 * cp.sin(2 * cp.pi * 120 *
-t)
+signal = cp.sin(2 * cp.pi * 50 * t) + 0.5 * cp.sin(2 * cp.pi * 120 * t)
 
 # Perform FFT using CuPy
 fft_result = cp.fft.fft(signal)
@@ -5377,11 +5132,77 @@ frequencies_cpu = cp.asnumpy(frequencies)
 # Plot the FFT result
 plt.plot(frequencies_cpu, np.abs(fft_result_cpu))
 plt.title('FFT using CuPy')
-plt.xlabel('Frequency\[Hz]')
+plt.xlabel('Frequency [Hz]')
 plt.ylabel('Magnitude')
 plt.show()
-
 #+end_src
+#+RESULTS:
+:RESULTS:
+: /home/thinky/.virtualenvs/tf/lib/python3.11/site-packages/cupy/_environment.py:370: UserWarning: CuPy failed to preload library (/home/thinky/.cupy/cuda_lib/11.x/cutensor/2.0.1/lib/libcutensor.so.2.0.1): OSError (libcublasLt.so.11: cannot open shared object file: No such file or directory)
+:   warnings.warn(msg)
+# [goto error]
+: ---------------------------------------------------------------------------
+: OSError                                   Traceback (most recent call last)
+: File cupy_backends/cuda/_softlink.pyx:25, in cupy_backends.cuda._softlink.SoftLink.__init__()
+: 
+: File /usr/lib/python3.11/ctypes/__init__.py:376, in CDLL.__init__(self, name, mode, handle, use_errno, use_last_error, winmode)
+:     375 if handle is None:
+: --> 376     self._handle = _dlopen(self._name, mode)
+:     377 else:
+: 
+: OSError: libnvrtc.so.11.2: cannot open shared object file: No such file or directory
+: 
+: The above exception was the direct cause of the following exception:
+: 
+: RuntimeError                              Traceback (most recent call last)
+: Cell In[8], line 5
+:       2 import matplotlib.pyplot as plt
+:       4 # Generate a sample signal on GPU
+: ----> 5 t = cp.linspace(0, 1, 1024, endpoint=False)
+:       6 signal = cp.sin(2 * cp.pi * 50 * t) + 0.5 * cp.sin(2 * cp.pi * 120 * t)
+:       8 # Perform FFT using CuPy
+: 
+: File ~/.virtualenvs/tf/lib/python3.11/site-packages/cupy/_creation/ranges.py:161, in linspace(start, stop, num, endpoint, retstep, dtype, axis)
+:     159 scalar_stop = cupy.isscalar(stop)
+:     160 if scalar_start and scalar_stop:
+: --> 161     return _linspace_scalar(start, stop, num, endpoint, retstep, dtype)
+:     163 if not scalar_start:
+:     164     if not (isinstance(start, cupy.ndarray) and start.dtype.kind == 'f'):
+: 
+: File ~/.virtualenvs/tf/lib/python3.11/site-packages/cupy/_creation/ranges.py:105, in _linspace_scalar(start, stop, num, endpoint, retstep, dtype)
+:     103     _linspace_ufunc_underflow(start, stop - start, div, ret)
+:     104 else:
+: --> 105     _linspace_ufunc(start, step, ret)
+:     107 if endpoint:
+:     108     # Here num == div + 1 > 1 is ensured.
+:     109     ret[-1] = stop
+: 
+: File cupy/_core/_kernel.pyx:1375, in cupy._core._kernel.ufunc.__call__()
+: 
+: File cupy/_core/_kernel.pyx:1402, in cupy._core._kernel.ufunc._get_ufunc_kernel()
+: 
+: File cupy/_core/_kernel.pyx:1082, in cupy._core._kernel._get_ufunc_kernel()
+: 
+: File cupy/_core/_kernel.pyx:94, in cupy._core._kernel._get_simple_elementwise_kernel()
+: 
+: File cupy/_core/_kernel.pyx:82, in cupy._core._kernel._get_simple_elementwise_kernel_from_code()
+: 
+: File cupy/_core/core.pyx:2281, in cupy._core.core.compile_with_cache()
+: 
+: File cupy/_core/core.pyx:2219, in cupy._core.core.assemble_cupy_compiler_options()
+: 
+: File cupy_backends/cuda/libs/nvrtc.pyx:57, in cupy_backends.cuda.libs.nvrtc.getVersion()
+: 
+: File cupy_backends/cuda/libs/_cnvrtc.pxi:72, in cupy_backends.cuda.libs.nvrtc.initialize()
+: 
+: File cupy_backends/cuda/libs/_cnvrtc.pxi:76, in cupy_backends.cuda.libs.nvrtc._initialize()
+: 
+: File cupy_backends/cuda/libs/_cnvrtc.pxi:143, in cupy_backends.cuda.libs.nvrtc._get_softlink()
+: 
+: File cupy_backends/cuda/_softlink.pyx:32, in cupy_backends.cuda._softlink.SoftLink.__init__()
+: 
+: RuntimeError: CuPy failed to load libnvrtc.so.11.2: OSError: libnvrtc.so.11.2: cannot open shared object file: No such file or directory
+:END:
 
 *** TensorFlow
   :PROPERTIES:
@@ -5400,11 +5221,13 @@ Offers a variety of FFT functions adaptable to different use cases.
 Example:
 
 #+begin_src jupyter-python
- import tensorflow as tf import matplotlib.pyplot as plt
+import tensorflow as tf
+import matplotlib.pyplot as plt
 
 # Generate a sample signal
 t = tf.linspace(0.0, 1.0, 1024)
-signal = tf.sin(2.0 * tf.constant(np.pi) * 50.0 * t) + 0.5 * tf.sin(2.0* tf.constant(np.pi) * 120.0 * t)
+signal = tf.sin(2.0 * tf.constant(np.pi) * 50.0 * t) + \
+    0.5 * tf.sin(2.0* tf.constant(np.pi) * 120.0 * t)
 
 # Perform FFT using TensorFlow
 fft_result = tf.signal.fft(tf.cast(signal, tf.complex64))
@@ -5417,41 +5240,24 @@ frequencies_np = frequencies.numpy()
 # Plot the FFT result
 plt.plot(frequencies_np, np.abs(fft_result_np))
 plt.title('FFT using TensorFlow')
-plt.xlabel('Frequency\[Hz]')
+plt.xlabel('Frequency [Hz]')
 plt.ylabel('Magnitude')
 plt.show()
-
 #+end_src
 
 *** Choosing the Right Library
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-Selecting the appropriate library for performing FFT depends on several
-factors, including the size and complexity of the data, performance
-requirements, and integration needs with other components of your
-workflow. Here's a quick guide:
+Selecting the appropriate library for performing FFT depends on several factors, including the size and complexity of the data, performance requirements, and integration needs with other components of your workflow. Here's a quick guide:
 
-- NumPy: Ideal for general-purpose FFT tasks with a focus on simplicity
-  and ease of use.
-- SciPy: Suitable for scientific computing tasks requiring advanced
-  features and enhanced performance.
-- PyFFTW: Best for high-performance applications needing extensive
-  customization and multi-threading support.
-- CuPy: Appropriate for large-scale FFT operations benefiting from GPU
-  acceleration.
-- TensorFlow: Optimal for integrating FFT within machine learning models
-  and leveraging hardware acceleration.
+- NumPy :: Ideal for general-purpose FFT tasks with a focus on simplicity and ease of use.
+- SciPy :: Suitable for scientific computing tasks requiring advanced features and enhanced performance.
+- PyFFTW: Best for high-performance applications needing extensive customization and multi-threading support.
+- CuPy :: Appropriate for large-scale FFT operations benefiting from GPU acceleration.
+- TensorFlow :: Optimal for integrating FFT within machine learning models and leveraging hardware acceleration.
 
-Optimized FFT libraries in Python provide the tools necessary to perform
-efficient and accurate Fourier analysis across a multitude of
-applications. Whether you're processing audio signals, analyzing data
-streams, or integrating FFT within machine learning models, these
-libraries offer the performance and flexibility needed to handle even
-the most demanding tasks. The practical examples provided demonstrate
-how to implement these libraries in real-world scenarios, equipping you
-with the knowledge and skills to leverage the full power of Fourier
-Transforms in Python.
+Optimized FFT libraries in Python provide the tools necessary to perform efficient and accurate Fourier analysis across a multitude of applications. Whether you're processing audio signals, analyzing data streams, or integrating FFT within machine learning models, these libraries offer the performance and flexibility needed to handle even the most demanding tasks. The practical examples provided demonstrate how to implement these libraries in real-world scenarios, equipping you with the knowledge and skills to leverage the full power of Fourier Transforms in Python.
 
 ** Time Complexity and Performance
   :PROPERTIES:
@@ -5461,64 +5267,41 @@ Transforms in Python.
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-Time complexity refers to the computational complexity that describes
-the amount of time it takes to run an algorithm as a function of the
-length of the input. For the FFT, which is a critical algorithm in the
-Fourier domain, understanding its time complexity allows you to predict
-performance and make informed decisions about its applicability in
-various scenarios.
+Time complexity refers to the computational complexity that describes the amount of time it takes to run an algorithm as a function of the length of the input. For the FFT, which is a critical algorithm in the Fourier domain, understanding its time complexity allows you to predict performance and make informed decisions about its applicability in various scenarios.
 
-The FFT is celebrated for its efficiency, reducing the computational
-burden of the Discrete Fourier Transform (DFT). While the DFT has a time
-complexity of (O(N^2)), where (N) is the number of data points, the FFT
-brings this down dramatically to (O(N \log N)). This reduction is
-crucial for handling large datasets and real-time applications.
+The FFT is celebrated for its efficiency, reducing the computational burden of the Discrete Fourier Transform (DFT). While the DFT has a time complexity of \(O(N^2)\), where \(N\) is the number of data points, the FFT brings this down dramatically to \(O(N \log N)\). This reduction is crucial for handling large datasets and real-time applications.
 
 *** Analyzing the FFT Algorithm
   :PROPERTIES:
   :CUSTOM_ID: part0007.xhtml#page_187
   :CLASS: heading_s1W
   :END:
-To appreciate the efficiency of the FFT, it's essential to understand
-the algorithm's structure. The Cooley-Tukey algorithm, the most common
-FFT algorithm, works by recursively breaking down a DFT of any composite
-size (N = N_1 \cdot N_2) into many smaller DFTs. This divide-and-conquer
-approach is what enables the (O(N \log N)) performance.
+To appreciate the efficiency of the FFT, it's essential to understand the algorithm's structure. The Cooley-Tukey algorithm, the most common FFT algorithm, works by recursively breaking down a DFT of any composite size \(N = N_1 \cdot N_2\) into many smaller DFTs. This divide-and-conquer approach is what enables the \(O(N \log N)\) performance.
 
 *** Step-by-Step Breakdown
   :PROPERTIES:
   :CLASS: heading_sW8
   :END:
-1. Divide: The input sequence is divided into smaller subsequences. For
-   instance, if (N) is a power of two, the sequence can be split into
-   even and odd indexed elements.
-2. Conquer: The DFT is recursively computed on these smaller
-   subsequences.
-3. Combine: The results of the smaller DFTs are combined using a
-   specific pattern of additions and multiplications by complex roots of
-   unity.
++ Divide :: The input sequence is divided into smaller subsequences. For instance, if \(N\) is a power of two, the sequence can be split into even and odd indexed elements.
++ Conquer :: The DFT is recursively computed on these smaller subsequences.
++ Combine :: The results of the smaller DFTs are combined using a specific pattern of additions and multiplications by complex roots of unity.
 
-This recursive breakdown and efficient combination define the (O(N \log
-N)) time complexity, making the FFT algorithm significantly faster than
-the naive DFT approach.
+This recursive breakdown and efficient combination define the \(O(N \log N)\) time complexity, making the FFT algorithm significantly faster than the naive DFT approach.
 
 *** Implementing FFT in Python
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-To illustrate the practical implications, let's delve into a Python
-implementation of FFT using NumPy, a foundational library for scientific
-computing in Python. NumPy's fft module provides an optimized and
-easy-to-use interface for performing FFTs.
+To illustrate the practical implications, let's delve into a Python implementation of FFT using NumPy, a foundational library for scientific computing in Python. NumPy's fft module provides an optimized and easy-to-use interface for performing FFTs.
 
 #+begin_src jupyter-python
- import numpy as np import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib.pyplot as plt
 
 # Sample data: a simple sinusoidal signal
-N = 1024  # Number of sample points
-T = 1.0 / 800.0  # Sample spacing
-<<part0007.xhtml#page_188>>x = np.linspace(0.0, N*T, N,
-endpoint=False)
+N = 1024 # Number of sample points
+T = 1.0 / 800.0 # Sample spacing
+x = np.linspace(0.0, N*T, N, endpoint=False)
 y = np.sin(50.0 * 2.0*np.pi*x) + 0.5*np.sin(80.0 * 2.0*np.pi*x)
 
 # Compute the FFT
@@ -5526,68 +5309,49 @@ yf = np.fft.fft(y)
 xf = np.fft.fftfreq(N, T)[:N//2]
 
 # Plot the original signal
-plt.figure(figsize=(12, 6))
+# plt.figure(figsize=(12, 6))
 plt.subplot(2, 1, 1)
 plt.plot(x, y)
 plt.title("Original Signal")
-plt.xlabel("Time\[s]")
+plt.xlabel("Time [s]")
 plt.ylabel("Amplitude")
 
 # Plot the FFT result
 plt.subplot(2, 1, 2)
 plt.plot(xf, 2.0/N * np.abs(yf[:N//2]))
 plt.title("FFT of the Signal")
-plt.xlabel("Frequency\[Hz]")
+plt.xlabel("Frequency [Hz]")
 plt.ylabel("Amplitude")
 plt.tight_layout()
 plt.show()
-
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/423ee3031bf5dcef82a200282d1c82c1e8f63f91.png]]
 
 
-This example demonstrates how to generate a simple sinusoidal signal,
-compute its FFT, and visualize both the original signal and its
-frequency components. NumPy's optimized FFT implementation ensures
-efficient computation, even for large datasets.
+This example demonstrates how to generate a simple sinusoidal signal, compute its FFT, and visualize both the original signal and its frequency components. NumPy's optimized FFT implementation ensures efficient computation, even for large datasets.
 
 *** Optimizing Performance
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-While the FFT offers significant time complexity improvements, further
-optimizations can enhance performance:
+While the FFT offers significant time complexity improvements, further optimizations can enhance performance:
 
-1. Data Preprocessing: Ensure your data length (N) is a power of two.
-   This simplifies the recursive breakdown in the FFT algorithm and
-   maximizes performance.
-2. Memory Management: Use in-place computations where possible to reduce
-   memory overhead.
-3. Parallel Computing: Leverage parallel processing capabilities.
-   Libraries like Dask and Numba in Python can distribute the
-   computation across multiple cores or GPUs.
-4. Algorithm Variants: Explore specialized FFT algorithms like Radix-2,
-   Radix-4, and mixed-radix FFTs, which can offer performance benefits
-   depending on your data characteristics.
++ Data Preprocessing :: Ensure your data length \(N\) is a power of two.  This simplifies the recursive breakdown in the FFT algorithm and maximizes performance.
++ Memory Management :: Use in-place computations where possible to reduce memory overhead.
++ Parallel Computing :: Leverage parallel processing capabilities.  Libraries like Dask and Numba in Python can distribute the computation across multiple cores or GPUs.
++ Algorithm Variants: Explore specialized FFT algorithms like Radix-2, Radix-4, and mixed-radix FFTs, which can offer performance benefits depending on your data characteristics.
 
 *** Practical Considerations
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-Despite its efficiency, the FFT is not without limitations.
-Understanding these can help in making the most of the algorithm:
+Despite its efficiency, the FFT is not without limitations.  Understanding these can help in making the most of the algorithm:
 
-- Precision: Numerical precision can degrade for extremely large
-  datasets due to floating-point arithmetic limitations.
-- Windowing: Applying window functions to your data can mitigate
-  spectral leakage, a common issue in practical signal processing where
-  the signal is not perfectly periodic within the sampling window.
+- Precision :: Numerical precision can degrade for extremely large datasets due to floating-point arithmetic limitations.
+- Windowing :: Applying window functions to your data can mitigate spectral leakage, a common issue in practical signal processing where the signal is not perfectly periodic within the sampling window.
 
-Time complexity and performance are critical considerations in the
-practical application of Fourier Transforms, especially in real-time and
-large-scale data scenarios. As you continue to explore the vast
-applications of Fourier Transforms, keep in mind these optimization
-strategies to maximize your <<part0007.xhtml#page_190>>computational
-performance, driving both your projects and your expertise forward.
+Time complexity and performance are critical considerations in the practical application of Fourier Transforms, especially in real-time and large-scale data scenarios. As you continue to explore the vast applications of Fourier Transforms, keep in mind these optimization strategies to maximize your computational performance, driving both your projects and your expertise forward.
 
 ** FFT in Multidimensional Data
   :PROPERTIES:
@@ -5597,72 +5361,51 @@ performance, driving both your projects and your expertise forward.
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-Multidimensional FFT refers to applying the Fourier Transform to data
-with more than one dimension. In essence, while a one-dimensional FFT
-transforms data from time to frequency domain in a single axis, a
-two-dimensional FFT would extend this transformation to two axes, such
-as in images where you have both x and y coordinates. Three-dimensional
-FFTs are used for data with depth, such as volumetric data in medical
-imaging.
+Multidimensional FFT refers to applying the Fourier Transform to data with more than one dimension. In essence, while a one-dimensional FFT transforms data from time to frequency domain in a single axis, a two-dimensional FFT would extend this transformation to two axes, such as in images where you have both x and y coordinates. Three-dimensional FFTs are used for data with depth, such as volumetric data in medical imaging.
 
-The concept remains fundamentally the same: converting spatial or
-temporal data into its frequency components. However, the complexity
-increases with each added dimension, necessitating efficient algorithms
-and robust computational practices.
+The concept remains fundamentally the same: converting spatial or temporal data into its frequency components. However, the complexity increases with each added dimension, necessitating efficient algorithms and robust computational practices.
 
 *** Mathematical Foundation
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-The core idea of multidimensional FFT is to apply the 1D FFT along each
-dimension sequentially. For instance, a 2D FFT performs a 1D FFT on each
-row of the data matrix, followed by a 1D FFT on each column of the
-transformed rows. Mathematically, for a 2D signal \(f(x, y)\), the 2D
-FFT \(F(u, v)\) can be expressed as:
+The core idea of multidimensional FFT is to apply the 1D FFT along each dimension sequentially. For instance, a 2D FFT performs a 1D FFT on each row of the data matrix, followed by a 1D FFT on each column of the transformed rows. Mathematically, for a 2D signal \(f(x, y)\), the 2D FFT \(F(u, v)\) can be expressed as:
 
-[ F(u, v) = \sum_{x=0}^{N-1} \sum_{y=0}^{M-1} f(x, y) e^{-2\pi i \left(
-\frac{ux}{N} + \frac{vy}{M} \right)}\]
+\[ F(u, v) = \sum_{x=0}^{N-1} \sum_{y=0}^{M-1} f(x, y) e^{-2\pi i \left( \frac{ux}{N} + \frac{vy}{M} \right)}\]
 
-Here, \(N\) and \(M\) represent the dimensions of the data in the x and
-y directions, respectively.
+Here, \(N\) and \(M\) represent the dimensions of the data in the x and y directions, respectively.
 
 For three-dimensional data \(f(x, y, z)\):
 
-[ F(u, v, w) = \sum_{x=0}^{N-1} \sum_{y=0}^{M-1} \sum_{z=0}^{L-1} f(x,
-y, z) e^{-2\pi i \left\(\frac{ux}{N} + \frac{vy}{M} + \frac{wz}{L}
-\right)}\]
+\[ F(u, v, w) = \sum_{x=0}^{N-1} \sum_{y=0}^{M-1} \sum_{z=0}^{L-1} f(x, y, z) e^{-2\pi i \left\(\frac{ux}{N} + \frac{vy}{M} + \frac{wz}{L} \right)}\]
 
-This sequential approach ensures that the multidimensional FFT remains
-computationally efficient.
+This sequential approach ensures that the multidimensional FFT remains computationally efficient.
 
 *** Implementing Multidimensional FFT in Python
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-Python, with its extensive libraries, provides powerful tools for
-implementing multidimensional FFTs. NumPy and SciPy are particularly
-well-equipped for such tasks. Let's explore a practical example using a
-2D FFT on an image.
+Python, with its extensive libraries, provides powerful tools for implementing multidimensional FFTs. NumPy and SciPy are particularly well-equipped for such tasks. Let's explore a practical example using a 2D FFT on an image.
 
 #+begin_src jupyter-python
- import numpy as np import matplotlib.pyplot as plt from
-scipy.fftpack import fft2, ifft2, fftshift
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.fftpack import fft2, ifft2, fftshift
 
 # Load a sample image
-image = plt.imread('sample_image.png')
-if image.ndim == 3:  # Convert RGB to grayscale
-    image = image[..., 0]
+image = plt.imread('data/sample_image.jpg')
+if image.ndim == 3: # Convert RGB to grayscale
+    image = image[..., 0]
 
 # Compute the 2D FFT of the image
 fft_image = fft2(image)
-fft_image_shifted = fftshift(fft_image)  # Shift the zero frequency
-component to the center
+fft_image_shifted = fftshift(fft_image) # Shift the zero frequency component to the center
 
 # Compute the magnitude spectrum
 magnitude_spectrum = np.abs(fft_image_shifted)
 
 # Plot the original image
-plt.figure(figsize=(12, 6))
+# plt.figure(figsize=(12, 6))
 plt.subplot(1, 2, 1)
 plt.imshow(image, cmap='gray')
 plt.title("Original Image")
@@ -5674,8 +5417,9 @@ plt.imshow(np.log1p(magnitude_spectrum), cmap='gray')
 plt.title("Magnitude Spectrum")
 plt.axis('off')
 plt.show()
-
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/9f9aeb6e562d277ec8dad80618c011abd419b844.png]]
 
 
 In this script, we load a sample image, apply a 2D FFT using fft2 from
@@ -5687,25 +5431,15 @@ interpretable.
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-1. Image Processing:
-2. Filtering: Multidimensional FFT is used to apply frequency-based
-   filters to images, such as low-pass or high-pass filters, to enhance
-   or suppress certain features.
-3. Compression: Techniques like JPEG use 2D FFT (or more commonly,
-   Discrete Cosine Transform, DCT) for image compression by transforming
-   image blocks and quantizing the frequency components.
-4. Geophysics:
-5. Seismic Data Analysis: 3D FFTs are employed to analyze seismic data,
-   helping to interpret subsurface structures and identify potential
-   resource reservoirs.
-6. Medical Imaging:
-7. MRI and CT Scans: 3D FFTs are crucial in reconstructing images from
-   raw scan data, enabling detailed visualization of internal body
-   structures.
-8. Fluid Dynamics:
-9. Turbulence Analysis: Multidimensional FFTs help analyze the frequency
-   components of fluid flows, aiding in the study of turbulence and
-   other complex fluid behaviors.
++ Image Processing ::
+  + Filtering :: Multidimensional FFT is used to apply frequency-based filters to images, such as low-pass or high-pass filters, to enhance or suppress certain features.
+  + Compression :: Techniques like JPEG use 2D FFT (or more commonly, Discrete Cosine Transform, DCT) for image compression by transforming image blocks and quantizing the frequency components.
++ Geophysics ::
+  + Seismic Data Analysis :: 3D FFTs are employed to analyze seismic data, helping to interpret subsurface structures and identify potential resource reservoirs.
++ Medical Imaging ::
+  + MRI and CT Scans :: 3D FFTs are crucial in reconstructing images from raw scan data, enabling detailed visualization of internal body structures.
++ Fluid Dynamics ::
+  + Turbulence Analysis :: Multidimensional FFTs help analyze the frequency components of fluid flows, aiding in the study of turbulence and other complex fluid behaviors.
 
 *** Optimizing Multidimensional FFT Performance
   :PROPERTIES:
@@ -5713,20 +5447,11 @@ interpretable.
   :END:
 Optimizing multidimensional FFTs involves several strategies:
 
-1. Efficient Data Handling: Ensure data dimensions are powers of two to
-   exploit the full efficiency of FFT algorithms.
-2. Parallel Processing: Utilize parallel computing frameworks to handle
-   large multidimensional datasets. Python libraries like Dask and Numba
-   facilitate parallel execution.
-3. Memory Management: Use in-place operations to minimize memory
-   overhead, especially for large datasets.
++ Efficient Data Handling :: Ensure data dimensions are powers of two to exploit the full efficiency of FFT algorithms.
++ Parallel Processing :: Utilize parallel computing frameworks to handle large multidimensional datasets. Python libraries like Dask and Numba facilitate parallel execution.
++ Memory Management :: Use in-place operations to minimize memory overhead, especially for large datasets.
 
-Multidimensional FFT extends the power of Fourier analysis into realms
-where data spans multiple dimensions, unlocking new potential in fields
-as diverse as image processing, geophysics, and medical imaging. As you
-continue to explore the applications of multidimensional FFT, remember
-to leverage optimization strategies to ensure your computations are both
-effective and efficient.
+Multidimensional FFT extends the power of Fourier analysis into realms where data spans multiple dimensions, unlocking new potential in fields as diverse as image processing, geophysics, and medical imaging. As you continue to explore the applications of multidimensional FFT, remember to leverage optimization strategies to ensure your computations are both effective and efficient.
 
 ** FFT Applications in Image Processing
   :PROPERTIES:
@@ -5736,276 +5461,205 @@ effective and efficient.
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-At its core, image processing involves manipulating images to extract
-useful information or to enhance their quality. When images are
-represented in the frequency domain, many operations become more
-intuitive and efficient. FFT transforms <<part0007.xhtml#page_194>>the
-spatial domain data (i.e., pixel values) into the frequency domain,
-revealing the different frequency components that make up the image.
-This transformation facilitates various processing techniques that are
-challenging or inefficient to accomplish in the spatial domain.
+At its core, image processing involves manipulating images to extract useful information or to enhance their quality. When images are represented in the frequency domain, many operations become more intuitive and efficient. FFT transforms the spatial domain data (i.e., pixel values) into the frequency domain, revealing the different frequency components that make up the image.  This transformation facilitates various processing techniques that are challenging or inefficient to accomplish in the spatial domain.
 
 *** Mathematical Foundation
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-The 2D FFT operates on image data by transforming pixel values into
-frequency components. For an image \(f(x, y)\), where \(x\) and \(y\)
-represent pixel coordinates, the 2D FFT \(F(u, v)\) is given by:
+The 2D FFT operates on image data by transforming pixel values into frequency components. For an image \(f(x, y)\), where \(x\) and \(y\) represent pixel coordinates, the 2D FFT \(F(u, v)\) is given by:
 
-[ F(u, v) = \sum_{x=0}^{N-1} \sum_{y=0}^{M-1} f(x, y) e^{-2\pi i \left(
-\frac{ux}{N} + \frac{vy}{M} \right)}\]
+\[ F(u, v) = \sum_{x=0}^{N-1} \sum_{y=0}^{M-1} f(x, y) e^{-2\pi i \left( \frac{ux}{N} + \frac{vy}{M} \right)}\]
 
-Here, \(u\) and \(v\) are the frequency coordinates. This equation
-demonstrates that each frequency component is computed by summing the
-contributions of all pixel values, weighted by complex exponentials.
+Here, \(u\) and \(v\) are the frequency coordinates. This equation demonstrates that each frequency component is computed by summing the contributions of all pixel values, weighted by complex exponentials.
 
-To reconstruct the image from its frequency representation, the inverse
-FFT (IFFT) is applied:
+To reconstruct the image from its frequency representation, the inverse FFT (IFFT) is applied:
 
-[ f(x, y) = \frac{1}{NM} \sum_{u=0}^{N-1} \sum_{v=0}^{M-1} F(u, v)
-e^{2\pi i \left\(\frac{ux}{N} + \frac{vy}{M} \right)}\]
+\[ f(x, y) = \frac{1}{NM} \sum_{u=0}^{N-1} \sum_{v=0}^{M-1} F(u, v) e^{2\pi i \left\(\frac{ux}{N} + \frac{vy}{M} \right)}\]
 
-The IFFT effectively transforms the frequency components back into the
-spatial domain, recovering the original image.
+The IFFT effectively transforms the frequency components back into the spatial domain, recovering the original image.
 
 *** Practical Applications of FFT in Image Processing
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-1. Image Filtering:
+**** Image Filtering:
 
-Low-Pass and High-Pass Filtering: Low-pass filters allow low-frequency
-components (smooth variations) to pass while attenuating high-frequency
-components (sharp variations, noise). Conversely, high-pass filters do
-the opposite, enhancing edges and fine details.
++ Low-Pass and High-Pass Filtering :: Low-pass filters allow low-frequency components (smooth variations) to pass while attenuating high-frequency components (sharp variations, noise). Conversely, high-pass filters do the opposite, enhancing edges and fine details.
 
 #+begin_src jupyter-python
- import numpy as np import matplotlib.pyplot as plt from
-scipy.fftpack import fft2, ifft2, fftshift
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.fftpack import fft2, ifft2, fftshift
 
 # Load a sample image
-   image = plt.imread('sample_image.png')
-   if image.ndim == 3:  # Convert RGB to grayscale
-       image = image[..., 0]
+image = plt.imread('data/sample_image.jpg')
+if image.ndim == 3: # Convert RGB to grayscale
+    image = image[..., 0]
 
 # Compute the 2D FFT of the image
-   fft_image = fft2(image)
-   fft_image_shifted = fftshift(fft_image)  # Center the zero frequency
-component
+fft_image = fft2(image)
+fft_image_shifted = fftshift(fft_image) # Center the zero frequency component
 
 # Create a low-pass filter
-   rows, cols = image.shape
-   crow, ccol = rows // 2 , cols // 2
-   mask = np.zeros((rows, cols), np.uint8)
-   mask[crow-30:crow+30, ccol-30:ccol+30] = 1
+rows, cols = image.shape
+crow, ccol = rows // 2 , cols // 2
+mask = np.zeros((rows, cols), np.uint8)
+mask[crow-30:crow+30, ccol-30:ccol+30] = 1
 
 # Apply the filter
-   filtered_fft_image = fft_image_shifted * mask
+filtered_fft_image = fft_image_shifted * mask
 
 # Compute the inverse FFT to get the filtered image
-   filtered_image = ifft2(fftshift(filtered_fft_image)).real
+filtered_image = ifft2(fftshift(filtered_fft_image)).real
 
 # Plot the original and filtered images
-   plt.figure(figsize=(12, 6))
-   plt.subplot(1, 2, 1)
-   plt.imshow(image, cmap='gray')
-   plt.title("Original Image")
-   plt.axis('off')
+plt.figure(figsize=(12, 6))
+plt.subplot(1, 2, 1)
+plt.imshow(image, cmap='gray')
+plt.title("Original Image")
+plt.axis('off')
 
 plt.subplot(1, 2, 2)
-   plt.imshow(filtered_image, cmap='gray')
-   plt.title("Filtered Image (Low-Pass)")
-   <<part0007.xhtml#page_196>>plt.axis('off')
-   plt.show()
-
+plt.imshow(filtered_image, cmap='gray')
+plt.title("Filtered Image (Low-Pass)")
+plt.axis('off')
+plt.show()
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/9108aa1ed67d1c5e3388ee7b791d6d4ea926a172.png]]
 
 
-In this example, the low-pass filter is visualized by masking out
-high-frequency components in the FFT domain. The resulting image appears
-smoother, with reduced sharp edges and noise.
+In this example, the low-pass filter is visualized by masking out high-frequency components in the FFT domain. The resulting image appears smoother, with reduced sharp edges and noise.
 
-1. Image Compression:
++ Image Compression :: Compression techniques leverage the fact that many images have redundant information.
 
-Compression techniques leverage the fact that many images have redundant
-information.
-
-1. Edge Detection:
-
-Edge detection can be efficiently performed in the frequency domain.
-High-pass filters emphasize edges by amplifying high-frequency
-components. This approach is particularly useful in applications where
-edge clarity is critical, such as medical imaging and remote sensing.
++ Edge Detection :: Edge detection can be efficiently performed in the frequency domain. High-pass filters emphasize edges by amplifying high-frequency components. This approach is particularly useful in applications where edge clarity is critical, such as medical imaging and remote sensing.
 
 #+begin_src jupyter-python
- # Create a high-pass filter mask = np.ones((rows, cols),
-np.uint8) mask[crow-30:crow+30, ccol-30:ccol+30] = 0
+# Create a high-pass filter
+mask = np.ones((rows, cols), np.uint8)
+mask[crow-30:crow+30, ccol-30:ccol+30] = 0
 
 # Apply the filter
-   filtered_fft_image = fft_image_shifted * mask
+filtered_fft_image = fft_image_shifted * mask
 
 # Compute the inverse FFT to get the filtered image
-   filtered_image = ifft2(fftshift(filtered_fft_image)).real
+filtered_image = ifft2(fftshift(filtered_fft_image)).real
 
 # Plot the original and filtered images
-   plt.figure(figsize=(12, 6))
-   plt.subplot(1, 2, 1)
-   plt.imshow(image, cmap='gray')
-   plt.title("Original Image")
-   plt.axis('off')
+# plt.figure(figsize=(12, 6))
+plt.subplot(1, 2, 1)
+plt.imshow(image, cmap='gray')
+plt.title("Original Image")
+plt.axis('off')
 
 plt.subplot(1, 2, 2)
-   plt.imshow(filtered_image, cmap='gray')
-   plt.title("Filtered Image (High-Pass)")
-   plt.axis('off')
-   plt.show()
-
+plt.imshow(filtered_image, cmap='gray')
+plt.title("Filtered Image (High-Pass)")
+plt.axis('off')
+plt.show()
 #+end_src
-
+#+RESULTS:
+[[./.ob-jupyter/6a6cb22ce339136bc658749dcb03d28aef1306fe.png]]
 
 Here, applying a high-pass filter enhances the edges, making features
 like borders and lines more pronounced.
 
-1. Image Restoration:
++ Image Restoration :: Image restoration involves recovering an original image that has been degraded by factors such as blur or noise. In the frequency domain, these degradations can often be modeled and reversed by applying appropriate corrective filters.
 
-Image restoration involves recovering an original image that has been
-degraded by factors such as blur or noise. In the frequency domain,
-these degradations can often be modeled and reversed by applying
-appropriate corrective filters.
++ Signal Reconstruction :: Signal reconstruction uses inverse FFT techniques to  rebuild images from frequency data. This is essential in applications like MRI and CT scan reconstruction, where the raw data is inherently in the frequency domain.
 
-1. Signal Reconstruction:
-
-Signal reconstruction uses inverse FFT techniques to rebuild images from
-frequency data. This is essential in applications like MRI and CT scan
-reconstruction, where the raw data is inherently in the frequency
-domain.
-
-1. Pattern Recognition:
-
-FFT aids in pattern recognition by transforming patterns into their
-frequency components. Different patterns have unique frequency
-signatures, making it easier to detect and classify them in complex
-datasets.
++ Pattern Recognition :: FFT aids in pattern recognition by transforming patterns into their frequency components. Different patterns have unique frequency signatures, making it easier to detect and classify them in complex datasets.
 
 *** Real-World Applications
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-1. Medical Imaging:
-2. MRI: FFT is crucial in reconstructing MRI images from raw frequency
-   data, enabling non-invasive internal imaging.
-3. CT Scans: Similar to MRI, CT scans use FFT for image reconstruction,
-   allowing detailed views of internal structures.
-4. Astronomy:
-5. Telescope Imaging: FFT helps in processing images captured by
-   telescopes, enhancing clarity and detail by filtering out noise and
-   atmospheric distortions.
-6. Remote Sensing:
-7. Satellite Imagery: FFT-based techniques process satellite images for
-   environmental monitoring, urban planning, and disaster management.
-8. Forensics:
-9. Image Enhancement: Forensic analysts use FFT to enhance and analyze
-   images from surveillance cameras, aiding in criminal investigations.
++ Medical Imaging ::
+  + MRI :: FFT is crucial in reconstructing MRI images from raw frequency data, enabling non-invasive internal imaging.
+  + CT Scans :: Similar to MRI, CT scans use FFT for image reconstruction, allowing detailed views of internal structures.
++ Astronomy ::
+  + Telescope Imaging :: FFT helps in processing images captured by telescopes, enhancing clarity and detail by filtering out noise and atmospheric distortions.
++ Remote Sensing ::
+  + Satellite Imagery :: FFT-based techniques process satellite images for environmental monitoring, urban planning, and disaster management.
++ Forensics ::
+  + Image Enhancement :: Forensic analysts use FFT to enhance and analyze images from surveillance cameras, aiding in criminal investigations.
 
 *** Optimizing FFT for Image Processing
   :PROPERTIES:
   :CLASS: heading_sEC
   :END:
-To ensure efficient FFT computations in image processing, consider the
-following strategies:
+To ensure efficient FFT computations in image processing, consider the following strategies:
 
-1. Preprocessing:
-2. Image Padding: Pad images to dimensions that are powers of two to
-   optimize FFT performance.
-3. Data Normalization: Normalize image data to improve the accuracy of
-   frequency analysis.
-4. Parallel Computing:
-5. GPU Acceleration: Utilize GPUs for large-scale FFT operations,
-   leveraging libraries like CuPy or TensorFlow.
-6. Distributed Computing: Implement distributed FFT computations for
-   very large datasets using frameworks like Dask.
-7. Memory Management:
-8. In-Place Operations: Use in-place FFT transformations to minimize
-   memory usage, particularly important for high-resolution images.
++ Preprocessing ::
+  + Image Padding :: Pad images to dimensions that are powers of two to optimize FFT performance.
+  + Data Normalization :: Normalize image data to improve the accuracy of frequency analysis.
++ Parallel Computing ::
+  + GPU Acceleration :: Utilize GPUs for large-scale FFT operations, leveraging libraries like CuPy or TensorFlow.
+  + Distributed Computing :: Implement distributed FFT computations for very large datasets using frameworks like Dask.
++ Memory Management ::
+  + In-Place Operations :: Use in-place FFT transformations to minimize memory usage, particularly important for high-resolution images.
 
-The application of FFT in image processing opens up a world of
-possibilities for enhancing, analyzing, and transforming visual data.
-From filtering and edge detection to compression and reconstruction, the
-versatility of FFT makes it an indispensable tool in the modern image
-processing toolkit. Through practical examples and Python code, we have
-explored how these techniques are implemented and optimized, empowering
-you to leverage FFT for your image processing projects. As you continue
-to experiment with these tools, remember that the key to mastery lies in
-understanding both the mathematical foundations and practical
-applications, ensuring your solutions are both innovative and effective.
+The application of FFT in image processing opens up a world of possibilities for enhancing, analyzing, and transforming visual data.  From filtering and edge detection to compression and reconstruction, the versatility of FFT makes it an indispensable tool in the modern image processing toolkit. Through practical examples and Python code, we have explored how these techniques are implemented and optimized, empowering you to leverage FFT for your image processing projects. As you continue to experiment with these tools, remember that the key to mastery lies in understanding both the mathematical foundations and practical applications, ensuring your solutions are both innovative and effective.
 
 ** Practical Examples using NumPy
   :PROPERTIES:
   :CLASS: heading_sEA
   :END:
-In the previous sections, we've delved into the theoretical
-underpinnings and various applications of the Fast Fourier Transform
-(FFT) in image processing. Now, it's time to roll up our sleeves and get
-hands-on with practical examples using Python's powerful NumPy library.
-NumPy is a cornerstone in the Python scientific stack, providing support
-for large multi-dimensional arrays and matrices, along with a collection
-of mathematical functions to operate on these arrays.
+In the previous sections, we've delved into the theoretical underpinnings and various applications of the Fast Fourier Transform (FFT) in image processing. Now, it's time to roll up our sleeves and get hands-on with practical examples using Python's powerful NumPy library.  NumPy is a cornerstone in the Python scientific stack, providing support for large multi-dimensional arrays and matrices, along with a collection of mathematical functions to operate on these arrays.
 
 *** Example 1: Basic FFT on a 1D Signal
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-Let's begin with a straightforward example: computing the FFT
-<<part0007.xhtml#page_200>>of a simple 1D sinusoidal signal. This
-exercise will help you understand the basics of FFT and its
-interpretation in the frequency domain.
+Let's begin with a straightforward example: computing the FFT of a simple 1D sinusoidal signal. This exercise will help you understand the basics of FFT and its interpretation in the frequency domain.
 
-1. Generate a 1D Signal:
-
+**** Generate a 1D Signal:
 #+begin_src jupyter-python
- import numpy as np import matplotlib.pyplot as plt
+import numpy as np
+import matplotlib.pyplot as plt
 
 # Parameters
-   sample_rate = 1000  # Hz
-   T = 1.0 / sample_rate  # Sampling interval
-   N = 1024  # Number of sample points
+sample_rate = 1000 # Hz
+T = 1.0 / sample_rate # Sampling interval
+N = 1024 # Number of sample points
 
 # Time vector
-   t = np.linspace(0.0, N*T, N, endpoint=False)
+t = np.linspace(0.0, N*T, N, endpoint=False)
 
 # Generate a sinusoidal signal
-   freq = 50.0  # Frequency in Hz
-   amplitude = 1.0
-   signal = amplitude * np.sin(2.0 * np.pi * freq * t)
+freq = 50.0 # Frequency in Hz
+amplitude = 1.0
+signal = amplitude * np.sin(2.0 * np.pi * freq * t)
 
 # Plot the signal
-   plt.plot(t, signal)
-   plt.title("Original Signal (Time Domain)")
-   plt.xlabel("Time\[s]")
-   plt.ylabel("Amplitude")
-   plt.grid()
-   plt.show()
-
+plt.plot(t, signal)
+plt.title("Original Signal (Time Domain)")
+plt.xlabel("Time [s]")
+plt.ylabel("Amplitude")
+plt.grid()
+plt.show()
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/7b47624b20622f16234246ecf262286ff9fe4c75.png]]
 
-
-1. Compute the FFT:
-
+**** Compute the FFT:
 #+begin_src jupyter-python
- # Compute the FFT fft_signal = np.fft.fft(signal) freq_vector
-= np.fft.fftfreq(N, T)
+# Compute the FFT
+fft_signal = np.fft.fft(signal)
+freq_vector = np.fft.fftfreq(N, T)
 
 # Plot the FFT magnitude spectrum
-   plt.plot(freq_vector, np.abs(fft_signal))
-   plt.title("FFT of the Signal (Frequency Domain)")
-   <<part0007.xhtml#page_201>>plt.xlabel("Frequency\[Hz]")
-   plt.ylabel("Magnitude")
-   plt.grid()
-   plt.show()
-
+plt.plot(freq_vector, np.abs(fft_signal))
+plt.title("FFT of the Signal (Frequency Domain)")
+plt.xlabel("Frequency [Hz]")
+plt.ylabel("Magnitude")
+plt.grid()
+plt.show()
 #+end_src
-
+#+RESULTS:
+[[./.ob-jupyter/610c10e97c576fac3265d851647c718b78e2e164.png]]
 
 This code snippet generates a sinusoidal signal and computes its FFT.
 The resulting frequency spectrum reveals the presence of a peak at the
@@ -6019,45 +5673,42 @@ Moving on to a more complex example, we'll apply the 2D FFT to an image.
 This will help you see how FFT can be used to analyze and manipulate
 images in the frequency domain.
 
-1. Load and Display an Image:
-
+**** Load and Display an Image:
 #+begin_src jupyter-python
- from scipy.fftpack import fft2, ifft2, fftshift import
-matplotlib.image as mpimg
+from scipy.fftpack import fft2, ifft2, fftshift
+import matplotlib.image as mpimg
 
 # Load a sample image
-   image = mpimg.imread('sample_image.png')
-   if image.ndim == 3:  # Convert RGB to grayscale
-       image = image[..., 0]
+image = mpimg.imread('data/sample_image.jpg')
+if image.ndim == 3: # Convert RGB to grayscale
+    image = image[..., 0]
 
 # Display the original image
-   plt.imshow(image, cmap='gray')
-   plt.title("Original Image")
-   plt.axis('off')
-   plt.show()
-
+plt.imshow(image, cmap='gray')
+plt.title("Original Image")
+plt.axis('off')
+plt.show()
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/7a1270bb025dcfc937d1b247a440463a934ca606.png]]
 
-
-1. Compute the 2D FFT:
-
+**** Compute the 2D FFT:
 #+begin_src jupyter-python
- # Compute the 2D FFT of the image fft_image = fft2(image)
-fft_image_shifted = fftshift(fft_image) # Center the zero frequency
-component
+# Compute the 2D FFT of the image
+fft_image = fft2(image)
+fft_image_shifted = fftshift(fft_image) # Center the zero frequency component
 
 # Plot the magnitude spectrum of the FFT
-   plt.imshow(np.log(np.abs(fft_image_shifted)), cmap='gray')
-   plt.title("FFT Magnitude Spectrum")
-   plt.axis('off')
-   plt.show()
-
+plt.imshow(np.log(np.abs(fft_image_shifted)), cmap='gray')
+plt.title("FFT Magnitude Spectrum")
+plt.axis('off')
+plt.show()
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/e88b477cef2b0a90adc00d45b4c2bdcd014f7f56.png]]
 
 
-This example demonstrates how to compute the 2D FFT of an image and
-visualize its frequency components. The magnitude spectrum typically
-shows high-frequency details near the edges of the image.
+This example demonstrates how to compute the 2D FFT of an image and visualize its frequency components. The magnitude spectrum typically shows high-frequency details near the edges of the image.
 
 *** Example 3: Image Filtering with FFT
   :PROPERTIES:
@@ -6066,94 +5717,82 @@ shows high-frequency details near the edges of the image.
 Now, let's explore how to use the FFT for image filtering. We'll apply
 both low-pass and high-pass filters to an image and observe the effects.
 
-1. Low-Pass Filtering:
+**** Low-Pass Filtering:
 
 #+begin_src jupyter-python
- # Create a low-pass filter rows, cols = image.shape crow, ccol
-= rows // 2 , cols // 2 mask = np.zeros((rows, cols), np.uint8)
+# Create a low-pass filter
+rows, cols = image.shape
+crow, ccol = rows // 2 , cols // 2
+mask = np.zeros((rows, cols), np.uint8)
 mask[crow-30:crow+30, ccol-30:ccol+30] = 1
 
 # Apply the low-pass filter
-   filtered_fft_image = fft_image_shifted * mask
+filtered_fft_image = fft_image_shifted * mask
 
 # Compute the inverse FFT to get the filtered image
-   filtered_image = ifft2(fftshift(filtered_fft_image)).real
+filtered_image = ifft2(fftshift(filtered_fft_image)).real
 
 # Display the filtered image
-   plt.imshow(filtered_image, cmap='gray')
-   plt.title("Filtered Image (Low-Pass)")
-   plt.axis('off')
-   plt.show()
-
+plt.imshow(filtered_image, cmap='gray')
+plt.title("Filtered Image (Low-Pass)")
+plt.axis('off')
+plt.show()
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/728d7423677036bc77cf3d744d1f03f2c6e6299f.png]]
 
-
-1. High-Pass Filtering:
-
+**** High-Pass Filtering:
 #+begin_src jupyter-python
- # Create a high-pass filter mask = np.ones((rows, cols),
-np.uint8) mask[crow-30:crow+30, ccol-30:ccol+30] = 0
+# Create a high-pass filter
+mask = np.ones((rows, cols), np.uint8)
+mask[crow-30:crow+30, ccol-30:ccol+30] = 0
 
 # Apply the high-pass filter
-   filtered_fft_image = fft_image_shifted * mask
+filtered_fft_image = fft_image_shifted * mask
 
 # Compute the inverse FFT to get the filtered image
-   filtered_image = ifft2(fftshift(filtered_fft_image)).real
+filtered_image = ifft2(fftshift(filtered_fft_image)).real
 
 # Display the high-pass filtered image
-   plt.imshow(filtered_image, cmap='gray')
-   plt.title("Filtered Image (High-Pass)")
-   plt.axis('off')
-   plt.show()
-
+plt.imshow(filtered_image, cmap='gray')
+plt.title("Filtered Image (High-Pass)")
+plt.axis('off')
+plt.show()
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/43a93cd5b08f86f1dff650fdf7fd91273645a361.png]]
 
 
-These examples showcase how to create and apply low-pass and high-pass
-filters in the frequency domain. The low-pass filter smooths the image,
-reducing noise and high-frequency details, while the high-pass filter
-enhances edges and sharp features.
+These examples showcase how to create and apply low-pass and high-pass filters in the frequency domain. The low-pass filter smooths the image, reducing noise and high-frequency details, while the high-pass filter enhances edges and sharp features.
 
 *** Example 4: Image Compression using FFT
   :PROPERTIES:
   :CLASS: heading_s1W
   :END:
-Finally, let's see how FFT can be used to compress an image by
-discarding less significant frequency components.
+Finally, let's see how FFT can be used to compress an image by discarding less significant frequency components.
 
-1. Compressing the Image:
-
+**** Compressing the Image:
 #+begin_src jupyter-python
- # Thresholding to keep only significant frequencies threshold
-= np.max(np.abs(fft_image)) * 0.1 fft_image_compressed =
-fft_image_shifted * (np.abs(fft_image_shifted) > threshold)
+# Thresholding to keep only significant frequencies
+threshold = np.max(np.abs(fft_image)) * 0.1
+fft_image_compressed = fft_image_shifted * (np.abs(fft_image_shifted) > threshold)
 
 # Compute the inverse FFT to get the compressed image
-   compressed_image = ifft2(fftshift(fft_image_compressed)).real
+compressed_image = ifft2(fftshift(fft_image_compressed)).real
 
 # Display the compressed image
-   plt.imshow(compressed_image, cmap='gray')
-   <<part0007.xhtml#page_204>>plt.title("Compressed Image")
-   plt.axis('off')
-   plt.show()
-
+plt.imshow(compressed_image, cmap='gray')
+plt.title("Compressed Image")
+plt.axis('off')
+plt.show()
 #+end_src
+#+RESULTS:
+[[./.ob-jupyter/2d06a4d17122ee8206ffd559ea596827be336109.png]]
 
 
-In this example, we apply a threshold to the FFT of the image, keeping
-only the significant frequency components. The inverse FFT then
-reconstructs the image, which retains most of its visual quality while
-reducing data size.
+In this example, we apply a threshold to the FFT of the image, keeping only the significant frequency components. The inverse FFT then reconstructs the image, which retains most of its visual quality while reducing data size.
 
-Through these practical examples, we have explored the powerful
-capabilities of FFT in signal and image processing using NumPy. NumPy's
-robust and efficient implementation of FFT functions makes it an
-invaluable tool for your computational toolbox. As you experiment with
-these examples and adapt them to your unique needs, you'll gain deeper
-insights into the transformative power of Fourier analysis in the
-digital age.
-
-<<part0008.xhtml>>
+Through these practical examples, we have explored the powerful capabilities of FFT in signal and image processing using NumPy. NumPy's robust and efficient implementation of FFT functions makes it an invaluable tool for your computational toolbox. As you experiment with these examples and adapt them to your unique needs, you'll gain deeper insights into the transformative power of Fourier analysis in the digital age.
 
 * CHAPTER 5: FOURIER TRANSFORM IN SIGNAL PROCESSING
 ** Introduction
