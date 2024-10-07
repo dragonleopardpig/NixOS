@@ -36,8 +36,11 @@ wget -r --no-parent https://pythonnumericalmethods.studentorg.berkeley.edu/_sour
 
 ** Convert ipynb to org file
 #+BEGIN_SRC sh
+# convert all: .py file --> .ipynb files
+find . -iname "*.py" -type f -exec sh -c 'jupytext --to ipynb "${0}"' {} \;
+
 # convert all: ipynb file --> org files
-find ./ -iname "*.ipynb" -type f -exec sh -c 'pandoc "${0}" -o "${0%.ipynb}.org"' {} \;
+find . -iname "*.ipynb" -type f -exec sh -c 'pandoc "${0}" -o "${0%.ipynb}.org"' {} \;
 
 # replace "python" with "jupyter-python" recursively
 find . -type f -name "*.org" -exec sed -i 's|#+begin_src python|#+begin_src jupyter-python|g' {} +
@@ -7162,7 +7165,55 @@ in [ f a ]
 : [ <LAMBDA> 1 ]
 
 ** Multiple Arguments
-#+BEGIN_SRC nix  
-
+#+BEGIN_SRC python  
+print("hello")
 #+END_SRC
+
+#+RESULTS:
+
+* LSP Mode
+#+BEGIN_SRC python :tangle "python.py"
+print "Hello!"
+
+import numpy as np
+import pandas as pd
+#+END_SRC
+#+RESULTS:
+
+#+BEGIN_SRC jupyter-python
+import pandas as pd
+
+# Sample data for product prices in 2021, 2022, and 2023
+data = {'Matnum1': ['Laptop', 'Smartphone', 'Tablet', 'Smartwatch', 'Headphones'],
+        'Rev1': [1, 1, 1, 1, 1],
+        'Qty1': [1, 1, 1, 2, 1],
+        'Matnum2': ['Laptop1', 'Smartphone', 'Tablet1', 'Smartwatch', 'Headphones'],
+        'Rev2': [1, 2, 1, 1, 1],
+        'Qty2': [1, 8, 3, 2, 1],
+        }
+
+new_bom = pd.DataFrame(data)
+#+END_SRC
+
+#+RESULTS:
+
+#+BEGIN_SRC jupyter-python  
+# Comparing multiple columns
+comparison_result = (new_bom[['Matnum1', 'Matnum2']].eq(new_bom['Matnum1'], axis=0)).all(axis=1)
+
+# comparison_result = (product_prices[['Price_2021', 'Price_2022', 'Price_2023']].eq(product_prices['Price_2021'], axis=0)).all(axis=1)
+
+# Print the result
+print("Comparison Result:")
+print(comparison_result)
+#+END_SRC
+
+#+RESULTS:
+: Comparison Result:
+: 0    False
+: 1     True
+: 2    False
+: 3     True
+: 4     True
+: dtype: bool
 

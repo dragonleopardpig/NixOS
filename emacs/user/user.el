@@ -1,3 +1,16 @@
+;; ;; * Jedi
+;; (add-hook 'python-mode-hook 'jedi:setup)
+;; (setq jedi:complete-on-dot t)
+;; (add-hook 'python-mode-hook 'jedi:ac-setup)
+
+;; * Pyright
+;; (use-package lsp-pyright
+;;   :ensure t
+;;   :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
+;;   :hook (python-mode . (lambda ()
+;;                          (require 'lsp-pyright)
+;;                          (lsp))))  ; or lsp-deferred
+
 ;; * Org-fragtog
 ;; Auto preview Latex
 (add-hook 'org-mode-hook 'org-fragtog-mode)
@@ -8,6 +21,7 @@
 
 ;; * Set Faces, etc...
 (set-face-attribute 'default nil :height 130)
+(setq leuven-scale-outline-headlines 1.1)
 (setq text-scale-mode-step 1.05)
 (setq org-indent-indentation-per-level 0)
 (global-visual-line-mode t)
@@ -155,7 +169,9 @@ buffer's text scale."
 		      ))))
 (add-hook 'text-scale-mode-hook #'my/text-scale-adjust-latex-previews)
 (advice-add 'org-fragtog--post-cmd :after #'my/text-scale-adjust-latex-previews)
-
+;; ** Transparent Background
+;; (eval-after-load 'org
+;;   '(setf org-highlight-latex-and-related '(latex)))
 
 ;; * etc
 ;; (setq nb-notebook-directory "~/mountdir/Projects")
@@ -184,7 +200,7 @@ buffer's text scale."
 ;; * PDF Tools
 (pdf-tools-install)  ; Standard activation command
 (pdf-loader-install) ; On demand loading, leads to faster startup time
-
+(setq pdf-view-resize-factor 1.02)
 
 
 ;; * Copy-and-Paste issue for org-src-block
@@ -211,14 +227,14 @@ buffer's text scale."
 
 
 ;; * Remove line after :results
-(defun my-remove-line (_a _b)
-  (save-excursion 
-    (previous-line)
-    (beginning-of-line)
-    (when (looking-at-p "\n")
-      (kill-line))))
+;; (defun my-remove-line (_a _b)
+;;   (save-excursion 
+;;     (previous-line)
+;;     (beginning-of-line)
+;;     (when (looking-at-p "\n")
+;;       (kill-line))))
 
-(advice-add 'org-babel--insert-results-keyword :before #'my-remove-line)
+;; (advice-add 'org-babel--insert-results-keyword :before #'my-remove-line)
 
 
 
@@ -231,6 +247,49 @@ buffer's text scale."
 (keymap-global-set "C-c M-g" 'magit-file-dispatch)
 
 ;; **************************************************
+
+;; * Open ipynb
+(require 'markdown-mode nil t)
+
+(defun ipynb-to-markdown (file)
+  (interactive "f")
+  (let* ((data (with-temp-buffer
+                 (insert-file-literally file)
+                 (json-parse-string (buffer-string)
+                                    :object-type 'alist
+                                    :array-type 'list)))
+         (metadata (alist-get 'metadata data))
+         (kernelspec (alist-get 'kernelspec metadata))
+         (language (alist-get 'language kernelspec)))
+    (pop-to-buffer "ipynb-as-markdown")
+    ;; (when (featurep 'markdown-mode)
+    ;;   (markdown-mode))
+    (dolist (c (alist-get 'cells data))
+      (let* ((contents (alist-get 'source c))
+             (outputs (alist-get 'outputs c)))
+        (pcase (alist-get 'cell_type c)
+          ("markdown"
+           (when contents
+             (mapcar #'insert contents)
+             (insert "\n\n")))
+          ("code"
+           (when contents
+             (insert "```")
+             (insert language)
+             (insert "\n")
+             (mapcar #'insert contents)
+             (insert "\n```\n\n")
+             (dolist (x outputs)
+               (when-let (text (alist-get 'text x))
+                 (insert "```stdout\n")
+                 (insert (mapconcat #'identity text ""))
+                 (insert "\n```\n\n"))
+               (when-let (data (alist-get 'data x))
+                 (when-let (im64 (alist-get 'image/png data))
+                   (let ((imdata (base64-decode-string im64)))
+                     (insert-image (create-image imdata 'png t)))))
+               (insert "\n\n")))))))))
+
 
 ;; * Replace function in scimax-ob.el
 ;; ;; * create/modify blocks

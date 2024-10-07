@@ -80,28 +80,10 @@ For example, in medical imaging, the Fourier Transform helps in the reconstructi
 
 *** Communications
 
-In telecommunications, Fourier Transforms are fundamental in the
-modulation and demodulation of signals. They enable the transmission of
-data over various mediums by converting
-signals into a suitable form for propagation
-and subsequently reconstructing the original information at the
-receiver's end.
+In telecommunications, Fourier Transforms are fundamental in the modulation and demodulation of signals. They enable the transmission of data over various mediums by converting signals into a suitable form for propagation and subsequently reconstructing the original information at the receiver's end.
 
-- Modulation Techniques :: Fourier Transforms facilitate the modulation of
-  signals, such as Amplitude Modulation (AM) and Frequency Modulation
-  (FM), by converting these signals into the frequency domain where they
-  can be shifted and transmitted efficiently. For instance, in AM radio,
-  the audio signal modulates the amplitude of a carrier wave, which is
-  then transmitted. At the receiver's end, the inverse Fourier Transform
-  helps recover the original audio signal from the modulated carrier
-  wave.
-- OFDM in Wireless Communications :: Orthogonal Frequency-Division
-  Multiplexing (OFDM) is a key technology in modern wireless
-  communication systems, such as LTE and WiFi. OFDM relies on Fourier
-  Transforms to split a high-data-rate signal into multiple
-  lower-data-rate signals that are transmitted simultaneously over
-  different frequencies. This improves bandwidth efficiency and
-  resilience to channel interference.
+- Modulation Techniques :: Fourier Transforms facilitate the modulation of signals, such as Amplitude Modulation (AM) and Frequency Modulation (FM), by converting these signals into the frequency domain where they can be shifted and transmitted efficiently. For instance, in AM radio, the audio signal modulates the amplitude of a carrier wave, which is then transmitted. At the receiver's end, the inverse Fourier Transform helps recover the original audio signal from the modulated carrier wave.
+- OFDM in Wireless Communications :: Orthogonal Frequency-Division Multiplexing (OFDM) is a key technology in modern wireless communication systems, such as LTE and WiFi. OFDM relies on Fourier Transforms to split a high-data-rate signal into multiple lower-data-rate signals that are transmitted simultaneously over different frequencies. This improves bandwidth efficiency and resilience to channel interference.
 
 #+begin_src jupyter-python
 import numpy as np
@@ -2658,7 +2640,11 @@ Mathematically, the DFT of a discrete signal \(x[n]\) of length \(N\) is defined
 
 \[ X[k] = \sum_{n=0}^{N-1} x[n] \cdot e^{-j \frac{2\pi}{N} kn}\]
 
-where: - \(X[k]\) is the DFT coefficient representing the amplitude and phase of the frequency component at index (k). - \(x[n]\) is the (n)-th sample of the time-domain signal. - (N) is the total number of samples. - \(e^{-j \frac{2\pi}{N} kn}\) is the complex exponential basis function.
+where: 
+- \(X[k]\) is the DFT coefficient representing the amplitude and phase of the frequency component at index (k). 
+- \(x[n]\) is the (n)-th sample of the time-domain signal. 
+- \(N\) is the total number of samples. 
+- \(e^{-j \frac{2\pi}{N} kn}\) is the complex exponential basis function.
 
 The inverse DFT (IDFT), which transforms the frequency domain representation back to the time domain, is given by:
 

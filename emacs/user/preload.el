@@ -72,6 +72,8 @@
 	smartparens
 	spice-mode
 	ob-spice
+	lsp-mode
+	jedi
 	))
 (package-install-selected-packages)
 
