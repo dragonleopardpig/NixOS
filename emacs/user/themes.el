@@ -89,7 +89,7 @@
 ;; 	  (setq org-src-block-faces
 ;; 		'(("emacs-lisp" (:background "LightCyan1" :extend t))
 ;; 		  ("sh" (:background "gray90" :extend t))
-;; 		  ("jupyter-python" (:background "seashell" :extend t))
+;; 		  ("jupyter-python" (:background "ivory" :extend t))
 ;; 		  ("ipython" (:background "thistle1" :extend t))
 ;; 		  ("python" (:background "DarkSeaGreen1" :extend t))
 ;; 		  ("sqlite" (:background "#a24224" :extend t))
@@ -101,7 +101,7 @@
 ;; 	     ((t (
 ;; 		  :underline nil
 ;; 		  :overline nil
-;; 		  :foreground "indian red"
+;; 		  :foreground "orange red"
 ;; 		  :background "white"
 ;; 		  :italic t
 ;; 		  :bold t
@@ -110,15 +110,15 @@
 ;; 	     ((t (
 ;; 		  :underline nil
 ;; 		  :overline nil
-;; 		  :foreground "indian red"
+;; 		  :foreground "orange red"
 ;; 		  :background "white"
 ;; 		  :italic t
 ;; 		  :bold t
 ;; 		  :extend t))))
-;; 	   '(org-level-1 ((t (:foreground "indian red")))))))
+;; 	   '(org-level-1 ((t (:foreground "red3")))))))
 ;;       ;; ##################################
 ;;       (dolist (theme themes)
-;;         ;; (when heaven-and-hell-load-theme-no-confirm
+;; 	;; (when heaven-and-hell-load-theme-no-confirm
 ;; 	(when heaven-and-hell-load-theme-no-confirm
 ;; 	  (load-theme theme t t)))
 ;;       (custom-set-variables `(custom-enabled-themes (quote ,themes)))
@@ -133,4 +133,3 @@
 ;;       (outline-show-entry)
 ;;       ;; *********
 ;;       )))
-
