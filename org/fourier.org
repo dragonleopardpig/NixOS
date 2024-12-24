@@ -4304,8 +4304,7 @@ ecg_signal = np.loadtxt('data/ecg_signal.txt')
 
 # Perform DFT
 N = len(ecg_signal)
-frequencies = np.fft.fftfreq(N, 1/1000) # Assuming 1000 Hz sampling
-rate
+frequencies = np.fft.fftfreq(N, 1/1000) # Assuming 1000 Hz sampling rate
 spectrum = np.fft.fft(ecg_signal)
 
 # Plot the frequency spectrum

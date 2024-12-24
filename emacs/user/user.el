@@ -202,6 +202,8 @@ buffer's text scale."
 (pdf-loader-install) ; On demand loading, leads to faster startup time
 (setq pdf-view-resize-factor 1.02)
 
+(require 'saveplace-pdf-view)
+(save-place-mode 1)
 
 ;; * Copy-and-Paste issue for org-src-block
 (defun my-flush-lines ()

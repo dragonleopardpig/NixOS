@@ -74,6 +74,7 @@
 	ob-spice
 	lsp-mode
 	jedi
+	saveplace-pdf-view
 	))
 (package-install-selected-packages)
 
