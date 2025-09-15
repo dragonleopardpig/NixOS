@@ -79,6 +79,12 @@ return x*x
 
 #+RESULTS:
 : 36
+** Latex Preview Error
+#+BEGIN_SRC sh
+sudo apt install texlive-fonts-recommended texlive-fonts-extra texlive-lang-all texlive-science
+
+tlmgr init-usertree
+#+END_SRC
 
 * Jupyter BOOK
 #+begin_src sh

@@ -1,3 +1,33 @@
+;; * Disable some defaults
+(disable-theme 'smart-mode-line-light)
+(google-this-mode -1)
+
+;; * Set Faces, etc...
+(set-face-attribute 'default nil :height 110)
+(setq leuven-scale-outline-headlines 1.1)
+(setq text-scale-mode-step 1.05)
+(setq org-indent-indentation-per-level 0)
+(global-visual-line-mode t)
+;; (global-display-fill-column-indicator-mode t)
+;; (add-hook 'text-mode-hook 'turn-on-auto-fill)
+;; (add-hook 'text-mode-hook
+;; 	  (lambda() (set-fill-column 80)))
+(column-number-mode)
+;; (add-hook 'org-mode-hook 'org-indent-mode)
+(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
+(setopt display-fill-column-indicator-column 80)
+
+;; * Custom Keyboard Shortcut
+(global-set-key (kbd "M-p") 'scroll-up-line)
+(global-set-key (kbd "M-n") 'scroll-down-line)
+(global-set-key (kbd "C-M-a") 'org-babel-mark-block)
+
+;; * GUI Interface
+(delete-selection-mode 1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(tool-bar-mode -1)
+
 ;; Doom Themes
 (use-package doom-themes
   :ensure t
@@ -19,15 +49,30 @@
   ;; (doom-thexmes-treemacs-config)
   )
 
-;; Org Modern Mode
-(add-hook 'org-mode-hook #'org-modern-mode)
-(add-hook 'org-agenda-finalize-hook #'org-modern-agenda)
+;; * Org Modern
 
-;; ;; Kaolin Themes
-;; (use-package kaolin-themes
-;;   :config
-;;   (load-theme 'kaolin-galaxy t)
-;;   (kaolin-treemacs-theme))
+(setq
+ ;; Edit settings
+ org-auto-align-tags nil
+ org-tags-column 0
+ org-catch-invisible-edits 'show-and-error
+ org-special-ctrl-a/e t
+ org-insert-heading-respect-content t
+
+ ;; Org styling, hide markup etc.
+ org-hide-emphasis-markers t
+ org-pretty-entities t
+ org-agenda-tags-column 0
+ org-ellipsis "…")
+
+;; Option 2: Globally
+(with-eval-after-load 'org (global-org-modern-mode))
+
+;; Kaolin Themes
+(use-package kaolin-themes
+  :config
+  (load-theme 'kaolin-galaxy t)
+  (kaolin-treemacs-theme))
 
 ;; Heaven and Hell
 (use-package heaven-and-hell
@@ -133,3 +178,44 @@
 ;;       (outline-show-entry)
 ;;       ;; *********
 ;;       )))
+
+
+
+;; ;; Minimal UI
+;; (package-initialize)
+;; (menu-bar-mode -1)
+;; (tool-bar-mode -1)
+;; (scroll-bar-mode -1)
+;; (modus-themes-load-operandi)
+
+;; ;; Choose some fonts
+;; ;; (set-face-attribute 'default nil :family "Iosevka")
+;; ;; (set-face-attribute 'variable-pitch nil :family "Iosevka Aile")
+;; ;; (set-face-attribute 'org-modern-symbol nil :family "Iosevka")
+
+;; ;; Add frame borders and window dividers
+;; (modify-all-frames-parameters
+;;  '((right-divider-width . 40)
+;;    (internal-border-width . 40)))
+;; (dolist (face '(window-divider
+;;                 window-divider-first-pixel
+;;                 window-divider-last-pixel))
+;;   (face-spec-reset-face face)
+;;   (set-face-foreground face (face-attribute 'default :background)))
+;; (set-face-background 'fringe (face-attribute 'default :background))
+
+;; (setq
+;;  ;; Edit settings
+;;  org-auto-align-tags nil
+;;  org-tags-column 0
+;;  org-catch-invisible-edits 'show-and-error
+;;  org-special-ctrl-a/e t
+;;  org-insert-heading-respect-content t
+
+;;  ;; Org styling, hide markup etc.
+;;  org-hide-emphasis-markers t
+;;  org-pretty-entities t
+;;  org-agenda-tags-column 0
+;;  org-ellipsis "…")
+
+;; (global-org-modern-mode)

@@ -1,59 +1,53 @@
-;; ;; * Jedi
-;; (add-hook 'python-mode-hook 'jedi:setup)
-;; (setq jedi:complete-on-dot t)
-;; (add-hook 'python-mode-hook 'jedi:ac-setup)
-
-;; * Pyright
-;; (use-package lsp-pyright
-;;   :ensure t
-;;   :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
-;;   :hook (python-mode . (lambda ()
-;;                          (require 'lsp-pyright)
-;;                          (lsp))))  ; or lsp-deferred
+;; * ripgrep
+(require 'rg)
+(rg-enable-default-bindings)
 
 ;; * Org-fragtog
 ;; Auto preview Latex
 (add-hook 'org-mode-hook 'org-fragtog-mode)
 
-;; * Disable some defaults
-(disable-theme 'smart-mode-line-light)
-(google-this-mode -1)
+;; * Projectile
+;; Optional: ag is nice alternative to using grep with Projectile
+;; (use-package ag
+;; :ensure t)
 
-;; * Set Faces, etc...
-(set-face-attribute 'default nil :height 130)
-(setq leuven-scale-outline-headlines 1.1)
-(setq text-scale-mode-step 1.05)
-(setq org-indent-indentation-per-level 0)
-(global-visual-line-mode t)
-;; (global-display-fill-column-indicator-mode t)
-;; (add-hook 'text-mode-hook 'turn-on-auto-fill)
-;; (add-hook 'text-mode-hook
-;; 	  (lambda() (set-fill-column 80)))
-(column-number-mode)
-(add-hook 'org-mode-hook 'org-indent-mode)
-(add-hook 'prog-mode-hook #'display-fill-column-indicator-mode)
-(setopt display-fill-column-indicator-column 80)
+;; Optional: Enable vertico as the selection framework to use with Projectile
+(use-package vertico
+  :ensure t
+  :init
+  (vertico-mode +1))
 
-;; * Custom Keyboard Shortcut
-(global-set-key (kbd "M-p") 'scroll-up-line)
-(global-set-key (kbd "M-n") 'scroll-down-line)
-(global-set-key (kbd "C-M-a") 'org-babel-mark-block)
+;; Optional: which-key will show you options for partially completed keybindings
+;; It's extremely useful for packages with many keybindings like Projectile.
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode +1))
 
-;; * GUI Interface
-(delete-selection-mode 1)
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
+(use-package projectile
+  :ensure t
+  :init
+  (setq projectile-project-search-path '("~/vc/projects/"))
+  (setq projectile-cleanup-known-projects nil)
+  :config
+  (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map)
+  (global-set-key (kbd "C-c p") 'projectile-command-map)
+  (projectile-mode +1))
+
 
 ;; * Dashboard
 (require 'dashboard)
 (dashboard-setup-startup-hook)
-(setq dashboard-items '((recents  . 10)
+(setq dashboard-items '((recents  . 5)
                         (bookmarks . 5)
                         (projects . 5)
                         (agenda . 5)
                         (registers . 5)))
 (setq dashboard-set-navigator t)
+(setq dashboard-icon-type 'all-the-icons)  ; use `all-the-icons' package
+(setq dashboard-set-heading-icons t)
+(setq dashboard-set-file-icons t)
+(setq dashboard-projects-backend 'projectile)
 
 ;; * Org Mode Startup
 (setq org-startup-folded t)
@@ -127,7 +121,7 @@
  'org-babel-load-languages
  '(
    ;; (haskell . t)
-   ;; (julia . t)
+   (julia . t)
    (latex . t)
    (lisp . t)
    (nix . t)
@@ -183,8 +177,8 @@ buffer's text scale."
 (add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
 
 ;; * epub reader
-(setq nov-unzip-program (executable-find "bsdtar")
-      nov-unzip-args '("-xC" directory "-f" filename))
+;; (setq nov-unzip-program (executable-find "bsdtar")
+;; nov-unzip-args '("-xC" directory "-f" filename))
 (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
 
 ;; ** epub reader
@@ -292,6 +286,15 @@ buffer's text scale."
                      (insert-image (create-image imdata 'png t)))))
                (insert "\n\n")))))))))
 
+;; * Convert ipynb to org
+(setq code-cells-convert-ipynb-style '(
+				       ("pandoc" "--to" "ipynb" "--from" "org")
+				       ("pandoc" "--to" "org" "--from" "ipynb")
+				       org-mode))
+
+
+;; * Rust Mode
+;; (require 'rust-mode)
 
 ;; * Replace function in scimax-ob.el
 ;; ;; * create/modify blocks
@@ -464,3 +467,16 @@ buffer's text scale."
 ;; (require 'eaf-markdown-previewer)
 ;; (require 'eaf-file-manager)
 ;; (require 'eaf-jupyter)
+
+;; ;; * Jedi
+;; (add-hook 'python-mode-hook 'jedi:setup)
+;; (setq jedi:complete-on-dot t)
+;; (add-hook 'python-mode-hook 'jedi:ac-setup)
+
+;; * Pyright
+;; (use-package lsp-pyright
+;;   :ensure t
+;;   :custom (lsp-pyright-langserver-command "pyright") ;; or basedpyright
+;;   :hook (python-mode . (lambda ()
+;;                          (require 'lsp-pyright)
+;;                          (lsp))))  ; or lsp-deferred

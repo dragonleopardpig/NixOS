@@ -54,6 +54,7 @@
 	tide
 	web-mode
 	emmet-mode
+	rust-mode
 	company-web
 	ox-rst
 	alert 
@@ -75,6 +76,10 @@
 	lsp-mode
 	jedi
 	saveplace-pdf-view
+	ag
+	vertico
+	which-key
+	rg
 	))
 (package-install-selected-packages)
 
