@@ -129,7 +129,7 @@
 ** Optical Metrology
    
    - In most practical systems, the emerging wave front departs from a perfect sphere by an optical path difference (OPD). The OPD represents aberration. When the OPD is less than a wavelength, the distribution of light in the image point is determined by diffraction. OPD values greater than two waves indicate that the light distribution in the image is determined primarilyby the geometrical distribution of rays. The OPD is measured with respect to a central chief ray (which is often called the principal ray). When a design calls for a near-diffraction-limited lens, the designer concentrates on reducing the optical-path-length differences to the lowest possible values for several image points over the field of the object. When the images are several waves of OPD, the designer usually concentrates on the geometrical transverse deviations from a perfect point.
-   -
+
 
      
 ** Laser Machining

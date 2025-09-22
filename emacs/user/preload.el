@@ -27,14 +27,17 @@
 (setq scimax-theme nil)
 
 ;;* Load MELPA
-(when (>= emacs-major-version 24)
-  (progn
-    ;; load emacs 24's package system.
-    (require 'package)
-    ;; Add MELPA repository.
-    (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
-  (when (< emacs-major-version 27) (package-initialize)))
-
+;; (when (>= emacs-major-version 24)
+;;   (progn
+;;     ;; load emacs 24's package system.
+;;     (require 'package)
+;;     ;; Add MELPA repository.
+;;     (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
+;;   (when (< emacs-major-version 27) (package-initialize)))
+;; Initialize package.el
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(package-initialize)
 
 ;; * Auto Install My Packages
 (setq package-selected-packages
@@ -84,10 +87,18 @@
 (package-install-selected-packages)
 
 ;; ** Load Custom Directory Recursively
-;; (let ((default-directory "~/emacs/user/custom/"))
+;; (let ((default-directory "~/NixOS/emacs/user/custom/"))
 ;;   (normal-top-level-add-subdirs-to-load-path))
+
+(let ((base-directory "/home/thinky/NixOS/emacs/user/custom/"))
+  (add-to-list 'load-path base-directory)
+  (let ((default-directory base-directory))
+    (normal-top-level-add-subdirs-to-load-path)))
 
 ;; ** Pyvenv
 (require 'pyvenv)
 (pyvenv-activate "~/.virtualenvs/tf/")
+
+;; ** Scimax
+(add-hook 'org-mode-hook 'scimax-autoformat-mode)
 
