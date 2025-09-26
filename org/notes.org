@@ -7,7 +7,21 @@
 
 * Software Development
 - cp /var/lib/snapd/desktop/applications/remmina_remmina.desktop
-  ~/.local/share/applications/
+  ~/.local/share/Applications/
+** Dot-Bashrc
+#+BEGIN_SRC sh
+# <<< ChuPL <<<
+alias cry='cryfs basedir/ mountdir/ -c cryfs.config'
+alias bye='cryfs-unmount /home/thinky/mountdir/'
+export GTK_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
+export QT_IM_MODULES=ibus
+export FLASK_APP=main.py
+neofetch
+source ~/.virtualenvs/tf/bin/activate
+
+#+END_SRC
+
 ** Git clone with Token in Debian
 git clone https://<token>@github.com/dragonleopardpig/NixOS.git
 

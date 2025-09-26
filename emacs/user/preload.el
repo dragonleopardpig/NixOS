@@ -86,14 +86,6 @@
 	))
 (package-install-selected-packages)
 
-;; ** Load Custom Directory Recursively
-;; (let ((default-directory "~/NixOS/emacs/user/custom/"))
-;;   (normal-top-level-add-subdirs-to-load-path))
-
-(let ((base-directory "/home/thinky/NixOS/emacs/user/custom/"))
-  (add-to-list 'load-path base-directory)
-  (let ((default-directory base-directory))
-    (normal-top-level-add-subdirs-to-load-path)))
 
 ;; ** Pyvenv
 (require 'pyvenv)

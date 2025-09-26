@@ -1,0 +1,40 @@
+* Introduction
+** Gain Medium
+- Gives each type of laser its name
+- Determines the output /power/ or /energy/
+- Ultimate /tuning range/
+** Optical Resonator (or Cavity)
+- Controls the /spatial quality/
+- Controls the /line Width/
+** Lasers
+- High /spatial coherence/
+- High /temporal Coherence/
+** Resonator Types
+*** Stable
+- Stable Resonator :: An extended environment within which the relevant type of wave or oscillation can circulate in a self-consistent fashion.
+- Free-space /stable/ standing-wave
+- Free-space /stable/ Ring Cavities
+- Both constructed with discrete mirrors
+- Three dimensional /guided-wave/ resonators
+  - Formed out of the gain medium itself
+  - Formed out of external reflectors
+*** Unstable
+- /Unstable/ or /non-confining/ cavities
+- Constructed by mirrors of restricted transverse dimension
+- Constructed by /spatially graded Reflectivities/
+* Fabry-Perot Resonator
+- Fabry-Perot cavity :: two mirrors oppose each other across the gain medium.
+- Such a resonator provides physical confinement in one dimension only.
+- Light simply reflects back and forth along the axis joining the two mirrors.
+- Mirror specification (eg. curvatures, sizes, reflectivities) determines the reflection manner.
+- Three parameters must remain unchanged after one complete round-trip:
+  - the phase of the optical wavefront
+  - the on-axis amplitude of the wave
+  - the amplitude distribution, transverse to the Axis
+* Phase :ATTACH:
+:PROPERTIES:
+:ID:       28b4727f-0182-45e0-b6df-d0b64b6ae68a
+:END:
+- The oscillating wavelength of the light must correspond to an integer fraction of the cavity round-trip length.
+- \(\lambda = \frac{2nL}{q}\)
+[[file:/home/thinky/NixOS/org/source/The Physics and Technology of Laser Resonators_2025-09-25_17.11_01.png]] 
