@@ -98,6 +98,16 @@ return x*x
 sudo apt install texlive-fonts-recommended texlive-fonts-extra texlive-lang-all texlive-science
 
 tlmgr init-usertree
+#+END_Src
+* Rime
+- Create /default.custom.yaml/ file in location *~/.config/ibus/Rime/*
+#+BEGIN_SRC yaml
+# ~/.config/ibus/Rime/default.custom.yaml
+patch:
+  "menu/page_size": 9
+  schema_list:
+    - schema: luna_pinyin_simp
+    - schema: luna_pinyin #press ctrl+` or F4 to change traditional
 #+END_SRC
 
 * Jupyter BOOK
@@ -253,15 +263,6 @@ print(xyplot(1:10 ~ 1:10))
 library(lattice)
 xyplot(1:10 ~ 1:10)
 #+end_src
-
-* Encryption :crypt:
------BEGIN PGP MESSAGE-----
-
-jA0ECQMKdmtCbbEcitP80mMBFNzSGWBj9oNWpLPyeQv0NgdRoTfTaxx1DEYkBxzn
-fCLSTmLXfGUKi7Vz/Cic0SV7bJke+6p3Q88uUvAHDkl3M11XVBi15qZb041Zm4zu
-nXVKd1cWzhCs9Dow+bsfSTBHReI=
-=uHRH
------END PGP MESSAGE-----
 
 * Sympy
 #+begin_src python :python "nix-shell /tmp/shell.nix --pure --run python" :results output
@@ -6854,13 +6855,7 @@ print(np.tile(x, (2, 2)))
 #+END_SRC
 
 * Password
------BEGIN PGP MESSAGE-----
-
-jA0ECQMCNGw45956Ghn/0kQB8nnjoIkDL3gD7cocT4Fg5Qk2JIyIRVvIYpZ3SrA2
-aGqPxLUm1cYTl/lYkqkji2dDlP0wQ7vzX6OxRHhzQXsiYmYDOw==
-=6n2U
------END PGP MESSAGE-----
-* Nix and NixOS
+S7igBqFUH!s:HAM* Nix and NixOS
 - NixOS, a Linux distribution built on top of the Nix package manager, can be described as "OS as Code." It employs declarative Nix configuration files to describe the entire state of the operating system.
 - NixOS primarily focuses on managing the static portion of the system state in a declarative manner. Dynamic data, along with the contents in the user's home directory, remain unaffected by NixOS when rolling back to a previous generation.(although only the state declared in Nix configuration files can be rolled back).
 - NixOS uses declarative configuration to manage the entire system environment. These configurations can be managed directly with Git, allowing the system to be restored to any historical state as long as the configuration files are preserved (provided the desired states are declared in the Nix configuration).
