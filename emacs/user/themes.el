@@ -3,7 +3,7 @@
 (google-this-mode -1)
 
 ;; * Set Faces, etc...
-(set-face-attribute 'default nil :height 110)
+(set-face-attribute 'default nil :height 100)
 (setq leuven-scale-outline-headlines 1.1)
 (setq text-scale-mode-step 1.05)
 (setq org-indent-indentation-per-level 0)
@@ -78,5 +78,5 @@
           (dark . (doom-oceanic-next doom-plain-dark misterioso doom-badger leuven-dark))))
   (setq heaven-and-hell-load-theme-no-confirm t)
   :hook (after-init . heaven-and-hell-init-hook)
-  :bind (("C-c <f6>" . heaven-and-hell-load-default-theme)
-         ("<f6>" . heaven-and-hell-toggle-theme)))
+  :bind (("C-c <f8>" . heaven-and-hell-load-default-theme)
+         ("<f8>" . heaven-and-hell-toggle-theme)))

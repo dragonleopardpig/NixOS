@@ -99,6 +99,14 @@ sudo apt install texlive-fonts-recommended texlive-fonts-extra texlive-lang-all 
 
 tlmgr init-usertree
 #+END_Src
+* Firefox recovery :crypt:
+-----BEGIN PGP MESSAGE-----
+
+jA0ECQMKoN6a/MRhkW7/0l4BVv0SP6wGsCf84oGmUcnSnqp/IfN0SaELvybcndBM
+7ywzG83tmvd3R3SrfNCIrGjgfFK18qWeUSCH9Fj8aCeD957yAMk8w9SmE5RvYovb
+kd2c/8/Y5AvcNa/741hl
+=ps+n
+-----END PGP MESSAGE-----
 * Rime
 - Create /default.custom.yaml/ file in location *~/.config/ibus/Rime/*
 #+BEGIN_SRC yaml

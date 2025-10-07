@@ -84,7 +84,7 @@ Themes will be loaded if they weren't loaded previously."
 	       ((t (
 		    :underline t
 		    :overline nil
-		    :foreground "chartreuse"
+		    :foreground "pink"
 		    :background "#232627"
 		    :italic t
 		    :bold t
@@ -93,12 +93,12 @@ Themes will be loaded if they weren't loaded previously."
 	       ((t (
 		    :underline nil
 		    :overline t
-		    :foreground "chartreuse"
+		    :foreground "pink"
 		    :background "#232627"
 		    :italic t
 		    :bold t
 		    :extend t))))
-	     '(org-level-1 ((t (:italic t) )))))
+	     '(org-level-1 ((t (:foreground "thistle1" :italic t))))))
 	(progn
 	  (setq org-src-block-faces
 		'(("emacs-lisp" (:background "LightCyan1" :extend t))
