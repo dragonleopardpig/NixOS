@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, callPackage, ... }:
+{ config, pkgs, ... }:
 
 {
   imports =
@@ -14,10 +14,12 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-  # ChuPL - Enable plymouth
-  boot.plymouth.enable = true;
-  boot.initrd.luks.devices."luks-883066b1-7e59-4ac6-92d4-85bb8e1f0f75".device = "/dev/disk/by-uuid/883066b1-7e59-4ac6-92d4-85bb8e1f0f75";
-  networking.hostName = "X299"; # Define your hostname.
+
+  # Use latest kernel.
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
+  boot.initrd.luks.devices."luks-0b7115de-dd74-4755-a648-6d5ef2f33eb7".device = "/dev/disk/by-uuid/0b7115de-dd74-4755-a648-6d5ef2f33eb7";
+  networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -45,41 +47,24 @@
     LC_TIME = "en_SG.UTF-8";
   };
 
-  # ChuPL - Automatic Upgrades
-  system.autoUpgrade.enable = true;
-  system.autoUpgrade.allowReboot = false;
-  system.autoUpgrade.channel = "https://channels.nixos.org/nixos-23.11";
-  
-  # ChuPL
-  #services.flatpak.enable = true;
-  services.bamf.enable = true;
-  programs.dconf.enable = true;
-  
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-  
-  # Enable the KDE Plasma 5 Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
 
-  # # Enable the KDE Plasma 6 Desktop Environment.
-  # # KDE Plasma 6 is now available on unstable
-  # services.desktopManager.plasma6.enable = true;
-  # services.xserver.displayManager.defaultSession = "plasma";
-  # services.xserver.displayManager.sddm.wayland.enable = true;
-  
+  # Enable the Cinnamon Desktop Environment.
+  services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.desktopManager.cinnamon.enable = true;
+
   # Configure keymap in X11
-  services.xserver = {
-    xkb.layout = "us";
-    xkb.variant = "";
+  services.xserver.xkb = {
+    layout = "us";
+    variant = "";
   };
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
- 
+
   # Enable sound with pipewire.
-  sound.enable = true;
-  hardware.pulseaudio.enable = false;
+  services.pulseaudio.enable = false;
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -103,68 +88,45 @@
     description = "thinky";
     extraGroups = [ "networkmanager" "wheel" ];
     packages = with pkgs; [
-      kate
+    #  thunderbird
     ];
   };
 
-  # Chinese Language Input
-  fonts = {
-    fontDir.enable = true;
-    packages = with pkgs; [
-      noto-fonts
-      noto-fonts-extra
-      noto-fonts-cjk-sans
-      noto-fonts-cjk-serif
-      source-han-sans
-      source-han-serif
-      sarasa-gothic  #更纱黑体
-      source-code-pro
-      hack-font
-      jetbrains-mono
-    ];
-  };
-
-  i18n.inputMethod = {
-    enabled = "fcitx5";
-    fcitx5.addons = with pkgs; [
-      fcitx5-mozc
-      fcitx5-gtk
-      fcitx5-chinese-addons
-    ];
-  };
+  # Install firefox.
+  programs.firefox.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  nixpkgs.config.packageOverrides = pkgs: {
-    nur = import (builtins.fetchTarball "https://github.com/nix-community/NUR/archive/master.tar.gz") {
-      inherit pkgs;
-    };
-  };
-    
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    #  vim # Do not forget to add an editor to edit configuration.nix!
-    # The Nano editor is also installed by default.
-    (aspellWithDicts (dicts: with dicts; [ en en-computers en-science ]))
-    #libsForQt5.qtstyleplugin-kvantum
-    (python311.withPackages(ps: with ps; [
-      toolz
-      ipykernel
-      scipy 
-      numpy 
-      matplotlib 
-      sympy 
+    wget
+    git
+    emacs
+    gparted
+    usbimager
+    sassc
+    redshift
+    variety
+    gnupg
+    eza
+    (python3.withPackages (python-pkgs: with python-pkgs; [
       pandas
-      jupyter-book
-      tkinter
+      requests
+      scipy
+      simpy
+      jupyterlab
+      numpy
+      matplotlib
     ]))
-    jupyter-all
-    julia
-    racket
-    meld
   ];
+
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+    pinentryPackage = pkgs.pinentry-qt; # Or "curses", "gnome3", etc., depending on your preference
+  };
   
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -191,7 +153,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment? 
-  
-}
+  system.stateVersion = "25.05"; # Did you read the comment?
 
+}
