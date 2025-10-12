@@ -15,10 +15,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  # Use latest kernel.
-  boot.kernelPackages = pkgs.linuxPackages_latest;
-
-  boot.initrd.luks.devices."luks-0b7115de-dd74-4755-a648-6d5ef2f33eb7".device = "/dev/disk/by-uuid/0b7115de-dd74-4755-a648-6d5ef2f33eb7";
+  boot.initrd.luks.devices."luks-51c7cb8c-d514-40e1-8286-0185987e196c".device = "/dev/disk/by-uuid/51c7cb8c-d514-40e1-8286-0185987e196c";
   networking.hostName = "nixos"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -103,7 +100,7 @@
   environment.systemPackages = with pkgs; [
     wget
     git
-    emacs
+    emacs-gtk
     gparted
     usbimager
     sassc
@@ -111,6 +108,8 @@
     variety
     gnupg
     eza
+    fastfetch
+    git-credential-manager
     (python3.withPackages (python-pkgs: with python-pkgs; [
       pandas
       requests
@@ -125,9 +124,25 @@
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
-    pinentryPackage = pkgs.pinentry-qt; # Or "curses", "gnome3", etc., depending on your preference
+    pinentryPackage = pkgs.pinentry-qt;
   };
-  
+
+  programs.bash = {
+    shellAliases = {
+      ls = "eza --icons=always --group-directories-first";
+      gc = "git commit -m";
+      update = "sudo nixos-rebuild switch";
+    };
+   interactiveShellInit = ''
+          ${pkgs.fastfetch}/bin/fastfetch
+        '';
+    promptInit = ''
+  # Example: Set a simple colored prompt with username and current directory
+  export PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\n\$ '
+  export PROMPT_COMMAND='echo -n > /dev/null'
+'';
+  };
+    
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
