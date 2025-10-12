@@ -3,8 +3,6 @@
  # Enable OpenGL
   hardware.graphics = {
     enable = true;
-    # driSupport = true;
-    # driSupport32Bit = true;
   };
 
   # Load nvidia driver for Xorg and Wayland
@@ -35,41 +33,16 @@
     nvidiaSettings = true;
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    # package = config.boot.kernelPackages.nvidiaPackages.beta;
-
-    package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-      version = "580.95.05";
-      sha256_64bit = "sha256-hJ7w746EK5gGss3p8RwTA9VPGpp2lGfk5dlhsv4Rgqc=";
-      sha256_aarch64 = "sha256-zLRCbpiik2fGDa+d80wqV3ZV1U1b4lRjzNQJsLLlICk=";
-      openSha256 = "sha256-RFwDGQOi9jVngVONCOB5m/IYKZIeGEle7h0+0yGnBEI=";
-      settingsSha256 = "sha256-F2wmUEaRrpR1Vz0TQSwVK4Fv13f3J9NJLtBe4UP2f14=";
-      persistencedSha256 = "sha256-QCwxXQfG/Pa7jSTBB0xD3lsIofcerAWWAHKvWjWGQtg=";
-    };
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
     
   };
 
-  # hardware.nvidia = {
-  #   modesetting.enable = true;
-  #   nvidiaSettings = true;
-  #   open = false;  # Use proprietary driver, not nouveau
-  #   package = config.boot.kernelPackages.nvidiaPackages.beta;
-  # };
-
-  # Enable X server with NVIDIA driver
-  # services.xserver = {
-  #   enable = true;
-  #   videoDrivers = [ "nvidia" ];
-  # };
-
-#   # Environment variables for Wayland or X11 sessions
-#   environment.sessionVariables = {
-#     GBM_BACKEND = "nvidia-drm";
-#     LIBVA_DRIVER_NAME = "nvidia";
-#     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
-#     XDG_SESSION_TYPE = "x11"; # Change to "x11" if you use X11
-#   };
-
-#   # Accept NVIDIA license
-#   nixpkgs.config.nvidia.acceptLicense = true;
-
+   hardware.nvidia.prime = {
+    # ... other prime options ...
+    # 00:02.0 VGA compatible controller: Intel Corporation Arrow Lake-S [Intel Graphics] (rev 06)
+    # 02:00.0 3D controller: NVIDIA Corporation AD107M [GeForce RTX 4050 Max-Q / Mobile] (rev a1)
+    sync.enable = true;
+    intelBusId = "PCI:0:2:0"; # Example for Intel GPU at 00:02.0
+    nvidiaBusId = "PCI:2:0:0"; # Example for NVIDIA GPU at 02:00.0
+  };
 }
