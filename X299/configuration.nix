@@ -165,6 +165,10 @@
     }))
   ];
 
+   # Optional: Enable nix-ld for automatic handling of dynamic libraries
+  # This is often recommended for seamless integration with non-Nix software.
+  programs.nix-ld.enable = true;
+  
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
@@ -180,11 +184,21 @@
    interactiveShellInit = ''
           ${pkgs.fastfetch}/bin/fastfetch
         '';
-    promptInit = ''
-  # Example: Set a simple colored prompt with username and current directory
-  export PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\n\$ '
-  export PROMPT_COMMAND='echo -n > /dev/null'
-'';
+     promptInit = ''
+  if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
+    PROMPT_COLOR="1;31m"
+    ((UID)) && PROMPT_COLOR="1;32m"
+    if [ -n "$INSIDE_EMACS" ]; then
+      # Emacs term mode doesn't support xterm title escape sequence (\e]0;)
+      PS1="\n\[\033[$PROMPT_COLOR\][\u@\h:\w]\\$\[\033[0m\] "
+    else
+      PS1="\n\[\033[$PROMPT_COLOR\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\n\$\[\033[0m\] "
+    fi
+    if test "$TERM" = "xterm"; then
+      PS1="\[\033]2;\h:\u:\w\007\]$PS1"
+    fi
+  fi
+ '';
   };
 
   i18n.inputMethod = {
