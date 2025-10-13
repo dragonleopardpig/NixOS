@@ -15,8 +15,18 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  boot.initrd.luks.devices."luks-51c7cb8c-d514-40e1-8286-0185987e196c".device = "/dev/disk/by-uuid/51c7cb8c-d514-40e1-8286-0185987e196c";
-  networking.hostName = "nixos"; # Define your hostname.
+  # Use latest kernel.
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
+  boot.extraModulePackages = [config.boot.kernelPackages.ddcci-driver];
+  boot.kernelModules = ["i2c-dev" "ddcci_backlight"];
+  services.udev.extraRules = ''
+        KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
+  '';
+  hardware.i2c.enable = true;
+  
+  boot.initrd.luks.devices."luks-6888724b-a24c-4ba6-bd13-d78dd20da012".device = "/dev/disk/by-uuid/6888724b-a24c-4ba6-bd13-d78dd20da012";
+  networking.hostName = "X299"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -46,7 +56,7 @@
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
-
+  
   # Enable the Cinnamon Desktop Environment.
   services.xserver.displayManager.lightdm.enable = true;
   services.xserver.desktopManager.cinnamon.enable = true;
@@ -83,7 +93,7 @@
   users.users.thinky = {
     isNormalUser = true;
     description = "thinky";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "i2c"];
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -102,6 +112,8 @@
     git
     remmina
     protonvpn-gui
+    pciutils
+    lshw
     emacs-gtk
     gparted
     usbimager
@@ -112,6 +124,15 @@
     eza
     fastfetch
     git-credential-manager
+    ddcutil
+    nerd-fonts.ubuntu
+    nerd-fonts.ubuntu-sans
+    nerd-fonts.ubuntu-mono
+    noto-fonts
+    noto-fonts-extra
+    noto-fonts-cjk-sans
+    texliveFull
+    onlyoffice-desktopeditors
     (python3.withPackages (python-pkgs: with python-pkgs; [
       pandas
       requests
@@ -121,6 +142,27 @@
       numpy
       matplotlib
     ]))
+    
+    # Create an FHS environment using the command `fhs`, enabling the execution of non-NixOS packages in NixOS!
+    (let base = pkgs.appimageTools.defaultFhsEnvArgs; in
+      pkgs.buildFHSEnv (base // {
+      name = "fhs";
+      targetPkgs = pkgs:
+        # pkgs.buildFHSEnv provides only a minimal FHS environment,
+        # lacking many basic packages needed by most software.
+        # Therefore, we need to add them manually.
+        #
+        # pkgs.appimageTools provides basic packages required by most software.
+        (base.targetPkgs pkgs) ++ (with pkgs; [
+          pkg-config
+          ncurses
+          # Feel free to add more packages here if needed.
+        ]
+      );
+      profile = "export FHS=1";
+      runScript = "bash";
+      extraOutputsToInstall = ["dev"];
+    }))
   ];
 
   programs.gnupg.agent = {
@@ -133,7 +175,7 @@
     shellAliases = {
       ls = "eza --icons=always --group-directories-first";
       gc = "git commit -m";
-      update = "sudo nixos-rebuild switch";
+      rebuild = "sudo nixos-rebuild switch";
     };
    interactiveShellInit = ''
           ${pkgs.fastfetch}/bin/fastfetch
@@ -144,14 +186,26 @@
   export PROMPT_COMMAND='echo -n > /dev/null'
 '';
   };
-    
+
+  i18n.inputMethod = {
+    type = "fcitx5";
+    enable = true;
+    fcitx5.addons = with pkgs; [
+      fcitx5-gtk   # Or fcitx5-qt for KDE Plasma
+      fcitx5-rime
+      rime-data
+      librime
+      fcitx5-chinese-addons
+      fcitx5-nord  # a color theme
+    ];
+  };
+
+  # Ensure fcitx5 is enabled for your environment
+  # services.fcitx5.enable = true; # Example for system-wide service
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
   # List services that you want to enable:
 

@@ -1,6 +1,7 @@
 ;; * Disable some defaults
 (disable-theme 'smart-mode-line-light)
 (google-this-mode -1)
+(fringe-mode -1)
 
 ;; * Set Faces, etc...
 (set-face-attribute 'default nil :height 100)

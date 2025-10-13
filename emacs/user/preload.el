@@ -27,13 +27,6 @@
 (setq scimax-theme nil)
 
 ;;* Load MELPA
-;; (when (>= emacs-major-version 24)
-;;   (progn
-;;     ;; load emacs 24's package system.
-;;     (require 'package)
-;;     ;; Add MELPA repository.
-;;     (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t))
-;;   (when (< emacs-major-version 27) (package-initialize)))
 ;; Initialize package.el
 (require 'package)
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
