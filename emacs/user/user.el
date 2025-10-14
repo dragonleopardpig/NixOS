@@ -1,3 +1,10 @@
+(unless (package-installed-p 'jupyter)
+  (package-refresh-contents)
+  (package-install 'jupyter))
+
+;; Optional: Configure jupyter
+(setq jupyter-default-kernel "python3")
+
 ;; * ripgrep
 (require 'rg)
 (rg-enable-default-bindings)
