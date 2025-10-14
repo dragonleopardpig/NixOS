@@ -11,12 +11,26 @@
       ./nvidia.nix
     ];
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+    boot.loader.systemd-boot.enable = false;
+    boot.loader.grub.enable = true;
+    boot.loader.grub.device = "nodev";
+    boot.loader.grub.useOSProber = true;
+    boot.loader.grub.efiSupport = true;
+    boot.loader.efi.canTouchEfiVariables = true;
+    boot.loader.efi.efiSysMountPoint = "/boot";
 
+    boot.loader.grub2-theme = {
+    enable = true;
+    theme = "stylish";
+    footer = true;
+    customResolution = "2560x1440";  # Optional: Set a custom resolution
+    };
+    
   boot.initrd.luks.devices."luks-51c7cb8c-d514-40e1-8286-0185987e196c".device = "/dev/disk/by-uuid/51c7cb8c-d514-40e1-8286-0185987e196c";
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "M90aPro"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -99,9 +113,11 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
-    git
+    git # git config --global core.askpass ""
     remmina
     protonvpn-gui
+    pciutils
+    lshw
     emacs-gtk
     gparted
     usbimager
@@ -111,39 +127,100 @@
     gnupg
     eza
     fastfetch
-    git-credential-manager
+    git-credential-manager # type "unset SSH_ASKPASS" in command prompt
+    ddcutil
+    nerd-fonts.ubuntu
+    nerd-fonts.ubuntu-sans
+    nerd-fonts.ubuntu-mono
+    noto-fonts
+    noto-fonts-extra
+    noto-fonts-cjk-sans
+    texliveFull
+    onlyoffice-desktopeditors
+    librecad
+    aspell
+    aspellDicts.en
+    aspellDicts.en-science
+    aspellDicts.en-computers
     (python3.withPackages (python-pkgs: with python-pkgs; [
       pandas
       requests
       scipy
-      simpy
+      sympy
       jupyterlab
       numpy
       matplotlib
+      ipykernel
+      jupyter
+      pyzmq
+      emacsPackages.zmq
     ]))
+    # Create an FHS environment using the command `fhs`, 
+    #enabling the execution of non-NixOS packages in NixOS!
+    (let base = pkgs.appimageTools.defaultFhsEnvArgs; in
+      pkgs.buildFHSEnv (base // {
+      name = "fhs";
+      targetPkgs = pkgs:
+        # pkgs.buildFHSEnv provides only a minimal FHS environment,
+        # lacking many basic packages needed by most software.
+        # Therefore, we need to add them manually.
+        #
+        # pkgs.appimageTools provides basic packages required by most software.
+        (base.targetPkgs pkgs) ++ (with pkgs; [
+          pkg-config
+          ncurses
+          # Feel free to add more packages here if needed.
+        ]
+      );
+      profile = "export FHS=1";
+      runScript = "bash";
+      extraOutputsToInstall = ["dev"];
+    }))
   ];
-
+  
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
-    pinentryPackage = pkgs.pinentry-qt;
   };
 
   programs.bash = {
     shellAliases = {
       ls = "eza --icons=always --group-directories-first";
       gc = "git commit -m";
-      update = "sudo nixos-rebuild switch";
+      rebuild = "sudo nixos-rebuild switch";
     };
    interactiveShellInit = ''
           ${pkgs.fastfetch}/bin/fastfetch
         '';
-    promptInit = ''
-  # Example: Set a simple colored prompt with username and current directory
-  export PS1='\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\n\$ '
-  export PROMPT_COMMAND='echo -n > /dev/null'
-'';
+     promptInit = ''
+  if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
+    PROMPT_COLOR="1;31m"
+    ((UID)) && PROMPT_COLOR="1;32m"
+    if [ -n "$INSIDE_EMACS" ]; then
+      # Emacs term mode doesn't support xterm title escape sequence (\e]0;)
+      PS1="\n\[\033[$PROMPT_COLOR\][\u@\h:\w]\\$\[\033[0m\] "
+    else
+      PS1="\n\[\033[$PROMPT_COLOR\][\[\e]0;\w\a\]\[\e[0;1;38;5;154m\]\u\[\e[1;35m\]@\[\e[0;1;38;5;154m\]\h\[\e[0;1;38;5;160m\]:\[\e[0;1;38;5;208m\]\w\[\033[$PROMPT_COLOR\]]\n\[\e[38;5;153m\]\$\[\033[0m\] "
+    fi
+    if test "$TERM" = "xterm"; then
+      PS1="\[\033]2;\h:\u:\w\007\]$PS1"
+    fi
+  fi
+ '';
   };
+
+    i18n.inputMethod = {
+    type = "fcitx5";
+    enable = true;
+    fcitx5.addons = with pkgs; [
+      fcitx5-gtk   # Or fcitx5-qt for KDE Plasma
+      fcitx5-rime
+      rime-data
+      librime
+      fcitx5-chinese-addons
+      fcitx5-nord  # a color theme
+    ];
+    };
     
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
