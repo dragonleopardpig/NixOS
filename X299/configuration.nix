@@ -111,7 +111,7 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     wget
-    git
+    git # git config --global core.askpass ""
     remmina
     protonvpn-gui
     pciutils
