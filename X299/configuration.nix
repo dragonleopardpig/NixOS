@@ -145,9 +145,7 @@
       matplotlib
       ipykernel
       jupyter
-      notebook
       pyzmq
-      zeromq
       emacsPackages.zmq
     ]))
     
