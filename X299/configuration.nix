@@ -125,7 +125,7 @@
     gnupg
     eza
     fastfetch
-    git-credential-manager
+    git-credential-manager # type "unset SSH_ASKPASS" in command prompt
     ddcutil
     nerd-fonts.ubuntu
     nerd-fonts.ubuntu-sans
@@ -151,7 +151,8 @@
       emacsPackages.zmq
     ]))
     
-    # Create an FHS environment using the command `fhs`, enabling the execution of non-NixOS packages in NixOS!
+    # Create an FHS environment using the command `fhs`, 
+    #enabling the execution of non-NixOS packages in NixOS!
     (let base = pkgs.appimageTools.defaultFhsEnvArgs; in
       pkgs.buildFHSEnv (base // {
       name = "fhs";
@@ -200,7 +201,7 @@
       # Emacs term mode doesn't support xterm title escape sequence (\e]0;)
       PS1="\n\[\033[$PROMPT_COLOR\][\u@\h:\w]\\$\[\033[0m\] "
     else
-      PS1="\n\[\033[$PROMPT_COLOR\][\[\e]0;\u@\h: \w\a\]\u@\h:\w]\n\$\[\033[0m\] "
+      PS1="\n\[\033[$PROMPT_COLOR\][\[\e]0;\w\a\]\[\e[0;1;38;5;154m\]\u\[\e[1;35m\]@\[\e[0;1;38;5;154m\]\h\[\e[0;1;38;5;160m\]:\[\e[0;1;38;5;208m\]\w\[\033[$PROMPT_COLOR\]]\n\[\e[38;5;153m\]\$\[\033[0m\] "
     fi
     if test "$TERM" = "xterm"; then
       PS1="\[\033]2;\h:\u:\w\007\]$PS1"
@@ -221,9 +222,6 @@
       fcitx5-nord  # a color theme
     ];
   };
-
-  # Ensure fcitx5 is enabled for your environment
-  # services.fcitx5.enable = true; # Example for system-wide service
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
