@@ -11,6 +11,9 @@
       ./nvidia.nix
     ];
 
+  # Dont delete
+  boot.initrd.luks.devices."luks-6888724b-a24c-4ba6-bd13-d78dd20da012".device = "/dev/disk/by-uuid/6888724b-a24c-4ba6-bd13-d78dd20da012";
+  
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
@@ -25,7 +28,6 @@
   '';
   hardware.i2c.enable = true;
   
-  boot.initrd.luks.devices."luks-6888724b-a24c-4ba6-bd13-d78dd20da012".device = "/dev/disk/by-uuid/6888724b-a24c-4ba6-bd13-d78dd20da012";
   networking.hostName = "X299"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -137,10 +139,16 @@
       pandas
       requests
       scipy
-      simpy
+      sympy
       jupyterlab
       numpy
       matplotlib
+      ipykernel
+      jupyter
+      notebook
+      pyzmq
+      zeromq
+      emacsPackages.zmq
     ]))
     
     # Create an FHS environment using the command `fhs`, enabling the execution of non-NixOS packages in NixOS!
@@ -172,7 +180,7 @@
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
-    pinentryPackage = pkgs.pinentry-qt;
+    # pinentryPackage = pkgs.pinentry-qt;
   };
 
   programs.bash = {
