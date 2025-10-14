@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ inputs, lib, config, pkgs, ... }:
 
 {
   imports =
@@ -11,12 +11,19 @@
       ./nvidia.nix
     ];
 
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  
   # Dont delete
   boot.initrd.luks.devices."luks-6888724b-a24c-4ba6-bd13-d78dd20da012".device = "/dev/disk/by-uuid/6888724b-a24c-4ba6-bd13-d78dd20da012";
   
   # Bootloader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
+    boot.loader.systemd-boot.enable = false;
+    boot.loader.grub.enable = true;
+    boot.loader.grub.device = "nodev";
+    boot.loader.grub.useOSProber = true;
+    boot.loader.grub.efiSupport = true;
+    boot.loader.efi.canTouchEfiVariables = true;
+    boot.loader.efi.efiSysMountPoint = "/boot";
 
   # Use latest kernel.
   # boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -27,6 +34,13 @@
         KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
   '';
   hardware.i2c.enable = true;
+
+  boot.loader.grub2-theme = {
+    enable = true;
+    theme = "stylish";
+    footer = true;
+    customResolution = "1920x1080";  # Optional: Set a custom resolution
+  };
   
   networking.hostName = "X299"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -95,7 +109,7 @@
   users.users.thinky = {
     isNormalUser = true;
     description = "thinky";
-    extraGroups = [ "networkmanager" "wheel" "i2c"];
+    extraGroups = [ "networkmanager" "wheel" "docker" "i2c"];
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -135,6 +149,7 @@
     noto-fonts-cjk-sans
     texliveFull
     onlyoffice-desktopeditors
+    librecad
     (python3.withPackages (python-pkgs: with python-pkgs; [
       pandas
       requests
