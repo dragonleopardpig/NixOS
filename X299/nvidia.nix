@@ -12,13 +12,6 @@
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
     package = config.boot.kernelPackages.nvidiaPackages.stable;
 
-    # package = config.boot.kernelPackages.nvidiaPackages.production.overrideAttrs {
-    #     version = "580.76.05";
-    #     src = pkgs.fetchurl {
-    #       url = "https://us.download.nvidia.com/XFree86/Linux-x86_64/580.76.05/NVIDIA-Linux-x86_64-580.76.05.run";
-    #       sha256 = "1zcpbp859h5whym0r54a3xrkqdl7z3py1hg8n8hv0c89nqvfd6r1";
-    #     };
-    # };
     # Modesetting is required.
     modesetting.enable = true;
 

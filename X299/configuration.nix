@@ -226,15 +226,24 @@
    interactiveShellInit = ''
           ${pkgs.fastfetch}/bin/fastfetch
         '';
-     promptInit = ''
+   promptInit = ''
   if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
     PROMPT_COLOR="1;31m"
     ((UID)) && PROMPT_COLOR="1;32m"
+    BOLD="\\[\\e[1m\\]"
+    GOLD="\\[\\e[38;5;220m\\]" # 256-color code for gold
+    GREEN="\\[\\e[0;1;38;5;154m\\]"
+    PURPLE="\\[\\e[1;35m\\]"
+    RED="\\[\\e[0;1;38;5;160m\\]"
+    ORANGE="\\[\\e[0;1;38;5;208m\\]"
+    BLUE="\\[\\e[38;5;153m\\]"
+    CYAN="\\[\\e[36m\\]"
+    RESET="\\[\\e[0m\\]"
     if [ -n "$INSIDE_EMACS" ]; then
       # Emacs term mode doesn't support xterm title escape sequence (\e]0;)
       PS1="\n\[\033[$PROMPT_COLOR\][\u@\h:\w]\\$\[\033[0m\] "
     else
-      PS1="\n\[\033[$PROMPT_COLOR\][\[\e]0;\w\a\]\[\e[0;1;38;5;154m\]\u\[\e[1;35m\]@\[\e[0;1;38;5;154m\]\h\[\e[0;1;38;5;160m\]:\[\e[0;1;38;5;208m\]\w\[\033[$PROMPT_COLOR\]]\n\[\e[38;5;153m\]\$\[\033[0m\] "
+PS1="\n\[\033[$PROMPT_COLOR\][$BOLD$BLUE\d $BOLD$CYAN\t $BOLD$GREEN\u$BOLD$PURPLE@$BOLD$ORANGE\h$BOLD$RED:$BOLD$GOLD\w\[\033[$PROMPT_COLOR\]]\n$BOLD$BLUE\$\[\033[0m\] "
     fi
     if test "$TERM" = "xterm"; then
       PS1="\[\033]2;\h:\u:\w\007\]$PS1"
