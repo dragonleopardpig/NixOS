@@ -205,7 +205,7 @@
 
   programs.bash = {
     shellAliases = {
-      ls = "eza --icons=always --group-directories-first";
+      ls = "eza --icons=always --group-directories-first --sort=extension";
       gc = "git commit -m";
       rebuild = "sudo nixos-rebuild switch";
     };
