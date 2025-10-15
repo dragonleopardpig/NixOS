@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ inputs, lib, config, pkgs, ... }:
 
 {
   imports =
@@ -12,6 +12,9 @@
     ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  # Don't delete
+  boot.initrd.luks.devices."luks-51c7cb8c-d514-40e1-8286-0185987e196c".device = "/dev/disk/by-uuid/51c7cb8c-d514-40e1-8286-0185987e196c";
   
   # Bootloader.
     boot.loader.systemd-boot.enable = false;
@@ -49,7 +52,6 @@
       plymouth.logo = "${pkgs.nixos-icons}/share/icons/hicolor/128x128/apps/nix-snowflake.png";
     };
     
-  boot.initrd.luks.devices."luks-51c7cb8c-d514-40e1-8286-0185987e196c".device = "/dev/disk/by-uuid/51c7cb8c-d514-40e1-8286-0185987e196c";
   networking.hostName = "M90aPro"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -197,6 +199,10 @@
       extraOutputsToInstall = ["dev"];
     }))
   ];
+
+  # Optional: Enable nix-ld for automatic handling of dynamic libraries
+  # This is often recommended for seamless integration with non-Nix software.
+  programs.nix-ld.enable = true;
   
   programs.gnupg.agent = {
     enable = true;

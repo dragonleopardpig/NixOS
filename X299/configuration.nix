@@ -13,7 +13,7 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   
-  # Dont delete
+  # Don't delete
   boot.initrd.luks.devices."luks-6888724b-a24c-4ba6-bd13-d78dd20da012".device = "/dev/disk/by-uuid/6888724b-a24c-4ba6-bd13-d78dd20da012";
   
   # Bootloader.
@@ -40,6 +40,26 @@
     theme = "stylish";
     footer = true;
     customResolution = "1920x1080";  # Optional: Set a custom resolution
+  };
+
+  boot = {
+    # silence first boot output
+    consoleLogLevel = 3;
+    initrd.verbose = false;
+    initrd.systemd.enable = true;
+    kernelParams = [
+      "quiet"
+      "splash"
+      "intremap=on"
+      "boot.shell_on_fail"
+      "udev.log_priority=3"
+      "rd.systemd.show_status=auto"
+    ];
+
+    # plymouth, showing after LUKS unlock
+    plymouth.enable = true;
+    plymouth.font = "${pkgs.hack-font}/share/fonts/truetype/Hack-Regular.ttf";
+    plymouth.logo = "${pkgs.nixos-icons}/share/icons/hicolor/128x128/apps/nix-snowflake.png";
   };
   
   networking.hostName = "X299"; # Define your hostname.
@@ -109,7 +129,7 @@
   users.users.thinky = {
     isNormalUser = true;
     description = "thinky";
-    extraGroups = [ "networkmanager" "wheel" "docker" "i2c"];
+    extraGroups = [ "networkmanager" "wheel" "i2c"];
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -187,7 +207,7 @@
     }))
   ];
 
-   # Optional: Enable nix-ld for automatic handling of dynamic libraries
+  # Optional: Enable nix-ld for automatic handling of dynamic libraries
   # This is often recommended for seamless integration with non-Nix software.
   programs.nix-ld.enable = true;
   
@@ -199,7 +219,7 @@
 
   programs.bash = {
     shellAliases = {
-      ls = "eza --icons=always --group-directories-first";
+      ls = "eza --icons=always --group-directories-first --sort=extension";
       gc = "git commit -m";
       rebuild = "sudo nixos-rebuild switch";
     };
