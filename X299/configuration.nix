@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, lib, config, pkgs, ... }:
+{ inputs, lib, options, config, pkgs, ... }:
 
 {
   imports =
@@ -17,13 +17,13 @@
   boot.initrd.luks.devices."luks-6888724b-a24c-4ba6-bd13-d78dd20da012".device = "/dev/disk/by-uuid/6888724b-a24c-4ba6-bd13-d78dd20da012";
   
   # Bootloader.
-    boot.loader.systemd-boot.enable = false;
-    boot.loader.grub.enable = true;
-    boot.loader.grub.device = "nodev";
-    boot.loader.grub.useOSProber = true;
-    boot.loader.grub.efiSupport = true;
-    boot.loader.efi.canTouchEfiVariables = true;
-    boot.loader.efi.efiSysMountPoint = "/boot";
+  boot.loader.systemd-boot.enable = false;
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "nodev";
+  boot.loader.grub.useOSProber = true;
+  boot.loader.grub.efiSupport = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot";
 
   # Use latest kernel.
   # boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -170,11 +170,39 @@
     texliveFull
     onlyoffice-desktopeditors
     librecad
+    freecad
+    gimp
+    inkscape
+    pinta
+    mission-center
+    resources
+    ripgrep
+    unzip
+    zip
+    pandoc
+    htop
+    traceroute
+    starship
+    bat
+    lsd
+    imagemagick
+    ffmpeg
+    fzf
+    fim
+    feh
+    sxiv
+    tiv
+    chafa
+    viu
+    inputs.nix-software-center.packages.${system}.nix-software-center
+    inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
     (python3.withPackages (python-pkgs: with python-pkgs; [
       pandas
       requests
       scipy
       sympy
+      scikit-learn
+      scikit-image
       jupyterlab
       numpy
       matplotlib
@@ -207,6 +235,9 @@
     }))
   ];
 
+  # Set the default editor to vim
+  environment.variables.EDITOR = "emacs";
+  
   # Optional: Enable nix-ld for automatic handling of dynamic libraries
   # This is often recommended for seamless integration with non-Nix software.
   programs.nix-ld.enable = true;
@@ -227,29 +258,29 @@
           ${pkgs.fastfetch}/bin/fastfetch
         '';
    promptInit = ''
-  if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
-    PROMPT_COLOR="1;31m"
-    ((UID)) && PROMPT_COLOR="1;32m"
-    BOLD="\\[\\e[1m\\]"
-    GOLD="\\[\\e[38;5;220m\\]" # 256-color code for gold
-    GREEN="\\[\\e[0;1;38;5;154m\\]"
-    PURPLE="\\[\\e[1;35m\\]"
-    RED="\\[\\e[0;1;38;5;160m\\]"
-    ORANGE="\\[\\e[0;1;38;5;208m\\]"
-    BLUE="\\[\\e[38;5;153m\\]"
-    CYAN="\\[\\e[36m\\]"
-    RESET="\\[\\e[0m\\]"
-    if [ -n "$INSIDE_EMACS" ]; then
-      # Emacs term mode doesn't support xterm title escape sequence (\e]0;)
-      PS1="\n\[\033[$PROMPT_COLOR\][\u@\h:\w]\\$\[\033[0m\] "
-    else
+    if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
+     PROMPT_COLOR="1;31m"
+     ((UID)) && PROMPT_COLOR="1;32m"
+     BOLD="\\[\\e[1m\\]"
+     GOLD="\\[\\e[38;5;220m\\]"
+     GREEN="\\[\\e[0;1;38;5;154m\\]"
+     PURPLE="\\[\\e[1;35m\\]"
+     RED="\\[\\e[0;1;38;5;160m\\]"
+     ORANGE="\\[\\e[0;1;38;5;208m\\]"
+     BLUE="\\[\\e[38;5;153m\\]"
+     CYAN="\\[\\e[36m\\]"
+     RESET="\\[\\e[0m\\]"
+     if [ -n "$INSIDE_EMACS" ]; then
+         # Emacs term mode doesn't support xterm title escape sequence (\e]0;)
+         PS1="\n\[\033[$PROMPT_COLOR\][\u@\h:\w]\\$\[\033[0m\] "
+     else
 PS1="\n\[\033[$PROMPT_COLOR\][$BOLD$BLUE\d $BOLD$CYAN\t $BOLD$GREEN\u$BOLD$PURPLE@$BOLD$ORANGE\h$BOLD$RED:$BOLD$GOLD\w\[\033[$PROMPT_COLOR\]]\n$BOLD$BLUE\$\[\033[0m\] "
     fi
     if test "$TERM" = "xterm"; then
       PS1="\[\033]2;\h:\u:\w\007\]$PS1"
     fi
-  fi
- '';
+    fi
+    '';
   };
 
   i18n.inputMethod = {
