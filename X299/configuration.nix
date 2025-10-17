@@ -2,7 +2,11 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, lib, options, config, pkgs, ... }:
+{ inputs, lib, config,  pkgs, ... }:
+
+let
+  plymouthIcon = pkgs.callPackage ./custom_plymouth_logo.nix {};
+in
 
 {
   imports =
@@ -59,9 +63,9 @@
     # plymouth, showing after LUKS unlock
     plymouth.enable = true;
     plymouth.font = "${pkgs.hack-font}/share/fonts/truetype/Hack-Regular.ttf";
-    plymouth.logo = "${pkgs.nixos-icons}/share/icons/hicolor/128x128/apps/nix-snowflake.png";
+    plymouth.logo = "${plymouthIcon}/share/icons/hicolor/128x128/apps/nix-snowflake-rainbow.png";
   };
-  
+     
   networking.hostName = "X299"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -125,6 +129,23 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  security.sudo = {
+    enable = true;
+    extraRules = [
+      {
+        # Replace "yourusername" with the actual username
+        users = [ "thinky" ]; 
+        commands = [
+          {
+            command = "ALL"; # Allows all commands
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
+      # You can add more rules here for other users or specific commands
+    ];
+  };
+  
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.thinky = {
     isNormalUser = true;
@@ -149,6 +170,7 @@
     remmina
     protonvpn-gui
     pciutils
+    inetutils
     lshw
     emacs-gtk
     gparted
@@ -180,6 +202,7 @@
     unzip
     zip
     pandoc
+    filezilla
     htop
     traceroute
     starship
@@ -194,6 +217,7 @@
     tiv
     chafa
     viu
+    tree
     inputs.nix-software-center.packages.${system}.nix-software-center
     inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
     (python3.withPackages (python-pkgs: with python-pkgs; [
@@ -236,7 +260,7 @@
   ];
 
   # Set the default editor to vim
-  environment.variables.EDITOR = "emacs";
+  environment.variables.EDITOR = "xed";
   
   # Optional: Enable nix-ld for automatic handling of dynamic libraries
   # This is often recommended for seamless integration with non-Nix software.

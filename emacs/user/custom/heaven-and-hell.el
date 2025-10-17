@@ -98,7 +98,7 @@ Themes will be loaded if they weren't loaded previously."
 		    :italic t
 		    :bold t
 		    :extend t))))
-	     '(org-level-1 ((t (:foreground "thistle1" :italic t))))))
+	     '(org-level-1 ((t (:foreground "thistle1" :italic t :bold t))))))
 	(progn
 	  (setq org-src-block-faces
 		'(("emacs-lisp" (:background "LightCyan1" :extend t))

@@ -35,6 +35,7 @@
 ;; * Auto Install My Packages
 (setq package-selected-packages
       '(material-theme
+	gruvbox-theme
         neotree
         all-the-icons
         rainbow-delimiters

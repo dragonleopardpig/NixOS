@@ -1,3 +1,4 @@
+;; * NixOS Jupyter Python setup
 (unless (package-installed-p 'jupyter)
   (package-refresh-contents)
   (package-install 'jupyter))
@@ -202,6 +203,7 @@ buffer's text scale."
 (pdf-tools-install)  ; Standard activation command
 (pdf-loader-install) ; On demand loading, leads to faster startup time
 (setq pdf-view-resize-factor 1.02)
+(setq pdf-view-continuous nil)
 
 (require 'saveplace-pdf-view)
 (save-place-mode 1)
