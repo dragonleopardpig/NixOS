@@ -2,7 +2,11 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ inputs, lib, config, pkgs, ... }:
+{ inputs, lib, config,  pkgs, ... }:
+
+let
+  plymouthIcon = pkgs.callPackage ./custom_plymouth_logo.nix {};
+in
 
 {
   imports =
@@ -24,7 +28,18 @@
     boot.loader.grub.efiSupport = true;
     boot.loader.efi.canTouchEfiVariables = true;
     boot.loader.efi.efiSysMountPoint = "/boot";
+    boot.loader.systemd-boot.consoleMode = "max";
 
+    # Use latest kernel.
+    # boot.kernelPackages = pkgs.linuxPackages_latest;
+    boot.kernelPackages = pkgs.linuxPackages_6_12;
+    # boot.extraModulePackages = [config.boot.kernelPackages.ddcci-driver];
+    # boot.kernelModules = ["i2c-dev" "ddcci_backlight"];
+    # services.udev.extraRules = ''
+    #       KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
+    # '';
+    # hardware.i2c.enable = true;
+    
     boot.loader.grub2-theme = {
       enable = true;
       theme = "stylish";
@@ -32,26 +47,26 @@
       customResolution = "2560x1440";  # Optional: Set a custom resolution
     };
 
-    boot = {
-      # silence first boot output
-      consoleLogLevel = 3;
-      initrd.verbose = false;
-      initrd.systemd.enable = true;
-      kernelParams = [
-        "quiet"
-        "splash"
-        "intremap=on"
-        "boot.shell_on_fail"
-        "udev.log_priority=3"
-        "rd.systemd.show_status=auto"
-      ];
+  boot = {
+    # silence first boot output
+    consoleLogLevel = 3;
+    initrd.verbose = false;
+    initrd.systemd.enable = true;
+    kernelParams = [
+      "quiet"
+      "splash"
+      "intremap=on"
+      "boot.shell_on_fail"
+      "udev.log_priority=3"
+      "rd.systemd.show_status=auto"
+    ];
 
-      # plymouth, showing after LUKS unlock
-      plymouth.enable = true;
-      plymouth.font = "${pkgs.hack-font}/share/fonts/truetype/Hack-Regular.ttf";
-      plymouth.logo = "${pkgs.nixos-icons}/share/icons/hicolor/128x128/apps/nix-snowflake.png";
-    };
-    
+    # plymouth, showing after LUKS unlock
+    plymouth.enable = true;
+    plymouth.font = "${pkgs.hack-font}/share/fonts/truetype/Hack-Regular.ttf";
+    plymouth.logo = "${plymouthIcon}/share/icons/hicolor/128x128/apps/nix-snowflake-rainbow.png";
+  };
+     
   networking.hostName = "M90aPro"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -85,6 +100,7 @@
 
   # Enable the Cinnamon Desktop Environment.
   services.xserver.displayManager.lightdm.enable = true;
+  services.xserver.displayManager.lightdm.background = ./assets/Nixos_2560x1440.jpg;
   services.xserver.desktopManager.cinnamon.enable = true;
 
   # Configure keymap in X11
@@ -115,6 +131,23 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  security.sudo = {
+    enable = true;
+    extraRules = [
+      {
+        # Replace "yourusername" with the actual username
+        users = [ "thinky" ]; 
+        commands = [
+          {
+            command = "ALL"; # Allows all commands
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
+      # You can add more rules here for other users or specific commands
+    ];
+  };
+  
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.thinky = {
     isNormalUser = true;
@@ -134,11 +167,73 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+    fastfetch
+    nnn # terminal file manager
+
+    # archives
+    zip
+    xz
+    unzip
+    p7zip
+
+    # utils
+    ripgrep # recursively searches directories for a regex pattern
+    jq # A lightweight and flexible command-line JSON processor
+    yq-go # yaml processor https://github.com/mikefarah/yq
+    eza # A modern replacement for ‘ls’
+    fzf # A command-line fuzzy finder
+
+    # networking tools
+    mtr # A network diagnostic tool
+    iperf3
+    dnsutils  # `dig` + `nslookup`
+    ldns # replacement of `dig`, it provide the command `drill`
+    aria2 # A lightweight multi-protocol & multi-source command-line download utility
+    socat # replacement of openbsd-netcat
+    nmap # A utility for network discovery and security auditing
+    ipcalc  # it is a calculator for the IPv4/v6 addresses
+
+    # misc
+    cowsay
+    file
+    which
+    tree
+    gnused
+    gnutar
+    gawk
+    zstd
+    gnupg
+
+    # nix related
+    #
+    # it provides the command `nom` works just like `nix`
+    # with more details log output
+    nix-output-monitor
+
+    # productivity
+    hugo # static site generator
+    glow # markdown previewer in terminal
+
+    btop  # replacement of htop/nmon
+    iotop # io monitoring
+    iftop # network monitoring
+
+    # system call monitoring
+    strace # system call monitoring
+    ltrace # library call monitoring
+    lsof # list open files
+
+    # system tools
+    sysstat
+    lm_sensors # for `sensors` command
+    ethtool
+    pciutils # lspci
+    usbutils # lsusb
     wget
     git # git config --global core.askpass ""
     remmina
     protonvpn-gui
-    pciutils
+    inetutils
     lshw
     emacs-gtk
     gparted
@@ -146,9 +241,7 @@
     sassc
     redshift
     variety
-    gnupg
     eza
-    fastfetch
     git-credential-manager # type "unset SSH_ASKPASS" in command prompt
     ddcutil
     nerd-fonts.ubuntu
@@ -160,15 +253,37 @@
     texliveFull
     onlyoffice-desktopeditors
     librecad
-    aspell
-    aspellDicts.en
-    aspellDicts.en-science
-    aspellDicts.en-computers
+    freecad
+    gimp
+    inkscape
+    pinta
+    mission-center
+    resources
+    pandoc
+    filezilla
+    htop
+    traceroute
+    starship
+    bat
+    lsd
+    imagemagick
+    ffmpeg
+    fzf
+    fim
+    feh
+    sxiv
+    tiv
+    chafa
+    viu
+    inputs.nix-software-center.packages.${system}.nix-software-center
+    inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
     (python3.withPackages (python-pkgs: with python-pkgs; [
       pandas
       requests
       scipy
       sympy
+      scikit-learn
+      scikit-image
       jupyterlab
       numpy
       matplotlib
@@ -200,6 +315,9 @@
     }))
   ];
 
+  # Set the default editor to vim
+  environment.variables.EDITOR = "xed";
+  
   # Optional: Enable nix-ld for automatic handling of dynamic libraries
   # This is often recommended for seamless integration with non-Nix software.
   programs.nix-ld.enable = true;
@@ -218,24 +336,33 @@
    interactiveShellInit = ''
           ${pkgs.fastfetch}/bin/fastfetch
         '';
-     promptInit = ''
-  if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
-    PROMPT_COLOR="1;31m"
-    ((UID)) && PROMPT_COLOR="1;32m"
-    if [ -n "$INSIDE_EMACS" ]; then
-      # Emacs term mode doesn't support xterm title escape sequence (\e]0;)
-      PS1="\n\[\033[$PROMPT_COLOR\][\u@\h:\w]\\$\[\033[0m\] "
-    else
-      PS1="\n\[\033[$PROMPT_COLOR\][\[\e]0;\w\a\]\[\e[0;1;38;5;154m\]\u\[\e[1;35m\]@\[\e[0;1;38;5;154m\]\h\[\e[0;1;38;5;160m\]:\[\e[0;1;38;5;208m\]\w\[\033[$PROMPT_COLOR\]]\n\[\e[38;5;153m\]\$\[\033[0m\] "
+   promptInit = ''
+    if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
+     PROMPT_COLOR="1;31m"
+     ((UID)) && PROMPT_COLOR="1;32m"
+     BOLD="\\[\\e[1m\\]"
+     GOLD="\\[\\e[38;5;220m\\]"
+     GREEN="\\[\\e[0;1;38;5;154m\\]"
+     PURPLE="\\[\\e[1;35m\\]"
+     RED="\\[\\e[0;1;38;5;160m\\]"
+     ORANGE="\\[\\e[0;1;38;5;208m\\]"
+     BLUE="\\[\\e[38;5;153m\\]"
+     CYAN="\\[\\e[36m\\]"
+     RESET="\\[\\e[0m\\]"
+     if [ -n "$INSIDE_EMACS" ]; then
+         # Emacs term mode doesn't support xterm title escape sequence (\e]0;)
+         PS1="\n\[\033[$PROMPT_COLOR\][\u@\h:\w]\\$\[\033[0m\] "
+     else
+PS1="\n\[\033[$PROMPT_COLOR\][$BOLD$BLUE\d $BOLD$CYAN\t $BOLD$GREEN\u$BOLD$PURPLE@$BOLD$ORANGE\h$BOLD$RED:$BOLD$GOLD\w\[\033[$PROMPT_COLOR\]]\n$BOLD$BLUE\$\[\033[0m\] "
     fi
     if test "$TERM" = "xterm"; then
       PS1="\[\033]2;\h:\u:\w\007\]$PS1"
     fi
-  fi
- '';
+    fi
+    '';
   };
 
-    i18n.inputMethod = {
+  i18n.inputMethod = {
     type = "fcitx5";
     enable = true;
     fcitx5.addons = with pkgs; [
@@ -246,7 +373,7 @@
       fcitx5-chinese-addons
       fcitx5-nord  # a color theme
     ];
-    };
+  };
     
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
