@@ -96,9 +96,18 @@ in
 
   # Enable the X11 windowing system.
   services.xserver.enable = true;
+  services.displayManager.sddm.enable = true;
+  environment.sessionVariables.NIXOS_OZONE_WL = "1"; # This variable fixes electron apps in wayland
+  
+  programs.hyprland = {
+    enable = true;
+    withUWSM = true; # recommended for most users
+    xwayland.enable = true; # Xwayland can be disabled.
+  };
   
   # Enable the Cinnamon Desktop Environment.
-  services.xserver.displayManager.lightdm.enable = true;
+  # services.xserver.displayManager.lightdm.enable = true;
+  # services.xserver.displayManager.lightdm.background = ./assets/Nixos_2560x1440.jpg;
   services.xserver.desktopManager.cinnamon.enable = true;
 
   # Configure keymap in X11
@@ -150,7 +159,19 @@ in
   users.users.thinky = {
     isNormalUser = true;
     description = "thinky";
-    extraGroups = [ "networkmanager" "wheel" "i2c"];
+    extraGroups = [ "networkmanager" "wheel" "i2c" "podman"];
+    subGidRanges = [
+      {
+        count = 65536;
+        startGid = 1000;
+      }
+    ];
+    subUidRanges = [
+      {
+        count = 65536;
+        startUid = 1000;
+      }
+    ];
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -164,12 +185,73 @@ in
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
+ environment.systemPackages = with pkgs; [
+    fastfetch
+    nnn # terminal file manager
+
+    # archives
+    zip
+    xz
+    unzip
+    p7zip
+
+    # utils
+    ripgrep # recursively searches directories for a regex pattern
+    jq # A lightweight and flexible command-line JSON processor
+    yq-go # yaml processor https://github.com/mikefarah/yq
+    eza # A modern replacement for ‘ls’
+    fzf # A command-line fuzzy finder
+
+    # networking tools
+    mtr # A network diagnostic tool
+    iperf3
+    dnsutils  # `dig` + `nslookup`
+    ldns # replacement of `dig`, it provide the command `drill`
+    aria2 # A lightweight multi-protocol & multi-source command-line download utility
+    socat # replacement of openbsd-netcat
+    nmap # A utility for network discovery and security auditing
+    ipcalc  # it is a calculator for the IPv4/v6 addresses
+
+    # misc
+    cowsay
+    file
+    which
+    tree
+    gnused
+    gnutar
+    gawk
+    zstd
+    gnupg
+
+    # nix related
+    #
+    # it provides the command `nom` works just like `nix`
+    # with more details log output
+    nix-output-monitor
+
+    # productivity
+    hugo # static site generator
+    glow # markdown previewer in terminal
+
+    btop  # replacement of htop/nmon
+    iotop # io monitoring
+    iftop # network monitoring
+
+    # system call monitoring
+    strace # system call monitoring
+    ltrace # library call monitoring
+    lsof # list open files
+
+    # system tools
+    sysstat
+    lm_sensors # for `sensors` command
+    ethtool
+    pciutils # lspci
+    usbutils # lsusb
     wget
     git # git config --global core.askpass ""
     remmina
     protonvpn-gui
-    pciutils
     inetutils
     lshw
     emacs-gtk
@@ -178,9 +260,9 @@ in
     sassc
     redshift
     variety
-    gnupg
+    orchis-theme
+    tela-icon-theme
     eza
-    fastfetch
     git-credential-manager # type "unset SSH_ASKPASS" in command prompt
     ddcutil
     nerd-fonts.ubuntu
@@ -198,9 +280,6 @@ in
     pinta
     mission-center
     resources
-    ripgrep
-    unzip
-    zip
     pandoc
     filezilla
     htop
@@ -217,7 +296,8 @@ in
     tiv
     chafa
     viu
-    tree
+    distrobox
+    wofi
     inputs.nix-software-center.packages.${system}.nix-software-center
     inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
     (python3.withPackages (python-pkgs: with python-pkgs; [
@@ -235,7 +315,6 @@ in
       pyzmq
       emacsPackages.zmq
     ]))
-    
     # Create an FHS environment using the command `fhs`, 
     #enabling the execution of non-NixOS packages in NixOS!
     (let base = pkgs.appimageTools.defaultFhsEnvArgs; in
@@ -259,6 +338,10 @@ in
     }))
   ];
 
+ virtualisation.podman = {
+   enable = true;
+   dockerCompat = true;
+ };
   # Set the default editor to vim
   environment.variables.EDITOR = "xed";
   
