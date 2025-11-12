@@ -9,6 +9,8 @@
   services.xserver.videoDrivers = ["nvidia"];
 
   hardware.nvidia = {
+    # Optionally, you may need to select the appropriate driver version for your specific GPU.
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
 
     # Modesetting is required.
     modesetting.enable = true;
@@ -31,18 +33,15 @@
     # Enable the Nvidia settings menu,
 	# accessible via `nvidia-settings`.
     nvidiaSettings = true;
-
-    # Optionally, you may need to select the appropriate driver version for your specific GPU.
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
     
   };
 
-   hardware.nvidia.prime = {
-    # ... other prime options ...
-    # 00:02.0 VGA compatible controller: Intel Corporation Arrow Lake-S [Intel Graphics] (rev 06)
-    # 02:00.0 3D controller: NVIDIA Corporation AD107M [GeForce RTX 4050 Max-Q / Mobile] (rev a1)
-    sync.enable = true;
-    intelBusId = "PCI:0:2:0"; # Example for Intel GPU at 00:02.0
-    nvidiaBusId = "PCI:2:0:0"; # Example for NVIDIA GPU at 02:00.0
-  };
+  #  hardware.nvidia.prime = {
+  #   # ... other prime options ...
+  #   # 00:02.0 VGA compatible controller: Intel Corporation Arrow Lake-S [Intel Graphics] (rev 06)
+  #   # 02:00.0 3D controller: NVIDIA Corporation AD107M [GeForce RTX 4050 Max-Q / Mobile] (rev a1)
+  #   sync.enable = true;
+  #   intelBusId = "PCI:0:2:0"; # Example for Intel GPU at 00:02.0
+  #   nvidiaBusId = "PCI:2:0:0"; # Example for NVIDIA GPU at 02:00.0
+  # };
 }

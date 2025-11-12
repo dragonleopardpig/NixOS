@@ -6,6 +6,15 @@
 
 let
   plymouthIcon = pkgs.callPackage ./custom_plymouth_logo.nix {};
+  sddm-astronaut = pkgs.sddm-astronaut.override {
+    embeddedTheme = "cyberpunk";
+    themeConfig = {
+      # AccentColor = "#746385";
+      FormPosition = "left";
+    
+      # ForceHideCompletePassword = true;
+    };
+  };
 in
 
 {
@@ -16,36 +25,35 @@ in
     ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
+  
   # Don't delete
-  boot.initrd.luks.devices."luks-51c7cb8c-d514-40e1-8286-0185987e196c".device = "/dev/disk/by-uuid/51c7cb8c-d514-40e1-8286-0185987e196c";
+  boot.initrd.luks.devices."luks-6888724b-a24c-4ba6-bd13-d78dd20da012".device = "/dev/disk/by-uuid/6888724b-a24c-4ba6-bd13-d78dd20da012";
   
   # Bootloader.
-    boot.loader.systemd-boot.enable = false;
-    boot.loader.grub.enable = true;
-    boot.loader.grub.device = "nodev";
-    boot.loader.grub.useOSProber = true;
-    boot.loader.grub.efiSupport = true;
-    boot.loader.efi.canTouchEfiVariables = true;
-    boot.loader.efi.efiSysMountPoint = "/boot";
-    boot.loader.systemd-boot.consoleMode = "max";
+  boot.loader.systemd-boot.enable = false;
+  boot.loader.grub.enable = true;
+  boot.loader.grub.device = "nodev";
+  boot.loader.grub.useOSProber = true;
+  boot.loader.grub.efiSupport = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot";
 
-    # Use latest kernel.
-    # boot.kernelPackages = pkgs.linuxPackages_latest;
-    boot.kernelPackages = pkgs.linuxPackages_6_12;
-    # boot.extraModulePackages = [config.boot.kernelPackages.ddcci-driver];
-    # boot.kernelModules = ["i2c-dev" "ddcci_backlight"];
-    # services.udev.extraRules = ''
-    #       KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
-    # '';
-    # hardware.i2c.enable = true;
-    
-    boot.loader.grub2-theme = {
-      enable = true;
-      theme = "stylish";
-      footer = true;
-      customResolution = "2560x1440";  # Optional: Set a custom resolution
-    };
+  # Use latest kernel.
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages = pkgs.linuxPackages_6_12;
+  boot.extraModulePackages = [config.boot.kernelPackages.ddcci-driver];
+  boot.kernelModules = ["i2c-dev" "ddcci_backlight"];
+  services.udev.extraRules = ''
+        KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
+  '';
+  hardware.i2c.enable = true;
+
+  boot.loader.grub2-theme = {
+    enable = true;
+    theme = "stylish";
+    footer = true;
+    customResolution = "1920x1080";  # Optional: Set a custom resolution
+  };
 
   boot = {
     # silence first boot output
@@ -67,7 +75,7 @@ in
     plymouth.logo = "${plymouthIcon}/share/icons/hicolor/128x128/apps/nix-snowflake-rainbow.png";
   };
      
-  networking.hostName = "M90aPro"; # Define your hostname.
+  networking.hostName = "X299"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Configure network proxy if necessary
@@ -96,19 +104,59 @@ in
   };
 
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the Cinnamon Desktop Environment.
-  services.xserver.displayManager.lightdm.enable = true;
-  services.xserver.displayManager.lightdm.background = ./assets/Nixos_2560x1440.jpg;
-  services.xserver.desktopManager.cinnamon.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
+  services.xserver = {
+    enable = true;
+    xkb.layout = "us";
+    xkb.variant = "";
+    desktopManager.cinnamon.enable = true;
   };
+  
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+    package = pkgs.kdePackages.sddm;
+    extraPackages = with pkgs; [
+      kdePackages.qtsvg
+      kdePackages.qtmultimedia
+      kdePackages.qtvirtualkeyboard
+    ];
+    theme = "sddm-astronaut-theme"; # Or "sddm-astronaut" if that's the package name
+    settings = {
+      Theme = {
+        Current = "sddm-astronaut-theme"; # Or "sddm-astronaut"
+        # This line overrides the embedded theme with the one you want
+        # You can find available themes in /run/current-system/sw/share/sddm/themes/sddm-astronaut-theme/Themes/
+        # embeddedTheme = "cyberpunk"; 
+      };
+    };
+  };
+  
+  # environment.sessionVariables.NIXOS_OZONE_WL = "1"; # This variable fixes electron apps in wayland
+  programs.uwsm = {
+    enable = true;
+    waylandCompositors = {
+      hyprland = {
+        prettyName = "Hyprland";
+        comment = "Hyprland compositor managed by UWSM";
+        binPath = "/run/current-system/sw/bin/Hyprland";
+      };
+    };
+  };
+  
+  programs.hyprland = {
+    enable = true;
+    withUWSM = true; # recommended for most users
+    xwayland.enable = true; # Xwayland can be disabled.
+  };
+  
+  # Enable the Cinnamon Desktop Environment.
+  # services.xserver.displayManager.lightdm.enable = true;
+  # services.xserver.displayManager.lightdm.background = ./assets/Nixos_2560x1440.jpg;
+  # services.xserver.desktopManager.gnome.enable = true;
+  # services.xserver.desktopManager.cinnamon.enable = true;
 
+  programs.dconf.enable = true;
+  
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
@@ -152,7 +200,19 @@ in
   users.users.thinky = {
     isNormalUser = true;
     description = "thinky";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "i2c" "podman"];
+    subGidRanges = [
+      {
+        count = 65536;
+        startGid = 1000;
+      }
+    ];
+    subUidRanges = [
+      {
+        count = 65536;
+        startUid = 1000;
+      }
+    ];
     packages = with pkgs; [
     #  thunderbird
     ];
@@ -166,7 +226,7 @@ in
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
+ environment.systemPackages = with pkgs; [
     fastfetch
     nnn # terminal file manager
 
@@ -240,10 +300,29 @@ in
     usbimager
     sassc
     redshift
+
+    # themes
     variety
-    eza
+    orchis-theme
+    tela-icon-theme
+    tela-circle-icon-theme
+    catppuccin
+    fluent-icon-theme
+    epapirus-icon-theme
+    catppuccin-fcitx5
+    catppuccin-grub
+    catppuccin-sddm
+    adwaita-icon-theme
+    sddm-astronaut
+
+    # others
     git-credential-manager # type "unset SSH_ASKPASS" in command prompt
+    brightnessctl
     ddcutil
+    wl-clipboard
+    upower
+    networkmanager
+    power-profiles-daemon
     nerd-fonts.ubuntu
     nerd-fonts.ubuntu-sans
     nerd-fonts.ubuntu-mono
@@ -275,8 +354,27 @@ in
     tiv
     chafa
     viu
-    inputs.nix-software-center.packages.${system}.nix-software-center
-    inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
+    distrobox
+    wofi
+    rofi
+    walker
+    ashell
+    adwaita-icon-theme
+    rustc
+    rustup
+    rust-script
+    cargo
+    rustfmt
+    clippy
+    gcc
+    gpustat
+    hyprpaper
+    hyprsunset
+    hypridle
+    hyprsysteminfo
+    waypaper
+    # inputs.nix-software-center.packages.${system}.nix-software-center
+    # inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
     (python3.withPackages (python-pkgs: with python-pkgs; [
       pandas
       requests
@@ -287,6 +385,18 @@ in
       jupyterlab
       numpy
       matplotlib
+      python-lsp-server
+      pyright
+      emacsPackages.lsp-pyright
+      emacsPackages.jsonrpc
+      python-lsp-jsonrpc
+      python-jsonrpc-server
+      jsonrpclib-pelix
+      jsonrpc-websocket
+      jsonrpc-base
+      jsonrpc-async
+      ajsonrpc
+      jsonrpc-glib
       ipykernel
       jupyter
       pyzmq
@@ -314,6 +424,8 @@ in
       extraOutputsToInstall = ["dev"];
     }))
   ];
+  
+  virtualisation.podman.enable = true;
 
   # Set the default editor to vim
   environment.variables.EDITOR = "xed";
@@ -325,6 +437,7 @@ in
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
+    # pinentryPackage = pkgs.pinentry-qt;
   };
 
   programs.bash = {
@@ -374,14 +487,10 @@ PS1="\n\[\033[$PROMPT_COLOR\][$BOLD$BLUE\d $BOLD$CYAN\t $BOLD$GREEN\u$BOLD$PURPL
       fcitx5-nord  # a color theme
     ];
   };
-    
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
   # List services that you want to enable:
 

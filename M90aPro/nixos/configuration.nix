@@ -335,6 +335,7 @@ in
     distrobox
     wofi
     rofi
+    walker
     ashell
     adwaita-icon-theme 
     inputs.nix-software-center.packages.${system}.nix-software-center

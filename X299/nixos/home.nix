@@ -5,32 +5,153 @@
   home.username = "thinky";
   home.homeDirectory = "/home/thinky";
 
-  # link the configuration file in current directory to the specified location in home directory
-  # home.file.".config/i3/wallpaper.jpg".source = ./wallpaper.jpg;
-
-  # link all files in `./scripts` to `~/.config/i3/scripts`
-  # home.file.".config/i3/scripts" = {
-  #   source = ./scripts;
-  #   recursive = true;   # link recursively
-  #   executable = true;  # make all files executable
-  # };
-
-  # encode the file content in nix configuration file directly
-  # home.file.".xxx".text = ''
-  #     xxx
-  # '';
-
-  # set cursor size and dpi for 4k monitor
-  xresources.properties = {
-    "Xcursor.size" = 16;
-    "Xft.dpi" = 172;
+  xdg.configFile."uwsm/env".source = "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
+  wayland.windowManager.hyprland = {
+    enable = true;
+    systemd = {
+      # disable the systemd integration, as it conflicts with uwsm.
+      enable = false;
+      variables = [ "--all" ];
+    };
   };
+  
+  wayland.windowManager.hyprland.settings = {
+    "$mod" = "SUPER";
+    bind =
+      [
+        "$mod, F, exec, firefox"
+        "$mod, Q, exec, kitty"
+        "$mod, E, exec, emacs"
+        "$mod, P, exec, protonvpn-app"
+        "$mod, M, exec, walker"
+        "$mod, left, movefocus, l"
+        "$mod, right, movefocus, r"
+        "$mod, up, movefocus, u"
+        "$mod, down, movefocus, d"
+        "$mod SHIFT, F, fullscreen, 0"
+        ", F1, exec, sleep 0.1 && hyprctl dispatch dpms off && hyprlock"
+        ", F6, exec, ddcutil setvcp 10 + 10"
+        ", F5, exec, ddcutil setvcp 10 - 10"
+        ",XF86MonBrightnessUp, exec, ddcutil setvcp 10 + 10"
+        ",XF86MonBrightnessDown, exec, ddcutil setvcp 10 - 10"
+        "CTRL ALT, left, workspace, -1"
+        "CTRL ALT, right, workspace, +1"
+        "$mod, Tab, cyclenext, hist"
+        ", Print, exec, grimblast copy area"
+      ]
+      ++ (
+        # workspaces
+        # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
+        builtins.concatLists (builtins.genList (i:
+          let ws = i + 1;
+          in [
+            "$mod, code:1${toString i}, workspace, ${toString ws}"
+            "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
+          ]
+        )
+          9)
+      );
+
+    bindm = [
+      # mouse movements
+      "$mod, mouse:272, movewindow"
+      "$mod, mouse:273, resizewindow"
+      "$mod ALT, mouse:272, resizewindow"
+    ];
+    
+    bindc =[
+      "$mod, mouse:274, togglefloating"
+    ];
+    
+    input = {
+      natural_scroll = true;
+      # other input settings...
+    };
+
+    monitor = "DP-3,1920x1080@60,0x0,1";
+    # Autostart programs
+    exec-once = [ "protonvpn-app" "while true; do sleep 60; waypaper --random; done"];
+
+    misc = {
+      mouse_move_enables_dpms = true;
+      key_press_enables_dpms = true;
+    };
+
+  };
+
+  programs.hyprpanel = {
+    enable = true;
+    # Configure and theme almost all options from the GUI.
+    # See 'https://hyprpanel.com/configuration/settings.html'.
+    # Default: <same as gui>
+    settings = {
+
+      # Configure bar layouts for monitors.
+      # See 'https://hyprpanel.com/configuration/panel.html'.
+      # Default: null
+      
+      bar.layouts = {
+        "*" = {
+          left = [ "dashboard" "workspaces" "media"];
+          middle = [ "windowtitle" ];
+          right = [ "network" "bluetooth" "volume" "battery" "systray" "clock" "notifications" ];
+        };
+      };
+
+      bar.launcher.autoDetectIcon = true;
+      bar.workspaces.show_icons = true;
+
+      menus.clock = {
+        time = {
+          military = true;
+          hideSeconds = true;
+        };
+        weather.unit = "metric";
+        weather.location = "Singapore, SG";
+      };
+
+      menus.dashboard.directories.enabled = true;
+      #menus.dashboard.stats.enable_gpu = true;
+      theme = {
+        bar.transparent = true;
+        font = {
+        name = "CaskaydiaCove NF";
+        size = "14px";
+        };
+      };
+    };
+  };
+
+  services.hyprpaper.enable = true;
+  services.hyprpaper.settings = {
+    # Set a preload wallpaper
+    preload = [
+      "~/Pictures/Kath.png"
+      "~/Pictures/corndog.png"
+      "~/Pictures/Mepth.png"
+      "~/Pictures/Sollee.png"
+      "~/Pictures/srev.png"
+      "~/Pictures/VDawg.png"
+    ];
+
+    # Set the wallpaper for a specific display
+    wallpaper = [
+      "DP-3,~/Pictures/corndog.png"
+    ];
+  };
+
+  programs.hyprlock = {
+    enable = true;
+  };
+
+  # catppuccin.hyprland.enable = true;
+  # catppuccin.hyprland.flavor = "mocha";
+  # catppuccin.hyprland.accent = "mauve";
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
     # here is some command line tools I use frequently
     # feel free to add your own or remove some of them
-
   ];
 
   # basic configuration of git, please change to your own
@@ -41,7 +162,7 @@
   };
 
   # starship - an customizable prompt for any shell
- programs.starship.enable = true;
+  programs.starship.enable = true;
   programs.starship.settings = {
     add_newline = false;
     format = "$shlvl$username$hostname$nix_shell$git_branch$git_commit$git_state$git_status$directory$jobs$cmd_duration$all$character";
@@ -120,14 +241,38 @@
         # draw_bold_text_with_bright_colors = true;
       };
       scrolling.multiplier = 5;
-      live_config_reload = true;
+      general.live_config_reload = true;
       selection.save_to_clipboard = true;
       keyboard.bindings = [
-           { key = "W"; mods = "Alt"; action = "Copy"; }
-           { key = "Y"; mods = "Control"; action = "Paste"; }
+        { key = "W"; mods = "Alt"; action = "Copy"; }
+        { key = "Y"; mods = "Control"; action = "Paste"; }
       ];
     };
-    theme = "github_light_high_contrast";
+    # theme = "github_dark_high_contrast";
+  };
+  
+  programs.kitty = lib.mkForce {
+    enable = true;
+    font = {
+      size = 9; # Replace with your desired size
+      name = "JetBrainsMono Nerd Font"; # Optional: set the font name
+    };
+    settings = {
+      confirm_os_window_close = 0;
+      dynamic_background_opacity = true;
+      enable_audio_bell = false;
+      mouse_hide_wait = "-1.0";
+      window_padding_width = 10;
+      background_opacity = "0.8";
+      background_blur = 5;
+    };
+    extraConfig = ''
+    map alt+w copy_to_clipboard
+    map ctrl+y paste_from_clipboard
+
+    # Optional: Copy on select
+    copy_on_select yes
+  '';
   };
   
   programs.bash = {

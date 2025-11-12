@@ -29,6 +29,8 @@
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
+(set-frame-parameter nil 'alpha-background 75) ; For current frame
+(add-to-list 'default-frame-alist '(alpha-background . 75)) ; For all new frames henceforth
 
 ;; Doom Themes
 (use-package doom-themes
@@ -76,7 +78,8 @@
   (setq heaven-and-hell-theme-type 'light)
   (setq heaven-and-hell-themes
         '((light . (doom-acario-light dichromacy doom-plain leuven doom-fairy-floss))
-          (dark . (doom-oceanic-next doom-plain-dark misterioso doom-badger leuven-dark))))
+          (dark . (ef-cherie doom-oceanic-next doom-plain-dark misterioso doom-badger leuven-dark)))
+	)
   (setq heaven-and-hell-load-theme-no-confirm t)
   :hook (after-init . heaven-and-hell-init-hook)
   :bind (("C-c <f8>" . heaven-and-hell-load-default-theme)

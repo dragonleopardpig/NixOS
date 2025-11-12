@@ -32,6 +32,22 @@
 (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
 
+(use-package package
+  :ensure nil
+  :config
+  (package-initialize)
+  :custom
+  (package-native-compile t)
+  (package-archives '(("gnu"   . "http://elpa.gnu.org/packages/")
+                      ("melpa" . "https://melpa.org/packages/"))))
+
+(use-package rustic
+  :ensure t
+  :config
+  (setq rustic-format-on-save nil)
+  :custom
+  (rustic-cargo-use-last-stored-arguments t))
+
 ;; * Auto Install My Packages
 (setq package-selected-packages
       '(material-theme
@@ -77,6 +93,7 @@
 	vertico
 	which-key
 	rg
+	ob-rust
 	))
 (package-install-selected-packages)
 

@@ -103,12 +103,12 @@
 (global-set-key (kbd "C-.") 'sp-rewrap-sexp)
 
 ;; * Electric Pair Mode
-;; (electric-pair-mode t)
-;; ;; ** disable "<" pairing
-;; (add-hook 'org-mode-hook (lambda ()
-;; 			   (setq-local electric-pair-inhibit-predicate
-;; 				       `(lambda (c)
-;; 					  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+(electric-pair-mode t)
+;; ** disable "<" pairing
+(add-hook 'org-mode-hook (lambda ()
+			   (setq-local electric-pair-inhibit-predicate
+				       `(lambda (c)
+					  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 
 
 ;; * Org Agenda
@@ -133,7 +133,7 @@
    (latex . t)
    (lisp . t)
    (nix . t)
-   ;; (jupyter . t)
+   (rust . t)
    (spice . t)
    ))
 

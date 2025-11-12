@@ -5,20 +5,129 @@
   home.username = "thinky";
   home.homeDirectory = "/home/thinky";
 
-  # link the configuration file in current directory to the specified location in home directory
-  # home.file.".config/i3/wallpaper.jpg".source = ./wallpaper.jpg;
+  # wayland.windowManager.hyprland.enable = true; # enable Hyprland
+  # wayland.windowManager.hyprland.systemd.variables = ["--all"];
+  # xdg.configFile."uwsm/env".source = "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
+  wayland.windowManager.hyprland = {
+    enable = true;
+    # set the Hyprland and XDPH packages to null to use the ones from the NixOS module
+    # package = null;
+    # portalPackage = null;
+    systemd = {
+      # disable the systemd integration, as it conflicts with uwsm.
+      enable = false;
+      variables = [ "--all" ];
+    };
+  };
+  
+  wayland.windowManager.hyprland.settings = {
+    "$mod" = "SUPER";
+    bind =
+      [
+        "$mod, F, exec, firefox"
+        "$mod, K, exec, kitty"
+        "$mod, E, exec, emacs"
+        "$mod, P, exec, protonvpn-app"
+        "$mod, M, exec, wofi --show drun"
+        "$mod, left, movefocus, l"
+        "$mod, right, movefocus, r"
+        "$mod, up, movefocus, u"
+        "$mod, down, movefocus, d"
+        "$mod SHIFT, L, exec, hyprlock"
+        "CTRL ALT, left, workspace, -1"
+        "CTRL ALT, right, workspace, +1"
+        "$mod, Tab, cyclenext, hist"
+        ", Print, exec, grimblast copy area"
+      ]
+      ++ (
+        # workspaces
+        # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
+        builtins.concatLists (builtins.genList (i:
+          let ws = i + 1;
+          in [
+            "$mod, code:1${toString i}, workspace, ${toString ws}"
+            "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
+          ]
+        )
+          9)
+      );
 
-  # link all files in `./scripts` to `~/.config/i3/scripts`
-  # home.file.".config/i3/scripts" = {
-  #   source = ./scripts;
-  #   recursive = true;   # link recursively
-  #   executable = true;  # make all files executable
-  # };
+    bindm = [
+      # mouse movements
+      "$mod, mouse:272, movewindow"
+      "$mod, mouse:273, resizewindow"
+      "$mod ALT, mouse:272, resizewindow"
+    ];
 
-  # encode the file content in nix configuration file directly
-  # home.file.".xxx".text = ''
-  #     xxx
-  # '';
+    input = {
+      natural_scroll = true;
+      # other input settings...
+    };
+
+    # monitor = "DP-3,1920x1080@60,0x0,1";
+    # Autostart programs
+    # exec-once = [ "ashell" ];
+  };
+
+  programs.hyprpanel = {
+    enable = true;
+    # Configure and theme almost all options from the GUI.
+    # See 'https://hyprpanel.com/configuration/settings.html'.
+    # Default: <same as gui>
+    settings = {
+
+      # Configure bar layouts for monitors.
+      # See 'https://hyprpanel.com/configuration/panel.html'.
+      # Default: null
+      layout = {
+        bar.layouts = {
+          "0" = {
+            left = [ "dashboard" "workspaces" ];
+            middle = [ "media" ];
+            right = [ "volume" "systray" "notifications" ];
+          };
+        };
+      };
+
+      bar.launcher.autoDetectIcon = true;
+      bar.workspaces.show_icons = true;
+
+      menus.clock = {
+        time = {
+          military = true;
+          hideSeconds = true;
+        };
+        weather.unit = "metric";
+      };
+
+      menus.dashboard.directories.enabled = false;
+      menus.dashboard.stats.enable_gpu = true;
+
+      theme.bar.transparent = true;
+
+      theme.font = {
+        name = "CaskaydiaCove NF";
+        size = "16px";
+      };
+    };
+  };
+
+  services.hyprpaper.enable = true;
+  services.hyprpaper.settings = {
+    # Set a preload wallpaper
+    preload = [
+      "/home/thinky/Pictures/Kath.png"
+    ];
+
+    # Set the wallpaper for a specific display
+    wallpaper = [
+      "DP-3,/home/thinky/Pictures/Kath.png"
+    ];
+  };
+
+  programs.hyprlock = {
+    enable = true;
+  };
 
   # set cursor size and dpi for 4k monitor
   xresources.properties = {
@@ -30,7 +139,6 @@
   home.packages = with pkgs; [
     # here is some command line tools I use frequently
     # feel free to add your own or remove some of them
-
   ];
 
   # basic configuration of git, please change to your own
@@ -42,7 +150,7 @@
 
   # starship - an customizable prompt for any shell
  programs.starship.enable = true;
-  programs.starship.settings = {
+ programs.starship.settings = {
     add_newline = false;
     format = "$shlvl$username$hostname$nix_shell$git_branch$git_commit$git_state$git_status$directory$jobs$cmd_duration$all$character";
     shlvl = {
@@ -127,9 +235,33 @@
            { key = "Y"; mods = "Control"; action = "Paste"; }
       ];
     };
-    theme = "github_light_high_contrast";
+    # theme = "github_dark_high_contrast";
   };
   
+ programs.kitty = lib.mkForce {
+   enable = true;
+   font = {
+     size = 11; # Replace with your desired size
+     name = "JetBrainsMono Nerd Font"; # Optional: set the font name
+   };
+  settings = {
+    confirm_os_window_close = 0;
+    dynamic_background_opacity = true;
+    enable_audio_bell = false;
+    mouse_hide_wait = "-1.0";
+    window_padding_width = 10;
+    background_opacity = "0.9";
+    background_blur = 5;
+  };
+  extraConfig = ''
+    map alt+w copy_to_clipboard
+    map ctrl+y paste_from_clipboard
+
+    # Optional: Copy on select
+    copy_on_select yes
+  '';
+ };
+ 
   programs.bash = {
     enable = true;
     enableCompletion = true;
