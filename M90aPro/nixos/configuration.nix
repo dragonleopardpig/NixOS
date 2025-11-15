@@ -8,12 +8,11 @@ let
   plymouthIcon = pkgs.callPackage ./custom_plymouth_logo.nix {};
   sddm-astronaut = pkgs.sddm-astronaut.override {
     embeddedTheme = "cyberpunk";
-    # themeConfig = {
-    #   AccentColor = "#746385";
-    #   FormPosition = "left";
-    #
-    #   ForceHideCompletePassword = true;
-    # };
+    themeConfig = {
+      # AccentColor = "#746385";
+      FormPosition = "left";
+      # ForceHideCompletePassword = true;
+    };
   };
 in
 
@@ -125,6 +124,7 @@ in
       };
     };
   };
+  
   
   # environment.sessionVariables.NIXOS_OZONE_WL = "1"; # This variable fixes electron apps in wayland
   programs.uwsm = {
@@ -260,6 +260,7 @@ in
     btop  # replacement of htop/nmon
     iotop # io monitoring
     iftop # network monitoring
+    gpustat
 
     # system call monitoring
     strace # system call monitoring
@@ -335,9 +336,10 @@ in
     distrobox
     wofi
     rofi
-    walker
-    ashell
-    adwaita-icon-theme 
+    waypaper
+    hyprpaper
+    adwaita-icon-theme
+    nvtopPackages.full
     inputs.nix-software-center.packages.${system}.nix-software-center
     inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
     (python3.withPackages (python-pkgs: with python-pkgs; [

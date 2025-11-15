@@ -18,6 +18,23 @@
       enable = false;
       variables = [ "--all" ];
     };
+    settings = {
+      general = {
+        gaps_in = 0;
+        gaps_out = 0;
+        "col.active_border" = "rgb(00FFFF)";
+        resize_on_border = true;
+        border_size = 3;
+      };
+      decoration = {
+        dim_inactive = true;
+        inactive_opacity = 0.9;
+        dim_strength = 0.2;
+      };
+      animations = {
+        workspace_wraparound = true;
+      };
+    };
   };
   
   wayland.windowManager.hyprland.settings = {
@@ -25,7 +42,7 @@
     bind =
       [
         "$mod, F, exec, firefox"
-        "$mod, K, exec, kitty"
+        "$mod, Q, exec, kitty"
         "$mod, E, exec, emacs"
         "$mod, P, exec, protonvpn-app"
         "$mod, M, exec, wofi --show drun"
@@ -66,42 +83,10 @@
 
     # monitor = "DP-3,1920x1080@60,0x0,1";
     # Autostart programs
-    # exec-once = [ "ashell" ];
+    exec-once = [ "do sleep 60; waypaper --random; done" ];
   };
 
-  # programs.waybar.enable = true;
-  # programs.waybar.settings.main = {
-  #   modules-left = [ "hyprland/workspaces" ];
-  #   modules-right = ["ashell" "clock" "custom/shutdown" "custom/logout"];
-  #   modules-center = ["hyprland/window"];
 
-  #   # Define the custom/shutdown module
-  #   "custom/shutdown" = {
-  #     format = "⏻"; # Unicode power symbol, or use an Awesome Font icon like "  power-off"
-  #     tooltip = "Shutdown";
-  #     # Command to execute when the button is clicked
-  #     on-click = "systemctl poweroff"; 
-  #   };
-
-  #   "custom/logout" = {
-  #     format = "➜]"; # Use an icon from Nerd Fonts/Awesome Fonts
-  #     tooltip = "Logout";
-  #     on-click = "hyprctl dispatch exit";
-  #   };
-  # };
-
- #  programs.ashell = {
- #    enable = true;
- #  };
- # # xdg.configFile."ashell/config.yaml".source = ./ashell-config.yaml;
-    
- #  programs.ashell.settings = {
- #    settings = {
- #      logout_cmd = "uwsm stop";
- #    };
- #  };
-
-  # programs.ashell.systemd.enable = true;
   programs.hyprpanel = {
     enable = true;
     # Configure and theme almost all options from the GUI.
@@ -112,16 +97,25 @@
       # Configure bar layouts for monitors.
       # See 'https://hyprpanel.com/configuration/panel.html'.
       # Default: null
-      layout = {
-        bar.layouts = {
-          "0" = {
-            left = [ "dashboard" "workspaces" ];
-            middle = [ "media" ];
-            right = [ "volume" "systray" "notifications" ];
-          };
+      theme = {
+        font.size = "16px";
+        font.name = "CaskaydiaCove NF";
+        bar = {
+          transparent = true;
+          outer_spacing = "0rem";
         };
+        bar.buttons.enableBorders = true;
       };
 
+      bar.layouts = {
+        "0" = {
+          left = [ "dashboard" "workspaces" "media" ];
+          middle = [ "windowtitle" ];
+          right = [ "volume" "network" "bluetooth"
+                    "battery" "systray" "clock" "notifications" ];
+        };
+      };
+     
       bar.launcher.autoDetectIcon = true;
       bar.workspaces.show_icons = true;
 
@@ -130,34 +124,40 @@
           military = true;
           hideSeconds = true;
         };
-        weather.unit = "metric";
+        weather = {
+          enabled = true;
+          location = "Singapore";
+          # unit = "metric";
+          "weather_api_key" = "d732c806c27b455abc7132317251511";
+        };
       };
 
-      menus.dashboard.directories.enabled = false;
-      menus.dashboard.stats.enable_gpu = true;
-
-      theme.bar.transparent = true;
-
-      theme.font = {
-        name = "CaskaydiaCove NF";
-        size = "16px";
-      };
+      menus.dashboard.directories.enabled = true;
+      # menus.dashboard.stats.enable_gpu = true;
     };
   };
+  
+  services.hyprpaper.enable = true;
+  services.hyprpaper.settings = {
+    # Set a preload wallpaper
+    preload = [
+      "~/Pictures/Kath.png"
+      "~/Pictures/corndog.png"
+      "~/Pictures/Mepth.png"
+      "~/Pictures/Sollee.png"
+      "~/Pictures/srev.png"
+      "~/Pictures/VDawg.png"
+    ];
+
+    # Set the wallpaper for a specific display
+    wallpaper = [
+      "eDP-1,~/Pictures/corndog.png"
+    ];
+  };
+  
   programs.hyprlock = {
     enable = true;
   };
-
-  # programs.waybar.style = "";
-  # wayland.windowManager.hyprland.plugins = [
-  #   inputs.hyprland-plugins.packages.${pkgs.stdenv.hostPlatform.system}.hyprbars
-  #   "/absolute/path/to/plugin.so"
-  # ];
-
-  # encode the file content in nix configuration file directly
-  # home.file.".xxx".text = ''
-  #     xxx
-  # '';
 
   # set cursor size and dpi for 4k monitor
   xresources.properties = {
