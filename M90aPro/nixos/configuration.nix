@@ -7,7 +7,7 @@
 let
   plymouthIcon = pkgs.callPackage ./custom_plymouth_logo.nix {};
   sddm-astronaut = pkgs.sddm-astronaut.override {
-    embeddedTheme = "cyberpunk";
+    embeddedTheme = "pixel_sakura";
     themeConfig = {
       # AccentColor = "#746385";
       FormPosition = "left";
@@ -20,7 +20,7 @@ in
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-      ./nvidia.nix
+      ./nvidia_test.nix
     ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -37,7 +37,7 @@ in
     boot.loader.efi.canTouchEfiVariables = true;
     boot.loader.efi.efiSysMountPoint = "/boot";
     boot.loader.systemd-boot.consoleMode = "max";
-
+ 
     # Use latest kernel.
     # boot.kernelPackages = pkgs.linuxPackages_latest;
     boot.kernelPackages = pkgs.linuxPackages_6_12;
@@ -54,6 +54,8 @@ in
     consoleLogLevel = 3;
     initrd.verbose = false;
     initrd.systemd.enable = true;
+    initrd.kernelModules = ["nvidia"];
+    extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
     kernelParams = [
       "quiet"
       "splash"
@@ -68,7 +70,14 @@ in
     plymouth.font = "${pkgs.hack-font}/share/fonts/truetype/Hack-Regular.ttf";
     plymouth.logo = "${plymouthIcon}/share/icons/hicolor/128x128/apps/nix-snowflake-rainbow.png";
   };
-     
+  console.font = "${pkgs.terminus_font}/share/consolefonts/ter-i20n.psf.gz";
+  console.packages = with pkgs; [ terminus_font ];
+  # console = {
+  #   earlySetup = true;
+  #   font = "${pkgs.tamzen}/share/consolefonts/Tamzen10x20.psf";
+  #   packages = with pkgs; [ tamzen ];
+  # };
+  
   networking.hostName = "M90aPro"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
@@ -142,6 +151,7 @@ in
     enable = true;
     withUWSM = true; # recommended for most users
     xwayland.enable = true; # Xwayland can be disabled.
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
   };
   
   # Enable the Cinnamon Desktop Environment.
@@ -152,6 +162,28 @@ in
 
   programs.dconf.enable = true;
   
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      General = {
+        # Shows battery charge of connected devices on supported
+        # Bluetooth adapters. Defaults to 'false'.
+        Experimental = true;
+        # When enabled other devices can connect faster to us, however
+        # the tradeoff is increased power consumption. Defaults to
+        # 'false'.
+        FastConnectable = true;
+      };
+      Policy = {
+        # Enable all controllers when they are found. This includes
+        # adapters present on start as well as adapters that are plugged
+        # in later on. Defaults to 'true'.
+        AutoEnable = true;
+      };
+    };
+  };
+  services.blueman.enable = true;
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
@@ -173,7 +205,7 @@ in
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-
+  # programs.walker.enable = true;
   security.sudo = {
     enable = true;
     extraRules = [
@@ -203,8 +235,8 @@ in
 
   # Install firefox.
   programs.firefox.enable = true;
-
-  # Allow unfree packages
+  services.orca.enable = false;
+    # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   # List packages installed in system profile. To search, run:
@@ -261,6 +293,7 @@ in
     iotop # io monitoring
     iftop # network monitoring
     gpustat
+    mesa-demos
 
     # system call monitoring
     strace # system call monitoring
@@ -284,6 +317,7 @@ in
     usbimager
     sassc
     redshift
+    brightnessctl
 
     # themes
     variety
@@ -292,7 +326,7 @@ in
     tela-circle-icon-theme
     catppuccin
     fluent-icon-theme
-    epapirus-icon-theme
+    # epapirus-icon-theme
     catppuccin-fcitx5
     catppuccin-grub
     catppuccin-sddm
@@ -306,7 +340,7 @@ in
     nerd-fonts.ubuntu-sans
     nerd-fonts.ubuntu-mono
     noto-fonts
-    noto-fonts-extra
+    # noto-fonts-extra
     noto-fonts-cjk-sans
     texliveFull
     onlyoffice-desktopeditors
@@ -340,8 +374,7 @@ in
     hyprpaper
     adwaita-icon-theme
     nvtopPackages.full
-    inputs.nix-software-center.packages.${system}.nix-software-center
-    inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
+    walker
     (python3.withPackages (python-pkgs: with python-pkgs; [
       pandas
       requests
@@ -357,7 +390,7 @@ in
       emacsPackages.lsp-pyright
       emacsPackages.jsonrpc
       python-lsp-jsonrpc
-      python-jsonrpc-server
+      # python-jsonrpc-server
       jsonrpclib-pelix
       jsonrpc-websocket
       jsonrpc-base
@@ -449,7 +482,8 @@ PS1="\n\[\033[$PROMPT_COLOR\][$BOLD$BLUE\d $BOLD$CYAN\t $BOLD$GREEN\u$BOLD$PURPL
       fcitx5-rime
       rime-data
       librime
-      fcitx5-chinese-addons
+      # fcitx5-chinese-addons
+      qt6Packages.fcitx5-chinese-addons
       fcitx5-nord  # a color theme
     ];
   };

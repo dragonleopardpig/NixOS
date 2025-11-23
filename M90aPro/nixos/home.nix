@@ -7,12 +7,9 @@
 
   # wayland.windowManager.hyprland.enable = true; # enable Hyprland
   # wayland.windowManager.hyprland.systemd.variables = ["--all"];
-  # xdg.configFile."uwsm/env".source = "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
+  xdg.configFile."uwsm/env".source = "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
   wayland.windowManager.hyprland = {
     enable = true;
-    # set the Hyprland and XDPH packages to null to use the ones from the NixOS module
-    # package = null;
-    # portalPackage = null;
     systemd = {
       # disable the systemd integration, as it conflicts with uwsm.
       enable = false;
@@ -41,11 +38,13 @@
     "$mod" = "SUPER";
     bind =
       [
-        "$mod, F, exec, firefox"
-        "$mod, Q, exec, kitty"
-        "$mod, E, exec, emacs"
+        "$mod, F, exec, nvidia-offload firefox"
+        "$mod, Q, exec, nvidia-offload kitty"
+        "$mod, E, exec, nvidia-offload emacs"
         "$mod, P, exec, protonvpn-app"
-        "$mod, M, exec, wofi --show drun"
+        "$mod SHIFT, F, fullscreen, 1" 
+        "$mod, K, exec, hyprctl dispatch killactive"
+        "$mod, M, exec, walker"
         "$mod, left, movefocus, l"
         "$mod, right, movefocus, r"
         "$mod, up, movefocus, u"
@@ -53,8 +52,11 @@
         "$mod SHIFT, L, exec, hyprlock"
         "CTRL ALT, left, workspace, -1"
         "CTRL ALT, right, workspace, +1"
-        "$mod, Tab, cyclenext, hist"
+        "Alt, Tab, cyclenext, hist"
         ", Print, exec, grimblast copy area"
+        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+        ", F6, exec, brightnessctl s 5%+"
+        ", F5, exec, brightnessctl s 5%-"
       ]
       ++ (
         # workspaces
@@ -75,6 +77,11 @@
       "$mod, mouse:273, resizewindow"
       "$mod ALT, mouse:272, resizewindow"
     ];
+    # Volume and Media Control
+    binde = [
+      ", XF86AudioRaiseVolume, exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%+"
+      ", XF86AudioLowerVolume, exec, wpctl set-volume -l 1.4 @DEFAULT_AUDIO_SINK@ 5%-"
+    ];
 
     input = {
       natural_scroll = true;
@@ -83,9 +90,8 @@
 
     # monitor = "DP-3,1920x1080@60,0x0,1";
     # Autostart programs
-    exec-once = [ "do sleep 60; waypaper --random; done" ];
+    exec-once = [ "while true; do sleep 60; waypaper --random; done" ];
   };
-
 
   programs.hyprpanel = {
     enable = true;
@@ -98,7 +104,7 @@
       # See 'https://hyprpanel.com/configuration/panel.html'.
       # Default: null
       theme = {
-        font.size = "16px";
+        font.size = "14px";
         font.name = "CaskaydiaCove NF";
         bar = {
           transparent = true;
@@ -127,7 +133,7 @@
         weather = {
           enabled = true;
           location = "Singapore";
-          # unit = "metric";
+          unit = "metric";
           "weather_api_key" = "d732c806c27b455abc7132317251511";
         };
       };
@@ -151,7 +157,7 @@
 
     # Set the wallpaper for a specific display
     wallpaper = [
-      "eDP-1,~/Pictures/corndog.png"
+      "eDP-1,~/Pictures/Kath.png"
     ];
   };
   
@@ -159,6 +165,7 @@
     enable = true;
   };
 
+  # programs.walker.enable = true;
   # set cursor size and dpi for 4k monitor
   xresources.properties = {
     "Xcursor.size" = 16;
@@ -169,14 +176,13 @@
   home.packages = with pkgs; [
     # here is some command line tools I use frequently
     # feel free to add your own or remove some of them
-    ashell
   ];
 
   # basic configuration of git, please change to your own
   programs.git = {
     enable = true;
-    userName = "dragonleopardpig";
-    userEmail = "dragonleopardpig@gmail.com";
+    settings.user.name = "dragonleopardpig";
+    settings.user.email = "dragonleopardpig@gmail.com";
   };
 
   # starship - an customizable prompt for any shell
@@ -269,10 +275,10 @@
     # theme = "github_dark_high_contrast";
   };
   
- programs.kitty = lib.mkForce {
+ programs.kitty = {
    enable = true;
    font = {
-     size = 11; # Replace with your desired size
+     size = 10; # Replace with your desired size
      name = "JetBrainsMono Nerd Font"; # Optional: set the font name
    };
   settings = {
