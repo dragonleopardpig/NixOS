@@ -3,27 +3,27 @@
   description = "NixOS configuration";
   
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-25.05";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     grub2-themes.url = "github:vinceliuice/grub2-themes";
-    catppuccin.url = "github:catppuccin/nix/release-25.05";
-    # nix-software-center.url = "github:snowfallorg/nix-software-center";
-    # nixos-conf-editor.url = "github:snowfallorg/nixos-conf-editor";
+    hyprland.url = "github:hyprwm/Hyprland";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.05";
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    hyprpanel = {
+      url = "github:Jas-SinghFSU/HyprPanel";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
   
-  outputs = inputs@{ nixpkgs, grub2-themes, catppuccin, home-manager, ... }:
+  outputs = inputs@{ nixpkgs, grub2-themes, home-manager, ... }:
     {
       nixosConfigurations.X299 = nixpkgs.lib.nixosSystem {
-        system = "x86_64-linux";
+        # system = "x86_64-linux";
         specialArgs = { inherit inputs; };
-        # ... and then to your modules
         modules = [
           ./configuration.nix
           grub2-themes.nixosModules.default
-          catppuccin.nixosModules.catppuccin
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
@@ -33,12 +33,17 @@
             home-manager.users.thinky = {
               imports = [
                 ./home.nix
-                catppuccin.homeModules.catppuccin
               ];
             };
-            # Optionally, use home-manager.extraSpecialArgs
-            # to pass arguments to home.nix
+            home-manager.extraSpecialArgs = { inherit inputs; };
           }
+        ];
+      };
+      homeConfigurations."thinky@X299" = home-manager.lib.homeManagerConfiguration {
+        # you need this line
+        extraSpecialArgs = { inherit inputs; };
+        modules = [
+          ./home.nix
         ];
       };
     };

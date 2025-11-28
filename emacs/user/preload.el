@@ -22,7 +22,7 @@
       kept-old-versions 2)   ; and some old ones, too
 
 
-;; * Treat all thmes as safe
+;; * Treat all themes as safe
 (setq custom-safe-themes t) 
 (setq scimax-theme nil)
 
@@ -41,12 +41,6 @@
   (package-archives '(("gnu"   . "http://elpa.gnu.org/packages/")
                       ("melpa" . "https://melpa.org/packages/"))))
 
-(use-package rustic
-  :ensure t
-  :config
-  (setq rustic-format-on-save nil)
-  :custom
-  (rustic-cargo-use-last-stored-arguments t))
 
 ;; * Auto Install My Packages
 (setq package-selected-packages
@@ -94,6 +88,7 @@
 	which-key
 	rg
 	ob-rust
+	lua-mode
 	))
 (package-install-selected-packages)
 
@@ -105,3 +100,24 @@
 ;; ** Scimax
 (add-hook 'org-mode-hook 'scimax-autoformat-mode)
 
+;; * Direnv + LSP + Company
+(use-package direnv
+  :ensure t
+  :config
+  (direnv-mode))
+
+(require 'lsp-mode)
+
+(require 'company)
+
+;; Enable company-mode globally or in rustic-mode hook
+(add-hook 'after-init-hook 'global-company-mode)
+
+;; Optional: Configure company-mode for better integration
+(setq company-idle-delay 0.1) ; Shorter delay for autocompletion
+(setq company-minimum-prefix-length 2) ; Minimum characters before autocompletion starts
+(setq lsp-completion-provider :company) ; Ensure company is the completion provider
+(setq lsp-enable-file-watchers nil)
+(setq lsp-auto-guess-root nil)
+
+(advice-add 'lsp :before #'direnv-update-environment)

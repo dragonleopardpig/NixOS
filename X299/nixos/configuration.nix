@@ -11,7 +11,6 @@ let
     themeConfig = {
       # AccentColor = "#746385";
       FormPosition = "left";
-    
       # ForceHideCompletePassword = true;
     };
   };
@@ -25,6 +24,7 @@ in
     ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.trusted-users = [ "root" "thinky" ];
   
   # Don't delete
   boot.initrd.luks.devices."luks-6888724b-a24c-4ba6-bd13-d78dd20da012".device = "/dev/disk/by-uuid/6888724b-a24c-4ba6-bd13-d78dd20da012";
@@ -120,7 +120,7 @@ in
       kdePackages.qtmultimedia
       kdePackages.qtvirtualkeyboard
     ];
-    theme = "sddm-astronaut-theme"; # Or "sddm-astronaut" if that's the package name
+    theme = "sddm-astronaut-theme"; 
     settings = {
       Theme = {
         Current = "sddm-astronaut-theme"; # Or "sddm-astronaut"
@@ -147,6 +147,10 @@ in
     enable = true;
     withUWSM = true; # recommended for most users
     xwayland.enable = true; # Xwayland can be disabled.
+        # set the flake package
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    # make sure to also set the portal package, so that they are in sync
+    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
   
   # Enable the Cinnamon Desktop Environment.
@@ -178,6 +182,13 @@ in
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
+  # services.xserver.desktopManager.gnome.enable = false;
+  # services.gnome.core-os-services.enable = false;
+  systemd.user.services.orca.enable = false;
+  # services.gnome.at-spi2-core.enable = false;
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true; # Optional, powers on adapter on boot
+  services.upower.enable = true;
 
   security.sudo = {
     enable = true;
@@ -306,12 +317,12 @@ in
     orchis-theme
     tela-icon-theme
     tela-circle-icon-theme
-    catppuccin
+    # catppuccin
     fluent-icon-theme
-    epapirus-icon-theme
-    catppuccin-fcitx5
-    catppuccin-grub
-    catppuccin-sddm
+    # epapirus-icon-theme
+    # catppuccin-fcitx5
+    # catppuccin-grub
+    # catppuccin-sddm
     adwaita-icon-theme
     sddm-astronaut
 
@@ -327,7 +338,7 @@ in
     nerd-fonts.ubuntu-sans
     nerd-fonts.ubuntu-mono
     noto-fonts
-    noto-fonts-extra
+    # noto-fonts-extra
     noto-fonts-cjk-sans
     texliveFull
     onlyoffice-desktopeditors
@@ -357,51 +368,68 @@ in
     distrobox
     wofi
     rofi
-    walker
+    # walker
     ashell
     adwaita-icon-theme
-    rustc
-    rustup
-    rust-script
-    cargo
-    rustfmt
-    clippy
+
+    # rustc
+    # cargo
+    # rustfmt
+    # clippy
+    # rust-script
+    # rust-analyzer
+    emacsPackages.racer
+    devenv
+    
     gcc
     gpustat
     hyprpaper
     hyprsunset
     hypridle
     hyprsysteminfo
+    hyprshot
     waypaper
+    satty
+    slurp
+    grim
+    flameshot
+    xdg-desktop-portal
+    xdg-desktop-portal-hyprland
+    lua
+    direnv
+    nix-direnv
+    emacsPackages.direnv
+    walker
     # inputs.nix-software-center.packages.${system}.nix-software-center
     # inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
-    (python3.withPackages (python-pkgs: with python-pkgs; [
-      pandas
-      requests
-      scipy
-      sympy
-      scikit-learn
-      scikit-image
-      jupyterlab
-      numpy
-      matplotlib
-      python-lsp-server
-      pyright
-      emacsPackages.lsp-pyright
-      emacsPackages.jsonrpc
-      python-lsp-jsonrpc
-      python-jsonrpc-server
-      jsonrpclib-pelix
-      jsonrpc-websocket
-      jsonrpc-base
-      jsonrpc-async
-      ajsonrpc
-      jsonrpc-glib
-      ipykernel
-      jupyter
-      pyzmq
-      emacsPackages.zmq
-    ]))
+    # (python3.withPackages (python-pkgs: with python-pkgs; [
+    #   pandas
+    #   requests
+    #   scipy
+    #   sympy
+    #   scikit-learn
+    #   scikit-image
+    #   jupyterlab
+    #   numpy
+    #   matplotlib
+    #   python-lsp-server
+    #   pyright
+    #   emacsPackages.lsp-pyright
+    #   emacsPackages.jsonrpc
+    #   python-lsp-jsonrpc
+    #   # python-jsonrpc-server
+    #   jsonrpclib-pelix
+    #   jsonrpc-websocket
+    #   jsonrpc-base
+    #   jsonrpc-async
+    #   ajsonrpc
+    #   jsonrpc-glib
+    #   ipykernel
+    #   jupyter
+    #   pyzmq
+    #   emacsPackages.zmq
+    # ]))
+    
     # Create an FHS environment using the command `fhs`, 
     #enabling the execution of non-NixOS packages in NixOS!
     (let base = pkgs.appimageTools.defaultFhsEnvArgs; in
@@ -483,7 +511,8 @@ PS1="\n\[\033[$PROMPT_COLOR\][$BOLD$BLUE\d $BOLD$CYAN\t $BOLD$GREEN\u$BOLD$PURPL
       fcitx5-rime
       rime-data
       librime
-      fcitx5-chinese-addons
+      # fcitx5-chinese-addons
+      qt6Packages.fcitx5-chinese-addons
       fcitx5-nord  # a color theme
     ];
   };

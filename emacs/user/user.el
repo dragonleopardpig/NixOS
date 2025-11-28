@@ -72,7 +72,7 @@
 (setq org-crypt-key nil)
 
 ;; * Org Capture
-(setq org-directory "~/NixOS/org")
+(setq org-directory "~/Downloads/NixOS/org")
 (setq org-default-notes-file (concat org-directory "/tasks.org"))
 
 ;; * Org Alert
@@ -90,7 +90,7 @@
 
 ;; * Neotree
 (require 'neotree)
-(global-set-key [f8] 'neotree-toggle)
+(global-set-key [f4] 'neotree-toggle)
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 (setq neo-window-fixed-size nil)
 (setq neo-smart-open t)
@@ -129,6 +129,7 @@
  'org-babel-load-languages
  '(
    ;; (haskell . t)
+   (lua . t)
    (julia . t)
    (latex . t)
    (lisp . t)
@@ -218,10 +219,10 @@ buffer's text scale."
   "Beautify org src blk after copy and paste from PDF"
   (interactive)
   (org-babel-mark-block)
-  (replace-regexp-in-region "’" "'")
-  (replace-regexp-in-region "“" "\"")
-  (replace-regexp-in-region "”" "\"")
-  (replace-regexp-in-region "−" "-")
+  (replace-regexp-in-region "'" "'")
+  (replace-regexp-in-region """ "\"")
+  (replace-regexp-in-region """ "\"")
+  (replace-regexp-in-region "-" "-")
   (replace-regexp-in-region "\\#" "#")
   (query-replace-regexp "^[0-9]+\\. " "")
   (indent-for-tab-command)
@@ -230,6 +231,11 @@ buffer's text scale."
 
 (global-set-key (kbd "<f4>") 'myreplace)
 
+;; ;; * Direnv
+;; (use-package direnv
+;;   :ensure t
+;;   :config
+;;   (direnv-mode))
 
 ;; * Remove line after :results
 ;; (defun my-remove-line (_a _b)

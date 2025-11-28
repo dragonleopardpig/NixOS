@@ -85,7 +85,7 @@ Themes will be loaded if they weren't loaded previously."
 		    :underline t
 		    :overline nil
 		    :foreground "pink"
-		    :background "#232627"
+		    :background nil ;; "#232627"
 		    :italic t
 		    :bold t
 		    :extend t))))
@@ -94,7 +94,7 @@ Themes will be loaded if they weren't loaded previously."
 		    :underline nil
 		    :overline t
 		    :foreground "pink"
-		    :background "#232627"
+		    :background nil;; "#232627"
 		    :italic t
 		    :bold t
 		    :extend t))))
