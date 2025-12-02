@@ -46,8 +46,8 @@
 ;; * Dashboard
 (require 'dashboard)
 (dashboard-setup-startup-hook)
-(setq dashboard-items '((recents  . 5)
-                        (bookmarks . 5)
+(setq dashboard-items '((recents  . 10)
+                        (bookmarks . 10)
                         (projects . 5)
                         (agenda . 5)
                         (registers . 5)))
