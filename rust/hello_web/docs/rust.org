@@ -1349,9 +1349,9 @@ fn main() {
 : Username: user1
 : Email: user2@example.com
 : Sign in count: 1
-: Active: true
+: Active: True
 
-
+* Methods and Associated Functions
 #+BEGIN_SRC rust  
 struct Rectangle {
     width: u32,
@@ -1388,6 +1388,33 @@ fn main() {
 : The area of rect1 is 1500 square pixels.
 : Can rect1 hold rect2? true
 : Can rect1 hold rect3? false
+
+
+#+BEGIN_SRC rust  
+struct Rectangle {
+    width: u32,
+    height: u32,
+}
+impl Rectangle {
+    fn square(size: u32) -> Rectangle {
+        Rectangle {
+            width: size,
+            height: size,
+        }
+    }
+    // A method (takes &self)
+    fn area(&self) -> u32 {
+        self.width * self.height
+    }
+}
+fn main() {
+    let sq = Rectangle::square(3);
+    println!("The area of the square is {} square pixels.", sq.area());
+}
+#+END_SRC
+
+#+RESULTS:
+: The area of the square is 9 square pixels.
 
 
 #+BEGIN_SRC rust  
