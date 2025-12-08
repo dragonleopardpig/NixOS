@@ -30,7 +30,6 @@ in
   # boot.initrd.luks.devices."luks-6888724b-a24c-4ba6-bd13-d78dd20da012".device = "/dev/disk/by-uuid/6888724b-a24c-4ba6-bd13-d78dd20da012";
   
   # Bootloader.
-  swapDevices = lib.mkForce [ ];
   boot.loader.systemd-boot.enable = false;
   boot.loader.grub.enable = true;
   boot.loader.grub.device = "nodev";
@@ -68,7 +67,6 @@ in
       "boot.shell_on_fail"
       "udev.log_priority=3"
       "rd.systemd.show_status=auto"
-      "systemd.swap=0"
     ];
 
     # plymouth, showing after LUKS unlock
@@ -153,7 +151,6 @@ in
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     # make sure to also set the portal package, so that they are in sync
     portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-
   };
   
   # Enable the Cinnamon Desktop Environment.
@@ -388,8 +385,17 @@ in
     # ashell
     adwaita-icon-theme
 
+    # rustc
+    # cargo
+    # rustfmt
+    # clippy
+    # rust-script
+    # rust-analyzer
+    
     jsonrpc-glib
     devenv
+    gcc
+    lua
     direnv
     nix-direnv
     emacsPackages.direnv
@@ -404,15 +410,41 @@ in
     aspellDicts.en
     aspellDicts.en-science
     aspellDicts.en-computers
-    nodejs
-    yaml-language-server
-    vscode-json-languageserver
-    typescript-language-server
-    bash-language-server
-    systemd-language-server
-    nixd
-    nix-index
-    
+    basedpyright
+        
+    # inputs.nix-software-center.packages.${system}.nix-software-center
+    # inputs.nixos-conf-editor.packages.${system}.nixos-conf-editor
+    # (python3.withPackages (python-pkgs: with python-pkgs; [
+    #   pandas
+    #   requests
+    #   scipy
+    #   sympy
+    #   scikit-learn
+    #   scikit-image
+    #   jupyterlab
+    #   numpy
+    #   matplotlib
+    #   python-lsp-server
+    #   pyright
+    #   python-lsp-jsonrpc
+    #   jsonrpclib-pelix
+    #   jsonrpc-websocket
+    #   jsonrpc-base
+    #   jsonrpc-async
+    #   ajsonrpc
+    #   ipykernel
+    #   jupyter
+    #   pyzmq
+    #   epc
+    #   orjson
+    #   packaging
+    #   paramiko
+    #   rapidfuzz
+    #   setuptools
+    #   sexpdata
+    #   six
+    #   watchdog
+    # ]))
     
     # Create an FHS environment using the command `fhs`, 
     #enabling the execution of non-NixOS packages in NixOS!

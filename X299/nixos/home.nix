@@ -6,6 +6,10 @@
   home.homeDirectory = "/home/thinky";
 
   xdg.configFile."uwsm/env".source = "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
+  home.sessionVariables = {
+    GTK_IM_MODULE = "";
+    QT_IM_MODULE = "";
+  };
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -14,6 +18,11 @@
       enable = false;
       variables = [ "--all" ];
     };
+    extraConfig = ''
+    env = XDG_CURRENT_DESKTOP,Hyprland
+    env = XDG_SESSION_TYPE,wayland
+    env = XDG_SESSION_DESKTOP,Hyprland
+  '';
     settings = {
       general = {
         gaps_in = 0; # Inner gaps
@@ -38,7 +47,7 @@
       };
     };
   };
-    
+  
   wayland.windowManager.hyprland.settings = {
     "$mod" = "SUPER";
     bind =
@@ -50,14 +59,13 @@
         "$mod, M, exec, walker"
         "$mod, A, exec, anyrun"
         "$mod, N, exec, nemo"
+        "$mod, Y, exec, kitty -e yazi"
         "$mod, Escape, exit,"
         "$mod, K, killactive,"
         "$mod, left, movefocus, l"
         "$mod, right, movefocus, r"
         "$mod, up, movefocus, u"
         "$mod, down, movefocus, d"
-        # "CTRL, C, exec, wl-copy"
-        # "CTRL, V, exec, wl-paste"
         "$mod SHIFT, F, fullscreen, 1"
         ", Print, exec, hyprshot -m region"
         ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
@@ -123,7 +131,7 @@
   # programs.hyprshot.enable = true;
   
   programs.hyprpanel = {
-    package = inputs.hyprpanel.packages.${pkgs.system}.default;
+    package = inputs.hyprpanel.packages.${pkgs.stdenv.hostPlatform.system}.default;
     enable = true;
     settings = {
       bar.layouts = {
@@ -156,18 +164,18 @@
   services.hyprpaper.enable = true;
   services.hyprpaper.settings = {
     # Set a preload wallpaper
-    preload = [
-      "~/Pictures/Kath.png"
-      "~/Pictures/corndog.png"
-      "~/Pictures/Mepth.png"
-      "~/Pictures/Sollee.png"
-      "~/Pictures/srev.png"
-      "~/Pictures/VDawg.png"
-    ];
+    # preload = [
+    #   "~/Pictures/Kath.png"
+    #   "~/Pictures/corndog.png"
+    #   "~/Pictures/Mepth.png"
+    #   "~/Pictures/Sollee.png"
+    #   "~/Pictures/srev.png"
+    #   "~/Pictures/VDawg.png"
+    # ];
 
     # Set the wallpaper for a specific display
     wallpaper = [
-      "DP-3,~/Pictures/Kath.png"
+      "DP-3,~/Pictures/Wallpapers/Kath.png"
     ];
   };
 
@@ -375,6 +383,49 @@
       )
     '';
   };
+
+  programs.yazi = {
+    enable = true;
+    settings = {
+      manager = {
+        ratio = [
+          1
+          4
+          3
+        ];
+        sort_by = "natural";
+        sort_sensitive = true;
+        sort_reverse = false;
+        sort_dir_first = true;
+        linemode = "none";
+        show_hidden = true;
+        show_symlink = true;
+      };
+
+      preview = {
+        image_filter = "lanczos3";
+        image_quality = 90;
+        tab_size = 1;
+        max_width = 600;
+        max_height = 900;
+        cache_dir = "";
+        ueberzug_scale = 1;
+        ueberzug_offset = [
+          0
+          0
+          0
+          0
+        ];
+      };
+
+      tasks = {
+        micro_workers = 5;
+        macro_workers = 10;
+        bizarre_retry = 5;
+      };
+    };
+  };
+  
   # This value determines the home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new home Manager release introduces backwards
@@ -383,5 +434,5 @@
   # You can update home Manager without changing this value. See
   # the home Manager release notes for a list of state version
   # changes in each release.
-  home.stateVersion = "25.05";
+  home.stateVersion = "25.11";
 }
