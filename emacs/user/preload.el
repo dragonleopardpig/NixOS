@@ -1,6 +1,9 @@
 ;; * For SCIMAX starterkit, install scimax first.
 (setq warning-minimum-level :emergency)
 
+;; * Scimax
+(add-hook 'org-mode-hook 'scimax-autoformat-mode)
+
 ;; * Prevent undo tree files from polluting your git repo
 (setq undo-tree-history-directory-alist '(("." . "~/tmp/emacs/undo")))
 ;; Put backup files neatly away
@@ -89,47 +92,20 @@
 	))
 (package-install-selected-packages)
 
+;; * Pyvenv
+(require 'pyvenv)
+(pyvenv-activate "~/Downloads/NixOS/python/.devenv/state/venv/")
 
-;; ;; ** Pyvenv
-;; (require 'pyvenv)
-;; (pyvenv-activate "~/.virtualenvs/tf/")
-
-;; ** Scimax
-(add-hook 'org-mode-hook 'scimax-autoformat-mode)
-;; (add-hook 'org-mode-hook 'direnv)
 
 ;; * direnv + lspbridge
-;; Configure and load the emacs-direnv package
-;; (use-package direnv
-;;   :ensure t
-;;   :config
-;;   ;; Enable global direnv mode
-;;   (direnv-mode 1)
-
-;;   )
-
 (use-package envrc
   :ensure t
-  ;; :after lsp
-  ;; :delight 'envrc-mode
+  :delight 'envrc-mode
   :init
-  (add-hook 'prog-mode-hook #'direnv-update-environment)
-  (add-hook 'before-hack-local-variables-hook #'direnv-update-environment)
-  (advice-add 'python-mode :before #'direnv-update-environment)
-  (add-hook 'prog-mode-hook #'direnv--maybe-update-environment)
   (advice-add 'lsp :before #'direnv-update-environment)
-  (add-hook 'prog-mode-hook
-            (lambda () (progn (direnv-update-environment) (lsp))))
   :config
   (envrc-global-mode +1)
   )
-
-;; (use-package lsp-bridge
-;;   :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
-;; 			 :files (:defaults "*.el" "*.py" "acm" "core" "langserver" "multiserver" "resources")
-;; 			 :build (:not compile))
-;;   :init
-;;   (global-lsp-bridge-mode))
 
 (add-to-list 'load-path "~/Downloads/lsp-bridge")
 (add-to-list 'load-path "~/Downloads/flymake-bridge")
@@ -143,25 +119,21 @@
 (require 'flymake-bridge)
 (add-hook 'lsp-bridge-mode-hook #'flymake-bridge-setup)
 
+(setq lsp-bridge-enable-org-babel t)
+
+(setq lsp-bridge-org-babel-lang-list '(python rust javascript))
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (add-to-list 'lsp-bridge-completion-popup-predicates
+			 (lambda ()
+			   (org-in-src-block-p)))))
 
 
 
-;; (advice-add 'lsp :before #'direnv-update-environment)
-
-
-;; (require 'lsp-mode)
-
-;; (require 'company)
-
-;; ;; Enable company-mode globally or in rustic-mode hook
-;; (add-hook 'after-init-hook 'global-company-mode)
-
-;; ;; Optional: Configure company-mode for better integration
-;; (setq company-idle-delay 0.1) ; Shorter delay for autocompletion
-;; (setq company-minimum-prefix-length 2) ; Minimum characters before autocompletion starts
-;; (setq lsp-completion-provider :company) ; Ensure company is the completion provider
-;; (setq lsp-enable-file-watchers nil)
-;; (setq lsp-auto-guess-root nil)
-
-
-;; (advice-add 'org-mode :before #'direnv-update-environment)
+;; (with-eval-after-load 'lsp-bridge-mode
+;;   (lsp-register-client
+;;    (make-lsp-client :new-connection (lsp-stdio-connection "nixd")
+;;                     :major-modes '(nix-mode)
+;;                     :priority 0
+;;                     :server-id 'nixd)))

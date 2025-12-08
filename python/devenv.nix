@@ -6,9 +6,16 @@
 
   # https://devenv.sh/packages/
   # packages = [ pkgs.git ];
-
-  packages = with pkgs; [
-    (python3.withPackages (python-pkgs: with python-pkgs; [
+  
+  # https://devenv.sh/languages/
+  languages.python = {
+    enable = true;
+    # version = "3.11";
+    venv.enable = true;
+    uv.enable = true;
+    venv.requirements = ''
+      requests
+      torch
       pandas
       requests
       scipy
@@ -20,25 +27,31 @@
       matplotlib
       python-lsp-server
       pyright
-      emacsPackages.lsp-pyright
-      emacsPackages.jsonrpc
       python-lsp-jsonrpc
-      # python-jsonrpc-server
       jsonrpclib-pelix
       jsonrpc-websocket
       jsonrpc-base
       jsonrpc-async
       ajsonrpc
-      jsonrpc-glib
       ipykernel
+      ipython
       jupyter
       pyzmq
-      emacsPackages.zmq
-    ]))
-  ];
-  
-  # https://devenv.sh/languages/
-  languages.python.enable = true;
+      epc
+      orjson
+      packaging
+      paramiko
+      rapidfuzz
+      setuptools
+      sexpdata
+      six
+      watchdog
+      ty
+      ruff
+      basedpyright
+    '';
+   
+  };
 
   # https://devenv.sh/processes/
   # processes.dev.exec = "${lib.getExe pkgs.watchexec} -n -- ls -la";

@@ -1,10 +1,25 @@
-;; * NixOS Jupyter Python setup
-(unless (package-installed-p 'jupyter)
-  (package-refresh-contents)
-  (package-install 'jupyter))
+;; * Dashboard
+(use-package dashboard
+  :ensure t
+  :config 
+  (setq dashboard-startup-banner "~/Pictures/EmacsLogo.xpm") ;convert svg to xpm
+  ;; Other dashboard configurations
+  (dashboard-setup-startup-hook)
+  (setq dashboard-items '((recents . 10)
+			  (bookmarks . 10)
+			  (projects . 5)
+			  (agenda . 5)
+			  (registers . 5)))
+  (setq dashboard-set-navigator t)
+  (setq dashboard-icon-type 'all-the-icons) ; use `all-the-icons' package
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-projects-backend 'projectile))
 
-;; Optional: Configure jupyter
-(setq jupyter-default-kernel "python3")
+;; * Conf-desktop-mode for ini files
+;; Enable conf-mode for .ini files
+(add-to-list 'auto-mode-alist '("\\.ini\\'" . conf-desktop-mode))
+
 
 ;; * ripgrep
 (require 'rg)
@@ -42,20 +57,6 @@
   (global-set-key (kbd "C-c p") 'projectile-command-map)
   (projectile-mode +1))
 
-
-;; * Dashboard
-(require 'dashboard)
-(dashboard-setup-startup-hook)
-(setq dashboard-items '((recents  . 10)
-                        (bookmarks . 10)
-                        (projects . 5)
-                        (agenda . 5)
-                        (registers . 5)))
-(setq dashboard-set-navigator t)
-(setq dashboard-icon-type 'all-the-icons)  ; use `all-the-icons' package
-(setq dashboard-set-heading-icons t)
-(setq dashboard-set-file-icons t)
-(setq dashboard-projects-backend 'projectile)
 
 ;; * Org Mode Startup
 (setq org-startup-folded t)
@@ -250,7 +251,7 @@ buffer's text scale."
 
 
 ;; * Company Mode
-(add-hook 'after-init-hook 'global-company-mode)
+;; (add-hook 'after-init-hook 'global-company-mode)
 
 ;; * Magit
 (keymap-global-set "C-x g" 'magit-status)
