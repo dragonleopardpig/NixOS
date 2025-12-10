@@ -32,26 +32,6 @@
 (set-frame-parameter nil 'alpha-background 85) ; For current frame
 (add-to-list 'default-frame-alist '(alpha-background . 85)) ; For all new frames henceforth
 
-;; Doom Themes
-(use-package doom-themes
-  :ensure t
-  :config
-  ;; :tools direnv
-  ;; Global settings (defaults)
-  (setq doom-themes-enable-bold t
-	doom-themes-enable-italic t)
-  ;; Corrects (and improves) org-mode's native fontification.
-  (doom-themes-org-config)
-  ;; Enable flashing mode-line on errors
-  (doom-themes-visual-bell-config)
-  ;; ;; Enable custom neotree theme (all-the-icons must be installed!)
-  ;; (doom-themes-neotree-config)
-  ;; ;; or for treemacs users
-  ;; (setq doom-themes-treemacs-theme "doom-atom")
-  ;; ;; use "doom-colors" for less minimal icon theme
-  ;; (setq doom-themes-treemacs-theme "doom-colors")
-  ;; (doom-thexmes-treemacs-config)
-  )
 
 ;; * Org Modern
 (setq

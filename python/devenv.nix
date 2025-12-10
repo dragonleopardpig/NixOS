@@ -42,7 +42,7 @@
       packaging
       paramiko
       rapidfuzz
-      setuptools
+      setuptools 
       sexpdata
       six
       watchdog

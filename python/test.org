@@ -1660,3 +1660,14 @@ x = np.array([[1, 2], [3, 4]])
 
 print(np.tile(x, (2, 2)))
 #+END_SRC
+
+#+RESULTS:
+: [[1 2 1 2]
+:  [3 4 3 4]
+:  [1 2 1 2]
+:  [3 4 3 4]]
+
+#+BEGIN_SRC jupyter-python  
+
+#+END_SRC
+

@@ -7,7 +7,12 @@
   env.GREET = "devenv";
 
   # https://devenv.sh/packages/
-  packages = [ pkgs.git pkgs.rust-script ];
+  packages = with pkgs;
+    [ git
+      rust-script
+      semgrep
+      rustup
+    ];
 
   # https://devenv.sh/languages/
   languages.rust = {

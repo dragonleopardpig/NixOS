@@ -1417,7 +1417,7 @@ fn main() {
 : The area of the square is 9 square pixels.
 
 
-#+BEGIN_SRC rust  
+#+BEGIN_SRC rust  tangle "main.rs"
 
 #+END_SRC
 

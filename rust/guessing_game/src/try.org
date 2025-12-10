@@ -1,0 +1,11 @@
+#+BEGIN_SRC rust :tangle main.rs
+println!("hello")
+#+END_SRC
+
+#+RESULTS:
+: hello
+
+#+BEGIN_SRC rust  :tangle main.rs
+
+#+END_SRC
+

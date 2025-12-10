@@ -1,7 +1,3 @@
-// update root Cargo.toml workspaces after "cargo new" !!!
-
-// The & indicates that this argument is a reference, which gives you a way to let multiple parts of your code access one piece of data without needing to copy that data into memory multiple times.
-
 use std::cmp::Ordering;
 use std::io;
 

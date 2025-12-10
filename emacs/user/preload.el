@@ -1,5 +1,6 @@
 ;; * For SCIMAX starterkit, install scimax first.
 (setq warning-minimum-level :emergency)
+(setq package-enable-at-startup nil)
 
 ;; * Scimax
 (add-hook 'org-mode-hook 'scimax-autoformat-mode)
@@ -34,8 +35,6 @@
 
 (use-package package
   :ensure nil
-  :config
-  (package-initialize)
   :custom
   (package-native-compile t)
   (package-archives '(("gnu"   . "http://elpa.gnu.org/packages/")
@@ -46,6 +45,9 @@
 (setq package-selected-packages
       '(material-theme
 	gruvbox-theme
+	doom-themes
+	ef-themes
+	;; srcery-theme
         neotree
         all-the-icons
         rainbow-delimiters
@@ -56,13 +58,14 @@
         json-mode
 	prettier-js
 	js2-refactor
-	company-auctex
+	;; company-auctex
 	rjsx-mode
 	tide
 	web-mode
 	emmet-mode
-	rust-mode
-	company-web
+	;; rust-mode
+	rustic
+	;; company-web
 	ox-rst
 	alert 
 	org-fragtog
@@ -73,7 +76,6 @@
 	nix-mode
 	geiser-mit
 	pyvenv
-	srcery-theme
 	nov
 	markdown-mode
 	mixed-pitch ;;disable org-block-begin-line, org-block-end-line in .el file
@@ -81,6 +83,8 @@
 	spice-mode
 	ob-spice
 	lsp-mode
+	lsp-ui
+	company
 	jedi
 	saveplace-pdf-view
 	ag
@@ -89,6 +93,10 @@
 	rg
 	ob-rust
 	lua-mode
+	direnv
+	magik-mode
+	treemacs
+	lsp-treemacs
 	))
 (package-install-selected-packages)
 
@@ -103,37 +111,98 @@
   :delight 'envrc-mode
   :init
   (advice-add 'lsp :before #'direnv-update-environment)
+  ;; (add-hook 'direnv-after-update-hook (lambda ()
+  ;; 					(when (bound-and-true-p lsp-bridge-mode)
+  ;;                                         (lsp-bridge-restart-process))))
   :config
   (envrc-global-mode +1)
   )
 
-(add-to-list 'load-path "~/Downloads/lsp-bridge")
-(add-to-list 'load-path "~/Downloads/flymake-bridge")
+;; * lsp-bridge-mode
+;; (add-to-list 'load-path "~/Downloads/lsp-bridge")
+;; (add-to-list 'load-path "~/Downloads/flymake-bridge")
 
-(require 'lsp-bridge)
-(global-lsp-bridge-mode)
+;; (require 'lsp-bridge)
+;; (global-lsp-bridge-mode)
 
-(require 'yasnippet)
-(yas-global-mode 1)
+;; (require 'yasnippet)
+;; (yas-global-mode 1)
 
-(require 'flymake-bridge)
-(add-hook 'lsp-bridge-mode-hook #'flymake-bridge-setup)
+;; (require 'flymake-bridge)
+;; (add-hook 'lsp-bridge-mode-hook #'flymake-bridge-setup)
 
-(setq lsp-bridge-enable-org-babel t)
+;; (setq lsp-bridge-enable-org-babel t)
 
-(setq lsp-bridge-org-babel-lang-list '(python rust javascript))
+;; (setq lsp-bridge-org-babel-lang-list '(python rust javascript))
 
-(add-hook 'org-mode-hook
-          (lambda ()
-            (add-to-list 'lsp-bridge-completion-popup-predicates
-			 (lambda ()
-			   (org-in-src-block-p)))))
+;; (add-hook 'org-mode-hook
+;;           (lambda ()
+;;             (add-to-list 'lsp-bridge-completion-popup-predicates
+;; 			 (lambda ()
+;; 			   (org-in-src-block-p)))))
 
 
+;; * lsp-mode
+(use-package lsp-mode
+  :init
+  ;; set prefix for lsp-command-keymap (few alternatives - "C-l", "C-c l")
+  (setq lsp-keymap-prefix "C-c l")
+  :hook (;; replace XXX-mode with concrete major-mode(e. g. python-mode)
+         (python-mode . lsp)
+	 (rustic-mode . lsp)
+	 (c++-mode . lsp)
+         ;; if you want which-key integration
+         (lsp-mode . lsp-enable-which-key-integration))
+  :commands lsp)
 
-;; (with-eval-after-load 'lsp-bridge-mode
-;;   (lsp-register-client
-;;    (make-lsp-client :new-connection (lsp-stdio-connection "nixd")
-;;                     :major-modes '(nix-mode)
-;;                     :priority 0
-;;                     :server-id 'nixd)))
+;; optionally
+(use-package lsp-ui :commands lsp-ui-mode)
+;; if you are helm user
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+;; if you are ivy user
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
+;; optionally if you want to use debugger
+(use-package dap-mode)
+;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+
+;; optional if you want which-key integration
+(use-package which-key
+  :config
+  (which-key-mode))
+
+
+;; * lsp-bridge for reference only
+;; (use-package lsp-bridge
+;;   :straight '(lsp-bridge :type git :host github :repo "manateelazycat/lsp-bridge"
+;; 			 :files (:defaults "*.el" "*.py" "acm" "core"
+;; 					   "langserver" "multiserver" "resources")
+;; 			 :build (:not compile))
+;;   :ensure nil 
+;;   :hook
+;;   (org-mode . lsp-bridge-mode)
+;;   ;; Ensure src-edit buffers (C-c ') get lsp-bridge
+;;   (org-src-mode . (lambda () (lsp-bridge-mode 1)))
+;;   :init
+;;   (global-lsp-bridge-mode)
+;;   (setq lsp-bridge-enable-diagnostics t
+;;         lsp-bridge-enable-signature-help t
+;;         lsp-bridge-enable-hover-diagnostic t
+;;         lsp-bridge-enable-auto-format-code nil
+;;         lsp-bridge-enable-completion-in-minibuffer nil
+;;         lsp-bridge-enable-log t
+;;         lsp-bridge-org-babel-lang-list nil
+;;         lsp-bridge-enable-org-babel t
+;;         lsp-bridge-use-popup t
+;;         ;; lsp-bridge-python-lsp-server "pylsp"
+;; 	;; lsp-bridge-nix-lsp-server "nil"
+;; 	;; lsp-bridge-tex-lsp-server "texlab"
+;;         ;; lsp-bridge-csharp-lsp-server "omnisharp-roslyn"
+;; 	))
+
+;; (with-eval-after-load 'org
+;;   (add-to-list 'org-src-lang-modes '("jupyter-python" . python))
+;;   ;; (add-to-list 'org-src-lang-modes '("jupyter-R" . ess-r))
+;;   (add-to-list 'org-src-lang-modes '("rust" . rustic)))
+

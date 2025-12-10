@@ -3,14 +3,17 @@
 (when (executable-find "ipython")
   (setq python-shell-interpreter "ipython"))
 
-(add-hook 'python-mode-hook #'lsp-bridge-mode)
 
+;; * lsp-mode
 ;; (add-hook 'python-mode-hook #'lsp)
 ;; (setq lsp-pyright-auto-search-paths t)
 ;; (setq lsp-pyright-langserver-command "basedpyright")
-;; (setq lsp-bridge-python-lsp-server "basedpyright")
+
+;; * lsp-bridge-mode
+;; (add-hook 'python-mode-hook #'lsp-bridge-mode)
+(setq lsp-bridge-python-lsp-server "basedpyright")
 ;; (setq lsp-bridge-python-lsp-server "ruff")
-;; (setq lsp-bridge-python-multi-lsp-server "basedpyright_ruff")
+(setq lsp-bridge-python-multi-lsp-server "basedpyright_ruff")
 
 
 ;; (lsp-bridge-register-server

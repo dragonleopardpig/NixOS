@@ -2,7 +2,7 @@
 (use-package dashboard
   :ensure t
   :config 
-  (setq dashboard-startup-banner "~/Pictures/EmacsLogo.xpm") ;convert svg to xpm
+  (setq dashboard-startup-banner "~/Downloads/NixOS/emacs/Emacs-logo.xpm") ;convert svg to xpm
   ;; Other dashboard configurations
   (dashboard-setup-startup-hook)
   (setq dashboard-items '((recents . 10)
