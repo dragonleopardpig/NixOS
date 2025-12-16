@@ -32,7 +32,7 @@
 (use-package projectile
   :ensure t
   :init
-  (setq projectile-project-search-path '("~/vc/projects/"))
+  (setq projectile-project-search-path '("~/Downloads/NixOS/"))
   (setq projectile-cleanup-known-projects nil)
   :config
   (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map)
