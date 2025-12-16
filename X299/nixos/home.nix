@@ -164,14 +164,14 @@
   services.hyprpaper.enable = true;
   services.hyprpaper.settings = {
     # Set a preload wallpaper
-    # preload = [
-    #   "~/Pictures/Kath.png"
-    #   "~/Pictures/corndog.png"
-    #   "~/Pictures/Mepth.png"
-    #   "~/Pictures/Sollee.png"
-    #   "~/Pictures/srev.png"
-    #   "~/Pictures/VDawg.png"
-    # ];
+    preload = [
+      "~/Pictures/Wallpapers/Kath.png"
+      "~/Pictures/Wallpapers/corndog.png"
+      "~/Pictures/Wallpapers/Mepth.png"
+      "~/Pictures/Wallpapers/Sollee.png"
+      "~/Pictures/Wallpapers/srev.png"
+      "~/Pictures/Wallpapers/VDawg.png"
+    ];
 
     # Set the wallpaper for a specific display
     wallpaper = [
@@ -387,13 +387,13 @@
   programs.yazi = {
     enable = true;
     settings = {
-      manager = {
+      mgr = {
         ratio = [
           1
-          4
           3
+          4
         ];
-        sort_by = "natural";
+        sort_by = "extension";
         sort_sensitive = true;
         sort_reverse = false;
         sort_dir_first = true;

@@ -396,7 +396,7 @@ in
     emacsPackages.lsp-pyright
     emacsPackages.jsonrpc
     emacsPackages.zmq
-    emacsPackages.racer
+    # emacsPackages.racer
     # emacsPackages.jupyter
     # jupyter
     walker
@@ -410,9 +410,20 @@ in
     typescript-language-server
     bash-language-server
     systemd-language-server
+    nginx-language-server
+    kotlin-language-server
+    perlnavigator
     nixd
     nix-index
-    
+    marksman
+    gcc
+    enchant
+    pkg-config
+    libxml2
+    glib
+    enchant2
+    hunspell
+    hunspellDicts.en_US
     
     # Create an FHS environment using the command `fhs`, 
     #enabling the execution of non-NixOS packages in NixOS!
