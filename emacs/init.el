@@ -5,6 +5,7 @@
 (load  "~/Downloads/NixOS/emacs/user/user.el")
 (load  "~/Downloads/NixOS/emacs/user/language.el")
 (load  "~/Downloads/NixOS/emacs/user/themes.el")
+(load  "~/Downloads/NixOS/emacs/user/heaven-and-hell.el")
 
 
 ;; ;; Add your custom lisp directory to load-path
