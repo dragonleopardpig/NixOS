@@ -1,21 +1,3 @@
-;; * Dashboard
-(use-package dashboard
-  :ensure t
-  :config 
-  (setq dashboard-startup-banner "~/Downloads/NixOS/emacs/Emacs-logo.xpm") ;convert svg to xpm
-  ;; Other dashboard configurations
-  (dashboard-setup-startup-hook)
-  (setq dashboard-items '((recents . 10)
-			  (bookmarks . 10)
-			  (projects . 5)
-			  (agenda . 5)
-			  (registers . 5)))
-  (setq dashboard-set-navigator t)
-  (setq dashboard-icon-type 'all-the-icons) ; use `all-the-icons' package
-  (setq dashboard-set-heading-icons t)
-  (setq dashboard-set-file-icons t)
-  (setq dashboard-projects-backend 'projectile))
-
 ;; * Conf-desktop-mode for ini files
 ;; Enable conf-mode for .ini files
 (add-to-list 'auto-mode-alist '("\\.ini\\'" . conf-desktop-mode))
@@ -119,7 +101,7 @@
 ;; adjust the size in increments with 'shift-<' and 'shift->'
 ;; '?' to see all shortcuts. 'M-H' move UP rootdir, 'M-L' move DOWN rootdir
 (setq treemacs-width-is-initially-locked nil)
-(global-set-key [f9] 'treemacs)
+(global-set-key [f7] 'treemacs)
 
 ;; * Python
 (setq python-indent-guess-indent-offset nil)

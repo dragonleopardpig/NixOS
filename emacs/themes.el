@@ -1,10 +1,28 @@
+;; * Dashboard
+(use-package dashboard
+  :ensure t
+  :config 
+  (setq dashboard-startup-banner "~/Downloads/NixOS/emacs/Emacs-logo.xpm") ;convert svg to xpm
+  ;; Other dashboard configurations
+  (dashboard-setup-startup-hook)
+  (setq dashboard-items '((recents . 10)
+			  (bookmarks . 10)
+			  (projects . 5)
+			  (agenda . 5)
+			  (registers . 5)))
+  (setq dashboard-set-navigator t)
+  (setq dashboard-icon-type 'all-the-icons) ; use `all-the-icons' package
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
+  (setq dashboard-projects-backend 'projectile))
+
 ;; * Disable some defaults
 (disable-theme 'smart-mode-line-light)
 (google-this-mode -1)
 (fringe-mode -1)
 
 ;; * Set Faces, etc...
-(set-face-attribute 'default nil :height 100)
+(set-face-attribute 'default nil :height 110)
 (setq leuven-scale-outline-headlines 1.1)
 (setq text-scale-mode-step 1.05)
 (setq org-indent-indentation-per-level 0)

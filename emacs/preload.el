@@ -1,0 +1,138 @@
+;; * For SCIMAX starterkit, install scimax first.
+(setq warning-minimum-level :emergency)
+(setq package-enable-at-startup nil)
+
+;; * Scimax
+;; (add-hook 'org-mode-hook 'scimax-autoformat-mode)
+
+;; * Prevent undo tree files from polluting your git repo
+(setq undo-tree-history-directory-alist '(("." . "~/tmp/emacs/undo")))
+;; Put backup files neatly away
+(let ((backup-dir "~/tmp/emacs/backups")
+      (auto-saves-dir "~/tmp/emacs/auto-saves/"))
+  (dolist (dir (list backup-dir auto-saves-dir))
+    (when (not (file-directory-p dir))
+      (make-directory dir t)))
+  (setq backup-directory-alist `(("." . ,backup-dir))
+        auto-save-file-name-transforms `((".*" ,auto-saves-dir t))
+        auto-save-list-file-prefix (concat auto-saves-dir ".saves-")
+        tramp-backup-directory-alist `((".*" . ,backup-dir))
+        tramp-auto-save-directory auto-saves-dir))
+
+(setq backup-by-copying t    ; Don't delink hardlinks
+      delete-old-versions t  ; Clean up the backups
+      version-control t      ; Use version numbers on backups,
+      kept-new-versions 5    ; keep some new versions
+      kept-old-versions 2)   ; and some old ones, too
+
+
+;; * Treat all themes as safe
+(setq custom-safe-themes t) 
+(setq scimax-theme nil)
+
+;;* Load MELPA
+;; Initialize package.el
+(require 'package)
+
+(setq package-archives
+      '(("gnu"   . "https://elpa.gnu.org/packages/")
+        ("melpa" . "https://melpa.org/packages/")))
+
+(package-initialize)
+
+(unless package-archive-contents
+  (package-refresh-contents))
+
+(defun ensure-package (pkg)
+  "Install PKG unless already installed."
+  (unless (package-installed-p pkg)
+    (package-install pkg)))
+
+;; * Auto Install My Packages
+(setq package-selected-packages
+      '(material-theme
+	gruvbox-theme
+	doom-themes
+	ef-themes
+	;; srcery-theme
+	pdf-tools
+	async
+        neotree
+        all-the-icons
+        rainbow-delimiters
+        yaml-mode
+        dockerfile-mode
+        toml-mode
+        dumb-jump
+        json-mode
+	prettier-js
+	js2-refactor
+	;; company-auctex
+	rjsx-mode
+	tide
+	web-mode
+	emmet-mode
+	;; rust-mode
+	rustic
+	;; company-web
+	ox-rst
+	alert 
+	org-fragtog
+	ob-nix
+	latex-preview-pane
+	org-modern
+	slime
+	nix-mode
+	geiser-mit
+	pyvenv
+	nov
+	markdown-mode
+	mixed-pitch ;;disable org-block-begin-line, org-block-end-line in .el file
+	smartparens
+	spice-mode
+	ob-spice
+	lsp-mode
+	lsp-ui
+	company
+	jedi
+	saveplace-pdf-view
+	ag
+	vertico
+	which-key
+	rg
+	ob-rust
+	lua-mode
+	direnv
+	magik-mode
+	treemacs
+	lsp-treemacs
+	lsp-docker
+	dap-mode
+	))
+(package-install-selected-packages)
+
+;; * Pyvenv
+(require 'pyvenv)
+(pyvenv-activate "~/Downloads/NixOS/python/.devenv/state/venv/")
+
+
+;; * direnv + lspbridge
+(use-package envrc
+  :ensure t
+  :delight 'envrc-mode
+  ;; :init
+  ;; (advice-add 'lsp :before #'direnv-update-environment)
+  ;; (add-hook 'direnv-after-update-hook (lambda ()
+  ;; 					(when (bound-and-true-p lsp-bridge-mode)
+  ;;                                         (lsp-bridge-restart-process))))
+  :config
+  (envrc-global-mode +1)
+  )
+
+;; ;;;; ============================================================
+;; ;;;; envrc / direnv (early)
+;; ;;;; ============================================================
+
+;; (ensure-package 'envrc)
+;; (require 'envrc)
+;; (envrc-global-mode)
