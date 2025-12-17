@@ -12,6 +12,8 @@
       rust-script
       semgrep
       rustup
+      cargo-tauri
+      cargo-tauri_1
     ];
 
   # https://devenv.sh/languages/
