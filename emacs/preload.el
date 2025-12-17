@@ -115,16 +115,3 @@
 (require 'pyvenv)
 (pyvenv-activate "~/Downloads/NixOS/python/.devenv/state/venv/")
 
-
-;; * direnv + lspbridge
-(use-package envrc
-  :ensure t
-  :delight 'envrc-mode
-  ;; :init
-  ;; (advice-add 'lsp :before #'direnv-update-environment)
-  ;; (add-hook 'direnv-after-update-hook (lambda ()
-  ;; 					(when (bound-and-true-p lsp-bridge-mode)
-  ;;                                         (lsp-bridge-restart-process))))
-  :config
-  (envrc-global-mode +1)
-  )

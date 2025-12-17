@@ -22,7 +22,7 @@
 (fringe-mode -1)
 
 ;; * Set Faces, etc...
-(set-face-attribute 'default nil :height 120)
+(set-face-attribute 'default nil :height 110)
 (setq leuven-scale-outline-headlines 1.1)
 (setq text-scale-mode-step 1.05)
 (setq org-indent-indentation-per-level 0)
@@ -75,8 +75,11 @@
   :config
   (setq heaven-and-hell-theme-type 'light)
   (setq heaven-and-hell-themes
-        '((light . (ef-spring doom-acario-light dichromacy doom-plain leuven doom-fairy-floss))
-          (dark . (doom-oceanic-next doom-plain-dark misterioso doom-badger leuven-dark)))
+        '(
+	  (light . (ef-spring doom-acario-light dichromacy doom-plain doom-fairy-floss))
+	  ;; (light . (ef-spring doom-acario-light dichromacy doom-plain leuven doom-fairy-floss))
+          (dark . (doom-oceanic-next doom-plain-dark misterioso doom-badger leuven-dark))
+	  )
 	)
   (setq heaven-and-hell-load-theme-no-confirm t)
   :hook (after-init . heaven-and-hell-init-hook)

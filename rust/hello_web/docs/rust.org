@@ -623,6 +623,41 @@ println!("Sum is: {}", sum);
 #+RESULTS:
 : Sum is: 7
 
+#+BEGIN_SRC rust
+fn main() {
+    println!("Hello, world!");
+
+    another_function();
+}
+
+fn another_function() {
+    println!("Another function.");
+}
+#+END_SRC
+
+#+RESULTS:
+: Hello, world!
+: Another function.
+
+
+#+BEGIN_SRC rust  
+fn main() {
+    another_function(5);
+}
+
+fn another_function(x: i32) {
+    println!("The value of x is: {x}");
+}
+#+END_SRC
+
+#+RESULTS:
+: The value of x is: 5
+
+
+#+BEGIN_SRC rust  
+
+#+END_SRC
+
 * Scope
 #+BEGIN_SRC rust  
 let x = 5;
@@ -791,48 +826,6 @@ println!("Last fruit: {}", fruits[2]);
 #+RESULTS:
 : Last fruit: Orange
 
-** Vectors
-#+BEGIN_SRC rust  
-let mut fruits = vec!["apple", "banana"];
-fruits.push("cherry");
-
-println!("Last fruit: {}", fruits[2]); 
-#+END_SRC
-
-#+RESULTS:
-: Last fruit: Cherry
-
-** Tuples
-#+BEGIN_SRC rust  
-let person = ("John", 30, true);
-println!("Name: {}", person.0);
-println!("Age: {}", person.1);
-println!("Is active: {}", person.2); 
-#+END_SRC
-
-#+RESULTS:
-: Name: John
-: Age: 30
-: Is active: True
-
-** HashMaps
-#+BEGIN_SRC rust  
-// Import HashMap
-use std::collections::HashMap;
-
-fn main() {
-  let mut capital_cities = HashMap::new();
-  capital_cities.insert("France", "Paris");
-  capital_cities.insert("Japan", "Tokyo");
-
-  println!("Capital of Japan is {}", capital_cities["Japan"]);
-}
-#+END_SRC
-
-#+RESULTS:
-: Capital of Japan is Tokyo
-
-* Arrays
 #+BEGIN_SRC rust  
 let numbers = [1, 2, 3, 4, 5];
 println!("The first number is: {}", numbers[0]);
@@ -891,7 +884,33 @@ println!("{}", numbers[0]);
 #+RESULTS:
 : 1
 
-* Vectors
+#+BEGIN_SRC rust
+let a: [i32; 5] = [1, 2, 3, 4, 5];
+println!("{:?}", a);
+#+END_SRC
+
+#+RESULTS:
+: [1, 2, 3, 4, 5]
+
+#+BEGIN_SRC rust
+let a = [3; 5];
+println!("{:?}", a)
+#+END_SRC
+
+#+RESULTS:
+: [3, 3, 3, 3, 3]
+
+** Vectors
+#+BEGIN_SRC rust  
+let mut fruits = vec!["apple", "banana"];
+fruits.push("cherry");
+
+println!("Last fruit: {}", fruits[2]); 
+#+END_SRC
+
+#+RESULTS:
+: Last fruit: Cherry
+
 #+BEGIN_SRC rust  
 // A vector with 3 elements
 let mut cars = vec!["Volvo", "BMW", "Ford"];
@@ -996,7 +1015,33 @@ for fruit in &fruits {
 : I like banana.
 : I like Orange.
 
-* Tuples
+** Tuples
+#+BEGIN_SRC rust  
+let person = ("John", 30, true);
+println!("Name: {}", person.0);
+println!("Age: {}", person.1);
+println!("Is active: {}", person.2); 
+#+END_SRC
+
+#+RESULTS:
+: Name: John
+: Age: 30
+: Is active: True
+
+#+BEGIN_SRC rust
+fn main() {
+    let tup = (500, 6.4, 1);
+
+    let (x, y, z) = tup;
+
+    println!("The value of y is: {y}");
+}
+#+END_SRC
+
+#+RESULTS:
+: The value of y is: 6.4
+
+
 #+BEGIN_SRC rust  
 let person = ("John", 30, true);
 println!("Name: {}", person.0);
@@ -1140,6 +1185,23 @@ for (country, city) in &capitalCities {
 : The capital of Germany is Berlin.
 : The capital of England is London.
 : The capital of Norway is Oslo.
+
+** HashMaps
+#+BEGIN_SRC rust  
+// Import HashMap
+use std::collections::HashMap;
+
+fn main() {
+  let mut capital_cities = HashMap::new();
+  capital_cities.insert("France", "Paris");
+  capital_cities.insert("Japan", "Tokyo");
+
+  println!("Capital of Japan is {}", capital_cities["Japan"]);
+}
+#+END_SRC
+
+#+RESULTS:
+: Capital of Japan is Tokyo
 
 * Structs
 #+BEGIN_SRC rust  

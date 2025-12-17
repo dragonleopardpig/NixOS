@@ -1,7 +1,47 @@
+;; ;; * Helm
+;; (unless (package-installed-p 'helm)
+;;   (package-install 'helm))
+;; (require 'helm)
+;; (require 'helm-files)
+;; (require 'helm-buffers)
+;; (require 'helm-command)
+;; (helm-mode 1)
+;; (global-set-key (kbd "M-x")     #'helm-M-x)
+;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
+;; (global-set-key (kbd "C-x b")   #'helm-mini)
+
+;; (with-eval-after-load 'helm-files
+;;   (define-key helm-find-files-map (kbd "/")
+;; 	      #'helm-execute-persistent-action))
+
+;; (defun my/helm-insert-slash-literal ()
+;;   "Insert a literal '/' in Helm minibuffer without entering the highlighted directory."
+;;   (interactive)
+;;   (insert "/"))
+
+;; (with-eval-after-load 'helm-files
+;;   (define-key helm-find-files-map (kbd "M-j")
+;; 	      #'my/helm-insert-slash-literal))
+
+;; * Counsel Ivy
+(defun my/ivy-insert-slash-literal ()
+  "Insert a literal '/' in counsel-find-file without accepting any candidate."
+  (interactive)
+  (insert "/"))
+
+(with-eval-after-load 'ivy
+  (define-key counsel-find-file-map (kbd "M-j")
+	      #'my/ivy-insert-slash-literal))
+
+(setq counsel-find-file-ignore-regexp nil
+      counsel-find-file-at-point nil)
+
 ;; * Conf-desktop-mode for ini files
 ;; Enable conf-mode for .ini files
 (add-to-list 'auto-mode-alist '("\\.ini\\'" . conf-desktop-mode))
 
+;; * Dired
+(add-hook 'dired-mode-hook 'dired-hide-details-mode)
 
 ;; * ripgrep
 (require 'rg)
