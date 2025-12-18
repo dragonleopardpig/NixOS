@@ -15,6 +15,7 @@
   (setq dashboard-set-heading-icons t)
   (setq dashboard-set-file-icons t)
   (setq dashboard-projects-backend 'projectile))
+;; (require 'scimax-dashboard)
 
 ;; * Disable some defaults
 (disable-theme 'smart-mode-line-light)
@@ -52,6 +53,10 @@
 
 
 ;; * Org Modern
+(setq org-modern-list
+      '((?+ . "▪")
+        (?- . "•")))
+
 (setq
  ;; Edit settings
  org-auto-align-tags nil

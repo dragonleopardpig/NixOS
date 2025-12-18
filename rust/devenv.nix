@@ -14,6 +14,13 @@
       rustup
       cargo-tauri
       cargo-tauri_1
+      cargo-binstall
+      cargo-wasi
+      dioxus-cli
+      wasm-pack
+      wasm-tools
+      wasmserve
+      wasmi
     ];
 
   # https://devenv.sh/languages/

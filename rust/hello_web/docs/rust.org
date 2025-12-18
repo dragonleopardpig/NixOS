@@ -1,5 +1,4 @@
 #+STARTUP: content
-#+PROPERTY: header-args:rust :tangle "main.rs"
 * Intro
 #+BEGIN_SRC rust
 fn main(){
@@ -1478,8 +1477,221 @@ fn main() {
 #+RESULTS:
 : The area of the square is 9 square pixels.
 
+* Statements and Expressions
+- Statements :: instructions that perform some action and do not return a value.
+- Expressions :: evaluate to a resultant value, eg: calling a function or macro.
+- Brackets :: A new scope block created with curly brackets is an expression
+- Expressions do not include ending semicolons. If you add a semicolon to the end of an expression, you turn it into a statement, and it will then not return a value.
+#+BEGIN_SRC rust
+fn main() {
+    let y = {
+        let x = 3;
+        x + 1
+    };
 
-#+BEGIN_SRC rust  tangle "main.rs"
+    println!("The value of y is: {y}");
+}
+#+END_SRC
+
+#+RESULTS:
+: The value of y is: 4
+
+
+#+BEGIN_SRC rust
+fn five() -> i32 {
+    5
+}
+
+fn main() {
+    let x = five();
+
+    println!("The value of x is: {x}");
+}
+#+END_SRC
+
+#+RESULTS:
+: The value of x is: 5
+
+
+#+BEGIN_SRC rust
+fn main() {
+    let x = plus_one(5);
+
+    println!("The value of x is: {x}");
+}
+
+fn plus_one(x: i32) -> i32 {
+    x + 1
+}
+#+END_SRC
+
+#+RESULTS:
+: The value of x is: 6
+
+* Control Flow
+** If Expressions
+#+BEGIN_SRC rust  
+fn main() {
+    let number = 3;
+
+    if number < 5 {
+        println!("condition was true");
+    } else {
+        println!("condition was false");
+    }
+}
+#+END_SRC
+
+#+RESULTS:
+: condition was true
+
+#+BEGIN_SRC rust  
+fn main() {
+    let number = 6;
+
+    if number % 4 == 0 {
+        println!("number is divisible by 4");
+    } else if number % 3 == 0 {
+        println!("number is divisible by 3");
+    } else if number % 2 == 0 {
+        println!("number is divisible by 2");
+    } else {
+        println!("number is not divisible by 4, 3, or 2");
+    }
+}
+#+END_SRC
+
+#+RESULTS:
+: number is divisible by 3
+
+#+BEGIN_SRC rust  
+fn main() {
+    let condition = true;
+    let number = if condition { 5 } else { 6 };
+
+    println!("The value of number is: {number}");
+}
+#+END_SRC
+
+#+RESULTS:
+: The value of number is: 5
+
+** Repetition with Loops
+#+BEGIN_SRC rust 
+fn main() {
+    let mut counter = 0;
+
+    let result = loop {
+        counter += 1;
+
+        if counter == 10 {
+            break counter * 2;
+        }
+    };
+
+    println!("The result is {result}");
+}
+#+END_SRC
+
+#+RESULTS:
+: The result is 20
+
+
+#+BEGIN_SRC rust  
+fn main() {
+    let mut count = 0;
+    'counting_up: loop {
+        println!("count = {count}");
+        let mut remaining = 10;
+
+        loop {
+            println!("remaining = {remaining}");
+            if remaining == 9 {
+                break;
+            }
+            if count == 2 {
+                break 'counting_up;
+            }
+            remaining -= 1;
+        }
+
+        count += 1;
+    }
+    println!("End count = {count}");
+}
+#+END_SRC
+
+#+RESULTS:
+: count = 0
+: remaining = 10
+: remaining = 9
+: count = 1
+: remaining = 10
+: remaining = 9
+: count = 2
+: remaining = 10
+: End count = 2
+
+** Streamlining Conditional Loops with while
+#+BEGIN_SRC rust  
+fn main() {
+    let mut number = 3;
+
+    while number != 0 {
+        println!("{number}!");
+
+        number -= 1;
+    }
+
+    println!("LIFTOFF!!!");
+}
+#+END_SRC
+
+#+RESULTS:
+: 3!
+: 2!
+: 1!
+: LIFTOFF!!!
+
+** Looping Through a Collection with for
+#+BEGIN_SRC rust  
+fn main() {
+    let a = [10, 20, 30, 40, 50];
+    let mut index = 0;
+
+    while index < 5 {
+        println!("the value is: {}", a[index]);
+
+        index += 1;
+    }
+}
+#+END_SRC
+
+#+RESULTS:
+: the value is: 10
+: the value is: 20
+: the value is: 30
+: the value is: 40
+: the value is: 50
+
+** Reverse the range
+#+BEGIN_SRC rust  
+fn main() {
+    for number in (1..4).rev() {
+        println!("{number}!");
+    }
+    println!("LIFTOFF!!!");
+}
+#+END_SRC
+
+#+RESULTS:
+: 3!
+: 2!
+: 1!
+: LIFTOFF!!!
+
+* Understanding Ownership
+#+BEGIN_SRC rust  
 
 #+END_SRC
 
