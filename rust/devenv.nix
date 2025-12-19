@@ -1,65 +1,26 @@
-{ pkgs, lib, config, inputs, ... }:
+{ pkgs, ... }:
 
 {
-  dotenv.enable = true;
-  
-  # https://devenv.sh/basics/
-  env.GREET = "devenv";
-
-  # https://devenv.sh/packages/
-  packages = with pkgs;
-    [ git
-      rust-script
-      semgrep
-      rustup
-      cargo-tauri
-      cargo-tauri_1
-      cargo-binstall
-      cargo-wasi
-      dioxus-cli
-      wasm-pack
-      wasm-tools
-      wasmserve
-      wasmi
-    ];
-
-  # https://devenv.sh/languages/
   languages.rust = {
     enable = true;
     toolchainFile = ./rust-toolchain.toml;
   };
-  
-  # https://devenv.sh/processes/
-  # processes.dev.exec = "${lib.getExe pkgs.watchexec} -n -- ls -la";
 
-  # https://devenv.sh/services/
-  # services.postgres.enable = true;
+  env.packages = with pkgs; [
+    rust-analyzer
+    cargo-binstall
+  ];
 
-  # https://devenv.sh/scripts/
-  scripts.hello.exec = ''
-    echo hello from $GREET
-  '';
-
-  # https://devenv.sh/basics/
   enterShell = ''
-    hello         # Run scripts directly
-    git --version # Use packages
+    # Install wasm-bindgen-cli if missing
+    if ! command -v wasm-bindgen >/dev/null || \
+       ! wasm-bindgen --version | grep -q "0.2.106"; then
+      cargo binstall --force --version 0.2.106 wasm-bindgen-cli
+    fi
+
+    # Install Dioxus CLI
+    if ! command -v dx >/dev/null; then
+      cargo binstall --force dioxus-cli
+    fi
   '';
-
-  # https://devenv.sh/tasks/
-  # tasks = {
-  #   "myproj:setup".exec = "mytool build";
-  #   "devenv:enterShell".after = [ "myproj:setup" ];
-  # };
-
-  # https://devenv.sh/tests/
-  enterTest = ''
-    echo "Running tests"
-    git --version | grep --color=auto "${pkgs.git.version}"
-  '';
-
-  # https://devenv.sh/git-hooks/
-  # git-hooks.hooks.shellcheck.enable = true;
-
-  # See full reference at https://devenv.sh/reference/options/
 }

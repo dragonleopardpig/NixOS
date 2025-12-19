@@ -1,0 +1,7 @@
+/home/thinky/Downloads/NixOS/rust/target/debug/deps/ident_case-649284103e8b873b.d: /home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ident_case-1.0.1/src/lib.rs
+
+/home/thinky/Downloads/NixOS/rust/target/debug/deps/libident_case-649284103e8b873b.rlib: /home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ident_case-1.0.1/src/lib.rs
+
+/home/thinky/Downloads/NixOS/rust/target/debug/deps/libident_case-649284103e8b873b.rmeta: /home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ident_case-1.0.1/src/lib.rs
+
+/home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/ident_case-1.0.1/src/lib.rs:

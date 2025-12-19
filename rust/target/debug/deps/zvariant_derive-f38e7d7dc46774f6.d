@@ -1,0 +1,10 @@
+/home/thinky/Downloads/NixOS/rust/target/debug/deps/zvariant_derive-f38e7d7dc46774f6.d: /home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/lib.rs /home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/dict.rs /home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/type.rs /home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/utils.rs /home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/value.rs /home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/../README.md
+
+/home/thinky/Downloads/NixOS/rust/target/debug/deps/libzvariant_derive-f38e7d7dc46774f6.so: /home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/lib.rs /home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/dict.rs /home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/type.rs /home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/utils.rs /home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/value.rs /home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/../README.md
+
+/home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/lib.rs:
+/home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/dict.rs:
+/home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/type.rs:
+/home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/utils.rs:
+/home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/value.rs:
+/home/thinky/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/zvariant_derive-5.8.0/src/../README.md:

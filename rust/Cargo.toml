@@ -1,10 +1,5 @@
 [workspace]
 members = [
-    "dioxus",
-    "guessing_game",
-    "hello_web",
-    "hot_dog",
-    "hot_dog",
-    "wasm-test", "hot_dog",
-]
+    "hot_dog"
+, "tutorial"]
 resolver = "3"
