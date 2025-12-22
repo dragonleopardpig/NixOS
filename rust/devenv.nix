@@ -9,6 +9,9 @@
   env.packages = with pkgs; [
     rust-analyzer
     cargo-binstall
+    pkg-config
+    enchant
+    enchant2
   ];
 
   enterShell = ''

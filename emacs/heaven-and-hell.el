@@ -53,11 +53,12 @@ Themes will be loaded if they weren't loaded previously."
 		    :underline nil
 		    :overline t
 		    :foreground "pink"
-		    :background nil;; "#232627"
+		    :background nil ;; "#232627"
 		    :italic t
 		    :bold t
 		    :extend t))))
-	     '(org-level-1 ((t (:foreground "thistle1" :italic t :bold t))))))
+	     '(org-level-1 ((t (:foreground "salmon" :italic t :bold t))))
+	     ))
 	(progn
 	  (setq org-src-block-faces
 		'(("emacs-lisp" (:background "LightCyan1" :extend t))

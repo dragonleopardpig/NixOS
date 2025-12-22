@@ -82,8 +82,8 @@
   (setq heaven-and-hell-themes
         '(
 	  (light . (ef-spring doom-acario-light dichromacy doom-plain doom-fairy-floss))
-	  ;; (light . (ef-spring doom-acario-light dichromacy doom-plain leuven doom-fairy-floss))
-          (dark . (doom-oceanic-next doom-plain-dark misterioso doom-badger leuven-dark))
+          ;; (dark . (doom-oceanic-next doom-plain-dark misterioso doom-badger leuven-dark))
+	  (dark . (ef-cherie doom-fairy-floss))
 	  )
 	)
   (setq heaven-and-hell-load-theme-no-confirm t)

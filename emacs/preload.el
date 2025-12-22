@@ -115,3 +115,4 @@
 (require 'pyvenv)
 (pyvenv-activate "~/Downloads/NixOS/python/.devenv/state/venv/")
 
+(setq global-jinx-mode nil)

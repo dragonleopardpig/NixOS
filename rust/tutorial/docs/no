@@ -1704,8 +1704,8 @@ fn main() {
 - There can only be one owner at a time.
 - When the owner goes out of scope, the value will be dropped.
 
-#+BEGIN_SRC rust :tangle "main.rs"
+#+BEGIN_SRC rust
 fn main(){
-   
+    
 }
 #+END_SRC

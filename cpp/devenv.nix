@@ -7,6 +7,8 @@
   # https://devenv.sh/packages/
   packages =  with pkgs; [
     bear
+    pkg-config
+    enchant
   ];
 
   # https://devenv.sh/languages/
