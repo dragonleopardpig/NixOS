@@ -49,6 +49,7 @@
       ty
       ruff
       basedpyright
+      cmake
     '';
    
   };

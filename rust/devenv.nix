@@ -9,6 +9,7 @@
   env.packages = with pkgs; [
     rust-analyzer
     cargo-binstall
+    rust-script
     pkg-config
     enchant
     enchant2

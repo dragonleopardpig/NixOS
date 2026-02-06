@@ -31,17 +31,11 @@
 (setq scimax-theme nil)
 
 ;;* Load MELPA
-;; Initialize package.el
-(require 'package)
-
-(setq package-archives
-      '(("gnu"   . "https://elpa.gnu.org/packages/")
-        ("melpa" . "https://melpa.org/packages/")))
-
-(package-initialize)
-
-(unless package-archive-contents
-  (package-refresh-contents))
+;; Note: scimax/init.el already sets up package archives and initializes package.el
+;; This section is kept for reference but is redundant
+;; (require 'package)
+;; (setq package-archives ...)
+;; (package-initialize)
 
 (defun ensure-package (pkg)
   "Install PKG unless already installed."
@@ -54,7 +48,6 @@
 	gruvbox-theme
 	doom-themes
 	ef-themes
-	;; srcery-theme
 	pdf-tools
 	async
         neotree
@@ -63,20 +56,16 @@
         yaml-mode
         dockerfile-mode
         toml-mode
-        dumb-jump
         json-mode
 	prettier-js
 	js2-refactor
-	;; company-auctex
 	rjsx-mode
 	tide
 	web-mode
 	emmet-mode
-	;; rust-mode
 	rustic
-	;; company-web
 	ox-rst
-	alert 
+	alert
 	org-fragtog
 	ob-nix
 	latex-preview-pane
@@ -87,27 +76,17 @@
 	pyvenv
 	nov
 	markdown-mode
-	mixed-pitch ;;disable org-block-begin-line, org-block-end-line in .el file
+	mixed-pitch
 	smartparens
 	spice-mode
 	ob-spice
-	lsp-mode
-	lsp-ui
-	company
-	jedi
 	saveplace-pdf-view
-	ag
-	vertico
-	which-key
 	rg
 	ob-rust
 	lua-mode
 	direnv
 	magik-mode
 	treemacs
-	lsp-treemacs
-	lsp-docker
-	dap-mode
 	))
 (package-install-selected-packages)
 
@@ -116,3 +95,11 @@
 (pyvenv-activate "~/Downloads/NixOS/python/.devenv/state/venv/")
 
 (setq global-jinx-mode nil)
+
+;; * Claude
+(use-package claude-code-ide
+  :vc (:url "https://github.com/manzaltu/claude-code-ide.el" :rev :newest)
+  :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
+  :config
+  (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
+

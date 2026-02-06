@@ -80,13 +80,11 @@
   :config
   (setq heaven-and-hell-theme-type 'light)
   (setq heaven-and-hell-themes
-        '(
-	  (light . (ef-spring doom-acario-light dichromacy doom-plain doom-fairy-floss))
-          ;; (dark . (doom-oceanic-next doom-plain-dark misterioso doom-badger leuven-dark))
-	  (dark . (ef-cherie doom-fairy-floss))
-	  )
-	)
+        '((light . (ef-spring doom-acario-light dichromacy doom-plain doom-fairy-floss))
+	  (dark . (ef-cherie doom-fairy-floss))))
   (setq heaven-and-hell-load-theme-no-confirm t)
+  ;; Load custom org-mode styling for theme switching
+  (load "~/Downloads/NixOS/emacs/heaven-and-hell-custom.el")
   :hook (after-init . heaven-and-hell-init-hook)
   :bind (("C-c <f8>" . heaven-and-hell-load-default-theme)
          ("<f8>" . heaven-and-hell-toggle-theme)))

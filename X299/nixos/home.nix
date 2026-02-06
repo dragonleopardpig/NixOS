@@ -6,10 +6,6 @@
   home.homeDirectory = "/home/thinky";
 
   xdg.configFile."uwsm/env".source = "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
-  home.sessionVariables = {
-    GTK_IM_MODULE = "";
-    QT_IM_MODULE = "";
-  };
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -22,6 +18,8 @@
     env = XDG_CURRENT_DESKTOP,Hyprland
     env = XDG_SESSION_TYPE,wayland
     env = XDG_SESSION_DESKTOP,Hyprland
+    env = GTK_IM_MODULE,
+    env = QT_IM_MODULE,
   '';
     settings = {
       general = {
@@ -47,7 +45,7 @@
       };
     };
   };
-  
+
   wayland.windowManager.hyprland.settings = {
     "$mod" = "SUPER";
     bind =
@@ -55,7 +53,8 @@
         "$mod, F, exec, firefox"
         "$mod, Q, exec, kitty"
         "$mod, E, exec, emacs"
-        "$mod, P, exec, protonvpn-app --start-minimized"
+        # ProtonVPN: Known Wayland issue - app may start minimized to tray. Click tray icon or use this keybinding.
+        "$mod, P, exec, bash -c 'if pgrep -f protonvpn-app >/dev/null; then gdbus call --session --dest proton.vpn.app.gtk --object-path /proton/vpn/app/gtk --method org.gtk.Application.Activate {} 2>/dev/null || true; else protonvpn-app; fi'"
         "$mod, M, exec, walker"
         "$mod, A, exec, anyrun"
         "$mod, N, exec, nemo"
@@ -105,11 +104,11 @@
       "$mod, mouse:273, resizewindow"
       "$mod ALT, mouse:272, resizewindow"
     ];
-    
+
     bindc =[
       "$mod, mouse:274, togglefloating"
     ];
-    
+
     input = {
       natural_scroll = true;
       # other input settings...
@@ -117,7 +116,9 @@
 
     monitor = "DP-3,1920x1080@60,0x0,1";
     # Autostart programs
-    exec-once = [ "protonvpn-app --start-minimized"
+    # ProtonVPN: Start without --start-minimized so window appears, then user can minimize to tray
+    exec-once = [ "bash -c 'while ! dbus-send --session --dest=org.freedesktop.DBus --type=method_call --print-reply /org/freedesktop/DBus org.freedesktop.DBus.ListNames 2>/dev/null | grep -q org.kde.StatusNotifierWatcher; do sleep 1; done; protonvpn-app'"
+                  "swww-daemon && waypaper --random"
                   "while true; do sleep 60; waypaper --random; done"
                 ];
 
@@ -129,7 +130,7 @@
   };
 
   # programs.hyprshot.enable = true;
-  
+
   programs.hyprpanel = {
     package = inputs.hyprpanel.packages.${pkgs.stdenv.hostPlatform.system}.default;
     enable = true;
@@ -146,38 +147,58 @@
       bar.workspaces.show_icons = true;
       menus.clock.weather.unit = "metric";
       menus.clock.weather.location = "Singapore";
-      menus.clock.weather.weather_api_key = "d732c806c27b455abc7132317251511";
+      # Weather API key is stored in ~/.config/secrets/weather-api-key
+      # The activation script below will read it and update config.json at runtime
+      menus.clock.weather.key = "PLACEHOLDER_WILL_BE_REPLACED";
       menus.dashboard.directories.enabled = true;
+      menus.dashboard.shortcuts.left.shortcut1 = {
+        icon = "󰈹";
+        tooltip = "Firefox";
+        command = "firefox";
+      };
       #menus.dashboard.stats.enable_gpu = true;
       theme = {
         bar.transparent = true;
         bar.outer_spacing = "0em";
         bar.buttons.enableBorders = true;
         font = {
-          name = "CaskaydiaCove NF";
-          size = "12px";
+          name = "Inter";
+          size = "13px";
         };
       };
     };
   };
 
-  services.hyprpaper.enable = true;
-  services.hyprpaper.settings = {
-    # Set a preload wallpaper
-    preload = [
-      "~/Pictures/Wallpapers/Kath.png"
-      "~/Pictures/Wallpapers/corndog.png"
-      "~/Pictures/Wallpapers/Mepth.png"
-      "~/Pictures/Wallpapers/Sollee.png"
-      "~/Pictures/Wallpapers/srev.png"
-      "~/Pictures/Wallpapers/VDawg.png"
-    ];
+  services.hyprpaper.enable = false;
 
-    # Set the wallpaper for a specific display
-    wallpaper = [
-      "DP-3,~/Pictures/Wallpapers/Kath.png"
-    ];
-  };
+  # Waypaper configuration (wallpaper manager using swww backend)
+  xdg.configFile."waypaper/config.ini".text = ''
+    [Settings]
+    language = en
+    folder = ~/Pictures/Wallpapers
+    monitors = All
+    wallpaper = ~/Pictures/Wallpapers/Sollee.png
+    show_path_in_tooltip = True
+    backend = swww
+    fill = fill
+    sort = name
+    color = #ffffff
+    subfolders = False
+    all_subfolders = False
+    show_hidden = False
+    show_gifs_only = False
+    post_command =
+    number_of_columns = 3
+    swww_transition_type = any
+    swww_transition_step = 90
+    swww_transition_angle = 0
+    swww_transition_duration = 2
+    swww_transition_fps = 60
+    mpvpaper_sound = False
+    mpvpaper_options =
+    use_xdg_state = False
+    zen_mode = False
+  '';
 
   services.hypridle.enable = true;
   services.hypridle.settings = {
@@ -199,7 +220,7 @@
       }
     ];
   };
-  
+
   programs.hyprlock = {
     enable = true;
   };
@@ -246,14 +267,14 @@
       ssh_only = false;
     };
     nix_shell = {
-      symbol = "";
+      symbol = "";
       format = "[$symbol$name]($style) ";
       style = "bright-purple bold";
     };
     git_branch = {
       only_attached = true;
       format = "[$symbol$branch]($style) ";
-      # symbol = "שׂ";
+      # symbol = "שׂ";
       style = "bright-yellow bold";
     };
     git_commit = {
@@ -285,6 +306,15 @@
     };
   };
 
+  # Set Nemo as default file manager
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "inode/directory" = [ "nemo.desktop" ];
+      "application/pdf" = [ "sioyek.desktop" ];
+    };
+  };
+
   # alacritty - a cross-platform, GPU-accelerated terminal emulator
   programs.alacritty = {
     enable = true;
@@ -305,12 +335,12 @@
     };
     # theme = "github_dark_high_contrast";
   };
-  
+
   programs.kitty = {
     enable = true;
     font = {
       size = 9; # Replace with your desired size
-      name = "JetBrainsMono Nerd Font"; 
+      name = "JetBrainsMono Nerd Font";
     };
     settings = {
       confirm_os_window_close = 0;
@@ -329,7 +359,7 @@
     copy_on_select yes
   '';
   };
-  
+
   programs.bash = {
     enable = true;
     enableCompletion = true;
@@ -341,10 +371,13 @@
 
     # set some aliases, feel free to add more or remove some
     shellAliases = {
-      k = "kubectl";
-      urldecode = "python3 -c 'import sys, urllib.parse as ul; print(ul.unquote_plus(sys.stdin.read()))'";
-      urlencode = "python3 -c 'import sys, urllib.parse as ul; print(ul.quote_plus(sys.stdin.read()))'";
+      ls = "eza --icons=always --group-directories-first --sort=extension";
+      gc = "git commit -m";
+      rebuild = "sudo nixos-rebuild switch";
     };
+    initExtra = ''
+      fastfetch
+    '';
   };
 
   programs.anyrun = {
@@ -425,6 +458,9 @@
       };
     };
   };
+
+  # Install firefox.
+  programs.firefox.enable = true;
   
   # This value determines the home Manager release that your
   # configuration is compatible with. This helps avoid breakage
@@ -434,5 +470,18 @@
   # You can update home Manager without changing this value. See
   # the home Manager release notes for a list of state version
   # changes in each release.
+  # Replace HyprPanel config symlink with a writable copy and inject API key from secrets file
+  home.activation.makeHyprpanelConfigWritable = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    if [ -L "$HOME/.config/hyprpanel/config.json" ]; then
+      cp --remove-destination "$(readlink "$HOME/.config/hyprpanel/config.json")" "$HOME/.config/hyprpanel/config.json"
+      chmod u+w "$HOME/.config/hyprpanel/config.json"
+    fi
+    # Inject the weather API key from secrets file
+    if [ -f "$HOME/.config/secrets/weather-api-key" ] && [ -f "$HOME/.config/hyprpanel/config.json" ]; then
+      API_KEY=$(cat "$HOME/.config/secrets/weather-api-key" | tr -d '\n')
+      ${pkgs.jq}/bin/jq --arg key "$API_KEY" '.["menus.clock.weather.key"] = $key' "$HOME/.config/hyprpanel/config.json" > "$HOME/.config/hyprpanel/config.json.tmp"
+      mv "$HOME/.config/hyprpanel/config.json.tmp" "$HOME/.config/hyprpanel/config.json"
+    fi
+  '';
   home.stateVersion = "25.11";
 }

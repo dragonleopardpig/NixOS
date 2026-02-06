@@ -1,35 +1,3 @@
-;; * Helm
-(unless (package-installed-p 'helm)
-  (package-install 'helm))
-(require 'helm)
-(require 'helm-files)
-(require 'helm-buffers)
-(require 'helm-command)
-(helm-mode 1)
-(global-set-key (kbd "M-x")     #'helm-M-x)
-(global-set-key (kbd "C-x C-f") #'helm-find-files)
-(global-set-key (kbd "C-x b")   #'helm-mini)
-
-(with-eval-after-load 'helm-files
-  (define-key helm-find-files-map (kbd "/")
-	      #'helm-execute-persistent-action))
-
-(defun my/helm-insert-slash-literal ()
-  "Insert a literal '/' in Helm minibuffer without entering the highlighted directory."
-  (interactive)
-  (insert "/"))
-
-(with-eval-after-load 'helm-files
-  (define-key helm-find-files-map (kbd "M-j")
-	      #'my/helm-insert-slash-literal))
-
-(with-eval-after-load 'helm-files
-  (define-key helm-find-files-map
-	      (kbd "<backspace>") #'helm-find-files-up-one-level)
-  (define-key helm-find-files-map
-	      (kbd "DEL") #'helm-find-files-up-one-level))
-
-
 ;; * Counsel Ivy
 (defun my/ivy-insert-slash-literal ()
   "Insert a literal '/' in counsel-find-file without accepting any candidate."
@@ -61,32 +29,25 @@
 (add-hook 'org-mode-hook 'org-fragtog-mode)
 
 ;; * Projectile
-;; Optional: ag is nice alternative to using grep with Projectile
-;; (use-package ag
-;; :ensure t)
+;; Note: Projectile is already configured in scimax/packages.el
+;; This provides additional project-specific settings
 
-;; Optional: Enable vertico as the selection framework to use with Projectile
+;; Enable vertico (vertical completion UI)
 (use-package vertico
   :ensure t
   :init
   (vertico-mode +1))
 
-;; Optional: which-key will show you options for partially completed keybindings
-;; It's extremely useful for packages with many keybindings like Projectile.
+;; Enable which-key (shows available keybindings)
 (use-package which-key
   :ensure t
   :config
   (which-key-mode +1))
 
-(use-package projectile
-  :ensure t
-  :init
+;; Additional projectile configuration
+(with-eval-after-load 'projectile
   (setq projectile-project-search-path '("~/Downloads/NixOS/"))
-  (setq projectile-cleanup-known-projects nil)
-  :config
-  (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map)
-  (global-set-key (kbd "C-c p") 'projectile-command-map)
-  (projectile-mode +1))
+  (setq projectile-cleanup-known-projects nil))
 
 
 ;; * Org Mode Startup
@@ -129,18 +90,24 @@
 (setq projectile-switch-project-action 'neotree-projectile-action)
 
 ;; * Smartparens
+;; Smartparens provides advanced parenthesis handling
 (require 'smartparens-config)
 (add-hook 'org-mode-hook #'smartparens-mode)
-(sp-pair "$" "$")
+(sp-pair "$" "$")  ; Pair dollar signs for LaTeX math
 (global-set-key (kbd "C-.") 'sp-rewrap-sexp)
 
-;; * Electric Pair Mode
-(electric-pair-mode t)
-;; ** disable "<" pairing
-(add-hook 'org-mode-hook (lambda ()
-			   (setq-local electric-pair-inhibit-predicate
-				       `(lambda (c)
-					  (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
+;; * Electric Pair Mode - for non-org buffers
+;; Use electric-pair-mode in programming modes where smartparens isn't active
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (unless smartparens-mode
+              (electric-pair-local-mode t))))
+;; Disable "<" pairing in org-mode to avoid conflicts with org syntax
+(add-hook 'org-mode-hook
+          (lambda ()
+            (setq-local electric-pair-inhibit-predicate
+                        `(lambda (c)
+                           (if (char-equal c ?<) t (,electric-pair-inhibit-predicate c))))))
 
 
 ;; * Org Agenda
@@ -150,7 +117,8 @@
 ;; adjust the size in increments with 'shift-<' and 'shift->'
 ;; '?' to see all shortcuts. 'M-H' move UP rootdir, 'M-L' move DOWN rootdir
 (setq treemacs-width-is-initially-locked nil)
-(global-set-key [f7] 'treemacs)
+;; Changed from F7 to F6 to avoid conflict with counsel-recentf (scimax uses F7)
+(global-set-key [f6] 'treemacs)
 
 ;; * Python
 (setq python-indent-guess-indent-offset nil)
@@ -233,8 +201,8 @@ buffer's text scale."
 ;; (require 'nov-xwidget)
 
 ;; * PDF Tools
-(pdf-tools-install)  ; Standard activation command
-(pdf-loader-install) ; On demand loading, leads to faster startup time
+;; Use pdf-loader-install for on-demand loading (faster startup)
+(pdf-loader-install)
 (setq pdf-view-resize-factor 1.02)
 (setq pdf-view-continuous nil)
 
@@ -296,3 +264,54 @@ buffer's text scale."
 				       ("pandoc" "--to" "org" "--from" "ipynb")
 				       org-mode))
 
+(set-fontset-font t 'unicode (font-spec :family "CaskaydiaCove Nerd Font") nil 'append)
+
+;; * Clickable file paths in emacs-lisp-mode
+(defun my/file-path-open-at-click (event)
+  "Open the file path at the clicked position in the other window.
+If only one window exists, split horizontally first."
+  (interactive "e")
+  (let* ((pos (posn-point (event-end event)))
+         (path (get-char-property pos 'my/file-path)))
+    (when path
+      (let ((expanded-path (expand-file-name path)))
+        (when (= (count-windows) 1)
+          (split-window-below))
+        (other-window 1)
+        (if (file-directory-p expanded-path)
+            (dired expanded-path)
+          (find-file expanded-path))
+        (other-window -1)))))
+
+(defvar my/file-path-keymap
+  (let ((map (make-sparse-keymap)))
+    (define-key map [mouse-1] #'my/file-path-open-at-click)
+    map)
+  "Keymap for clickable file paths.")
+
+(defun my/add-file-path-overlays ()
+  "Add overlays to file paths in the current buffer to make them clickable."
+  (save-excursion
+    (goto-char (point-min))
+    ;; Remove existing file-path overlays
+    (dolist (ov (overlays-in (point-min) (point-max)))
+      (when (overlay-get ov 'my/file-path-overlay)
+        (delete-overlay ov)))
+    ;; Find quoted file paths: "~/..." or "/..."
+    (while (re-search-forward "\"\\(~?/[^\"]*\\)\"" nil t)
+      (let* ((beg (match-beginning 1))
+             (end (match-end 1))
+             (path (match-string-no-properties 1))
+             (ov (make-overlay beg end)))
+        (overlay-put ov 'my/file-path-overlay t)
+        (overlay-put ov 'face '(:underline t))
+        (overlay-put ov 'mouse-face 'highlight)
+        (overlay-put ov 'pointer 'hand)
+        (overlay-put ov 'my/file-path path)
+        (overlay-put ov 'keymap my/file-path-keymap)
+        (overlay-put ov 'help-echo (format "mouse-1: open %s" path))))))
+
+(add-hook 'emacs-lisp-mode-hook
+          (lambda ()
+            (my/add-file-path-overlays)
+            (add-hook 'after-save-hook #'my/add-file-path-overlays nil t)))

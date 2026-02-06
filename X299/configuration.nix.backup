@@ -1,6 +1,6 @@
 # Edit this configuration file to define what should be installed on
 # your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running 'nixos-help').
+# and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { inputs, lib, config,  pkgs, ... }:
 
@@ -25,10 +25,10 @@ in
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.settings.trusted-users = [ "root" "thinky" ];
-
+  
   # Don't delete
   # boot.initrd.luks.devices."luks-6888724b-a24c-4ba6-bd13-d78dd20da012".device = "/dev/disk/by-uuid/6888724b-a24c-4ba6-bd13-d78dd20da012";
-
+  
   # Bootloader.
   swapDevices = lib.mkForce [ ];
   boot.loader.systemd-boot.enable = false;
@@ -39,6 +39,8 @@ in
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
 
+  # Use latest kernel.
+  # boot.kernelPackages = pkgs.linuxPackages_latest;
   boot.kernelPackages = pkgs.linuxPackages_6_12;
   boot.extraModulePackages = [config.boot.kernelPackages.ddcci-driver];
   boot.kernelModules = ["i2c-dev" "ddcci_backlight"];
@@ -74,8 +76,13 @@ in
     plymouth.font = "${pkgs.hack-font}/share/fonts/truetype/Hack-Regular.ttf";
     plymouth.logo = "${plymouthIcon}/share/icons/hicolor/128x128/apps/nix-snowflake-rainbow.png";
   };
-
+  
   networking.hostName = "X299"; # Define your hostname.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+
+  # Configure network proxy if necessary
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -103,8 +110,9 @@ in
     enable = true;
     xkb.layout = "us";
     xkb.variant = "";
+    desktopManager.cinnamon.enable = true;
   };
-
+  
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
@@ -114,28 +122,29 @@ in
       kdePackages.qtmultimedia
       kdePackages.qtvirtualkeyboard
     ];
-    theme = "sddm-astronaut-theme";
+    theme = "sddm-astronaut-theme"; 
     settings = {
-      General = {
-        DefaultSession = "hyprland-uwsm.desktop";
-      };
       Theme = {
-        Current = "sddm-astronaut-theme";
+        Current = "sddm-astronaut-theme"; # Or "sddm-astronaut"
+        # This line overrides the embedded theme with the one you want
+        # You can find available themes in /run/current-system/sw/share/sddm/themes/sddm-astronaut-theme/Themes/
+        # embeddedTheme = "cyberpunk"; 
       };
     };
   };
-
+  
+  # environment.sessionVariables.NIXOS_OZONE_WL = "1"; # This variable fixes electron apps in wayland
   programs.uwsm = {
     enable = true;
     waylandCompositors = {
       hyprland = {
         prettyName = "Hyprland";
         comment = "Hyprland compositor managed by UWSM";
-        binPath = "/run/current-system/sw/bin/start-hyprland";
+        binPath = "/run/current-system/sw/bin/Hyprland";
       };
     };
   };
-
+  
   programs.hyprland = {
     enable = true;
     withUWSM = true; # recommended for most users
@@ -146,9 +155,15 @@ in
     portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
 
   };
+  
+  # Enable the Cinnamon Desktop Environment.
+  # services.xserver.displayManager.lightdm.enable = true;
+  # services.xserver.displayManager.lightdm.background = ./assets/Nixos_2560x1440.jpg;
+  # services.xserver.desktopManager.gnome.enable = true;
+  # services.xserver.desktopManager.cinnamon.enable = true;
 
   programs.dconf.enable = true;
-
+  
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
@@ -160,19 +175,30 @@ in
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    # If you want to use JACK applications, uncomment this
+    #jack.enable = true;
+
+    # use the example session manager (no others are packaged yet so this is enabled by default,
+    # no need to redefine it in your config for now)
+    #media-session.enable = true;
   };
 
+  # Enable touchpad support (enabled default in most desktopManager).
+  # services.xserver.libinput.enable = true;
+  # services.xserver.desktopManager.gnome.enable = false;
+  # services.gnome.core-os-services.enable = false;
   systemd.user.services.orca.enable = false;
+  # services.gnome.at-spi2-core.enable = false;
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true; # Optional, powers on adapter on boot
   services.upower.enable = true;
-  services.gnome.gnome-keyring.enable = true;
 
   security.sudo = {
     enable = true;
     extraRules = [
       {
-        users = [ "thinky" ];
+        # Replace "yourusername" with the actual username
+        users = [ "thinky" ]; 
         commands = [
           {
             command = "ALL"; # Allows all commands
@@ -180,10 +206,11 @@ in
           }
         ];
       }
+      # You can add more rules here for other users or specific commands
     ];
   };
-
-  # Define a user account. Don't forget to set a password with 'passwd'.
+  
+  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.thinky = {
     isNormalUser = true;
     description = "thinky";
@@ -205,6 +232,9 @@ in
     ];
   };
 
+  # Install firefox.
+  programs.firefox.enable = true;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
@@ -224,7 +254,7 @@ in
     ripgrep # recursively searches directories for a regex pattern
     jq # A lightweight and flexible command-line JSON processor
     yq-go # yaml processor https://github.com/mikefarah/yq
-    eza # A modern replacement for 'ls'
+    eza # A modern replacement for ‘ls’
     fzf # A command-line fuzzy finder
 
     # networking tools
@@ -279,13 +309,13 @@ in
     protonvpn-gui
     inetutils
     lshw
+    emacs-gtk
     gparted
     usbimager
     sassc
     redshift
     gpustat
     hyprpaper
-    swww
     hyprsunset
     hypridle
     hyprsysteminfo
@@ -303,7 +333,12 @@ in
     orchis-theme
     tela-icon-theme
     tela-circle-icon-theme
+    # catppuccin
     fluent-icon-theme
+    # epapirus-icon-theme
+    # catppuccin-fcitx5
+    # catppuccin-grub
+    # catppuccin-sddm
     adwaita-icon-theme
     sddm-astronaut
 
@@ -315,6 +350,12 @@ in
     upower
     networkmanager
     power-profiles-daemon
+    nerd-fonts.ubuntu
+    nerd-fonts.ubuntu-sans
+    nerd-fonts.ubuntu-mono
+    noto-fonts
+    # noto-fonts-extra
+    noto-fonts-cjk-sans
     texliveFull
     onlyoffice-desktopeditors
     librecad
@@ -333,6 +374,7 @@ in
     lsd
     imagemagick
     ffmpeg
+    fzf
     fim
     feh
     sxiv
@@ -343,7 +385,8 @@ in
     wofi
     rofi
     walker
-    nemo-with-extensions
+    # ashell
+    adwaita-icon-theme
 
     jsonrpc-glib
     devenv
@@ -359,6 +402,7 @@ in
         zmq
       ]
     ))
+    walker
     aspell
     aspellDicts.en
     aspellDicts.en-science
@@ -383,17 +427,8 @@ in
     enchant2
     hunspell
     hunspellDicts.en_US
-    # sioyek wrapped to use XWayland (native Wayland has issues with NVIDIA)
-    (pkgs.symlinkJoin {
-      name = "sioyek-wrapped";
-      paths = [ pkgs.sioyek ];
-      buildInputs = [ pkgs.makeWrapper ];
-      postBuild = ''
-        wrapProgram $out/bin/sioyek --set QT_QPA_PLATFORM xcb
-      '';
-    })
-
-    # Create an FHS environment using the command `fhs`,
+    
+    # Create an FHS environment using the command `fhs`, 
     #enabling the execution of non-NixOS packages in NixOS!
     (let base = pkgs.appimageTools.defaultFhsEnvArgs; in
      pkgs.buildFHSEnv (base // {
@@ -415,24 +450,57 @@ in
        extraOutputsToInstall = ["dev"];
      }))
   ];
-
+  
   virtualisation.podman.enable = true;
 
   # Set the default editor to vim
   environment.variables.EDITOR = "xed";
-  environment.variables.GTK_IM_MODULE = lib.mkForce "";
-  environment.variables.QT_IM_MODULE = lib.mkForce "";
-
+  
   # Optional: Enable nix-ld for automatic handling of dynamic libraries
   # This is often recommended for seamless integration with non-Nix software.
   programs.nix-ld.enable = true;
-
+  
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
     # pinentryPackage = pkgs.pinentry-qt;
   };
-  
+
+  programs.bash = {
+    shellAliases = {
+      ls = "eza --icons=always --group-directories-first --sort=extension";
+      gc = "git commit -m";
+      rebuild = "sudo nixos-rebuild switch";
+    };
+    interactiveShellInit = ''
+          ${pkgs.fastfetch}/bin/fastfetch
+        '';
+    promptInit = ''
+    if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
+     PROMPT_COLOR="1;31m"
+     ((UID)) && PROMPT_COLOR="1;32m"
+     BOLD="\\[\\e[1m\\]"
+     GOLD="\\[\\e[38;5;220m\\]"
+     GREEN="\\[\\e[0;1;38;5;154m\\]"
+     PURPLE="\\[\\e[1;35m\\]"
+     RED="\\[\\e[0;1;38;5;160m\\]"
+     ORANGE="\\[\\e[0;1;38;5;208m\\]"
+     BLUE="\\[\\e[38;5;153m\\]"
+     CYAN="\\[\\e[36m\\]"
+     RESET="\\[\\e[0m\\]"
+     if [ -n "$INSIDE_EMACS" ]; then
+         # Emacs term mode doesn't support xterm title escape sequence (\e]0;)
+         PS1="\n\[\033[$PROMPT_COLOR\][\u@\h:\w]\\$\[\033[0m\] "
+     else
+PS1="\n\[\033[$PROMPT_COLOR\][$BOLD$BLUE\d $BOLD$CYAN\t $BOLD$GREEN\u$BOLD$PURPLE@$BOLD$ORANGE\h$BOLD$RED:$BOLD$GOLD\w\[\033[$PROMPT_COLOR\]]\n$BOLD$BLUE\$\[\033[0m\] "
+    fi
+    if test "$TERM" = "xterm"; then
+      PS1="\[\033]2;\h:\u:\w\007\]$PS1"
+    fi
+    fi
+    '';
+  };
+
   i18n.inputMethod = {
     type = "fcitx5";
     enable = true;
@@ -441,6 +509,7 @@ in
       fcitx5-rime
       rime-data
       librime
+      # fcitx5-chinese-addons
       qt6Packages.fcitx5-chinese-addons
       fcitx5-nord  # a color theme
     ];
@@ -451,22 +520,28 @@ in
     dates = "daily";
     options = "--delete-older-than 7d";
   };
+  
+  # Some programs need SUID wrappers, can be configured further or are
+  # started in user sessions.
+  # programs.mtr.enable = true;
+
+  # List services that you want to enable:
+
+  # Enable the OpenSSH daemon.
+  # services.openssh.enable = true;
+
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
+  # networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
-  # on your system were taken. It's perfectly fine and recommended to leave
+  # on your system were taken. It‘s perfectly fine and recommended to leave
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  fonts.packages = with pkgs; [
-    nerd-fonts.ubuntu
-    nerd-fonts.ubuntu-sans
-    nerd-fonts.ubuntu-mono
-    nerd-fonts.caskaydia-cove
-    noto-fonts
-    noto-fonts-cjk-sans
-  ];
-
   system.stateVersion = "25.11"; # Did you read the comment?
 
 }
