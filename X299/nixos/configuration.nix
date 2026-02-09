@@ -47,6 +47,26 @@ in
   '';
   hardware.i2c.enable = true;
 
+  # Create ddcci backlight device for external monitor brightness control
+  # Auto-detects all i2c adapters (works with any GPU: NVIDIA, Intel, AMD)
+  systemd.services.ddcci-setup = {
+    description = "Setup ddcci backlight devices for external monitors";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "systemd-modules-load.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
+      ExecStart = pkgs.writeShellScript "ddcci-setup" ''
+        for bus in /sys/bus/i2c/devices/i2c-*/; do
+          busnum=$(basename "$bus")
+          # Try to create ddcci device on each i2c bus
+          echo "ddcci 0x37" > "$bus/new_device" 2>/dev/null || true
+        done
+      '';
+    };
+  };
+
   boot.loader.grub2-theme = {
     enable = true;
     theme = "stylish";
@@ -344,6 +364,7 @@ in
     rofi
     walker
     nemo-with-extensions
+    libnotify
 
     jsonrpc-glib
     devenv
