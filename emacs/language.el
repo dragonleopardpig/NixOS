@@ -12,8 +12,8 @@
 (setq lsp-completion-show-detail nil)
 (setq lsp-completion-show-kind nil)
 
-(setenv "PATH" (concat (getenv "PATH") ":" "~/Downloads/NixOS/rust/.devenv/profile/bin"))
-(add-to-list 'exec-path "~/Downloads/NixOS/rust/.devenv/profile/bin")
+(setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "~/Downloads/NixOS/rust/.devenv/profile/bin")))
+(add-to-list 'exec-path (expand-file-name "~/Downloads/NixOS/rust/.devenv/profile/bin"))
 
 ;; * lsp-bridge-mode
 (add-to-list 'load-path "~/Downloads/lsp-bridge")
@@ -29,12 +29,6 @@
 (setq lsp-bridge-enable-completion-in-string nil)
 (setq acm-enable-search-file-words nil)
 (setq lsp-bridge-enable-org-babel t)
-
-;; Hook to restart lsp-bridge when envrc changes environment
-(add-hook 'envrc-mode-hook
-          (lambda ()
-            (when (and (boundp 'lsp-bridge-mode) lsp-bridge-mode)
-              (lsp-bridge-restart-process))))
 
 ;; * Yasnippet
 ;; Disable scimax's yasnippet config and use our own
@@ -59,4 +53,3 @@
 (setq lsp-bridge-python-lsp-server "basedpyright")
 ;; (setq lsp-bridge-python-lsp-server "ruff")
 (setq lsp-bridge-python-multi-lsp-server "basedpyright_ruff")
-

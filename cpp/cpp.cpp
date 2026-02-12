@@ -1,11 +1,10 @@
-// run "bear -- clang++ cpp.cpp -o cpp"
-// open compile_commands.json, remove duplicated "arguments" section.
-// ammend related field
+// cmake -B build && cmake --build build
+// compile_commands.json is symlinked from build/
 
 #include <iostream>
 using namespace std;
 
 int main(){
-  cout << "Hello World!";
+  cout << "Hello World!\n";
   return 0;
 }

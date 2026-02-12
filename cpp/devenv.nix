@@ -6,7 +6,7 @@
 
   # https://devenv.sh/packages/
   packages =  with pkgs; [
-    bear
+    cmake
     pkg-config
     enchant
   ];
