@@ -6,14 +6,15 @@
 
 let
   plymouthIcon = pkgs.callPackage ./custom_plymouth_logo.nix {};
+  sddm-astronaut = pkgs.sddm-astronaut.override {
+    embeddedTheme = "pixel_sakura";
+    themeConfig = {
+      FormPosition = "left";
+    };
+  };
 in
 
 {
-  imports = [
-    ./hardware-configuration.nix
-    # NVIDIA config is host-specific - imported in host configs
-  ];
-
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.settings.trusted-users = [ "root" "thinky" ];
 
@@ -57,6 +58,29 @@ in
     plymouth.logo = "${plymouthIcon}/share/icons/hicolor/128x128/apps/nix-snowflake-rainbow.png";
   };
 
+  # Boot console mode
+  boot.loader.systemd-boot.consoleMode = "max";
+
+  # NVIDIA in initrd
+  boot.initrd.kernelModules = ["nvidia"];
+  boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+
+  # Console font configuration
+  console.font = "${pkgs.terminus_font}/share/consolefonts/ter-i20n.psf.gz";
+  console.packages = with pkgs; [ terminus_font ];
+
+  # SDDM theme (different from X299: pixel_sakura vs cyberpunk)
+  services.displayManager.sddm = {
+    theme = "sddm-astronaut-theme";
+    settings = {
+      General = {
+        DefaultSession = "hyprland-uwsm.desktop";
+      };
+      Theme = {
+        Current = "sddm-astronaut-theme";
+      };
+    };
+  };
   # Networking
   networking.networkmanager.enable = true;
 
@@ -94,7 +118,25 @@ in
     ];
     # theme and settings are host-specific
   };
+  
+  # Additional services (following X299)
+  services.upower.enable = true;
+  services.gnome.gnome-keyring.enable = true;
 
+  # Blueman service (M90aPro specific - laptop needs this)
+  services.blueman.enable = true;
+
+  # Detailed Bluetooth settings (M90aPro specific)
+  hardware.bluetooth.settings = {
+    General = {
+      Experimental = true;
+      FastConnectable = true;
+    };
+    Policy = {
+      AutoEnable = true;
+    };
+  };
+  
   # UWSM session manager
   programs.uwsm = {
     enable = true;
@@ -155,10 +197,26 @@ in
   users.users.thinky = {
     isNormalUser = true;
     description = "thinky";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
+    extraGroups = [ "networkmanager" "wheel" "i2c" "podman"];
+    subGidRanges = [
+      {
+        count = 65536;
+        startGid = 1000;
+      }
+    ];
+    subUidRanges = [
+      {
+        count = 65536;
+        startUid = 1000;
+      }
+    ];
+    packages = with pkgs; [
+      #  thunderbird
+    ];
   };
 
+  environment.variables.GTK_IM_MODULE = lib.mkForce "";
+  environment.variables.QT_IM_MODULE = lib.mkForce "";
   # Firefox
   programs.firefox.enable = true;
 
@@ -337,6 +395,24 @@ in
     hunspell
     hunspellDicts.en_US
 
+    ((emacsPackagesFor emacs-pgtk).emacsWithPackages (
+      epkgs: with epkgs; [
+        vterm
+        direnv
+        lsp-pyright
+        zmq
+      ]
+    ))
+
+    # Additional M90aPro packages
+    mesa-demos
+    efibootmgr
+    gptfdisk
+    util-linux
+    lua
+    nemo-with-extensions
+    claude-monitor
+    
     # Sioyek wrapped for XWayland
     (pkgs.symlinkJoin {
       name = "sioyek-wrapped";

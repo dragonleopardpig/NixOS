@@ -315,3 +315,4 @@ If only one window exists, split horizontally first."
           (lambda ()
             (my/add-file-path-overlays)
             (add-hook 'after-save-hook #'my/add-file-path-overlays nil t)))
+

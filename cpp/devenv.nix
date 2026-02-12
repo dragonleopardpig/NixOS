@@ -25,10 +25,24 @@
     echo hello from $GREET
   '';
 
+  # Generate .clangd with correct nix store paths for clangd
+  scripts.gen-clangd.exec = ''
+    INCLUDES=$(echo | c++ -xc++ -E -v /dev/null 2>&1 | sed -n '/#include <...>/,/End of search list/{ //!p }' | sed 's/^ *//')
+    {
+      echo "CompileFlags:"
+      echo "  Add:"
+      echo "$INCLUDES" | while read -r dir; do
+        echo "    - -isystem''${dir}"
+      done
+    } > .clangd
+    echo "Generated .clangd with $(echo "$INCLUDES" | wc -l) include paths"
+  '';
+
   # https://devenv.sh/basics/
   enterShell = ''
     hello         # Run scripts directly
     git --version # Use packages
+    gen-clangd    # Regenerate .clangd with current nix store paths
   '';
 
   # https://devenv.sh/tasks/

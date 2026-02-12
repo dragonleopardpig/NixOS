@@ -10,7 +10,7 @@
   # https://devenv.sh/languages/
   languages.python = {
     enable = true;
-    # version = "3.11";
+    version = "3.11";
     venv.enable = true;
     uv.enable = true;
     venv.requirements = ''

@@ -12,9 +12,6 @@
 (setq lsp-completion-show-detail nil)
 (setq lsp-completion-show-kind nil)
 
-(setenv "PATH" (concat (getenv "PATH") ":" (expand-file-name "~/Downloads/NixOS/rust/.devenv/profile/bin")))
-(add-to-list 'exec-path (expand-file-name "~/Downloads/NixOS/rust/.devenv/profile/bin"))
-
 ;; * lsp-bridge-mode
 (add-to-list 'load-path "~/Downloads/lsp-bridge")
 (add-to-list 'load-path "~/Downloads/flymake-bridge")
@@ -22,8 +19,17 @@
 ;; Set Python path for lsp-bridge - use the python devenv
 (setq lsp-bridge-python-command "~/Downloads/NixOS/python/.devenv/state/venv/bin/python")
 
+;; Add devenv profile bins to PATH so lsp-bridge can find LSP servers
+;; (clangd, rust-analyzer, basedpyright, etc.)
+(dolist (dir '("~/Downloads/NixOS/cpp/.devenv/profile/bin"
+              "~/Downloads/NixOS/rust/.devenv/profile/bin"
+              "~/Downloads/NixOS/python/.devenv/profile/bin"))
+  (let ((expanded (expand-file-name dir)))
+    (when (file-directory-p expanded)
+      (add-to-list 'exec-path expanded)
+      (setenv "PATH" (concat expanded ":" (getenv "PATH"))))))
+
 (require 'lsp-bridge)
-;; Make sure lsp-bridge loads after envrc has set up the environment
 (with-eval-after-load 'envrc
   (global-lsp-bridge-mode))
 (setq lsp-bridge-enable-completion-in-string nil)
