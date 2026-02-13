@@ -43,93 +43,81 @@
       input = {
         follow_mouse = 1;
       };
+      "$mod" = "SUPER";
+      bind =
+        [
+          "$mod, F, exec, firefox"
+          "$mod, Q, exec, kitty"
+          "$mod, E, exec, emacs"
+          "$mod, P, exec, protonvpn-app"
+          "$mod, M, exec, walker"
+          "$mod, A, exec, anyrun"
+          "$mod, N, exec, nemo"
+          "$mod, Y, exec, kitty -e yazi"
+          "$mod, Escape, exit,"
+          "$mod, K, killactive,"
+          "$mod, left, movefocus, l"
+          "$mod, right, movefocus, r"
+          "$mod, up, movefocus, u"
+          "$mod, down, movefocus, d"
+          "$mod SHIFT, F, fullscreen, 1"
+          ", Print, exec, hyprshot -m region"
+          ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
+          ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+          ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+          ", XF86AudioNext, exec, playerctl next"
+          ", XF86AudioPause, exec, playerctl play-pause"
+          ", XF86AudioPlay, exec, playerctl play-pause"
+          ", XF86AudioPrev, exec, playerctl previous"
+          ", F1, exec, sleep 0.1 && hyprctl dispatch dpms off && hyprlock"
+          ", F6, exec, brightnessctl -d $(ls /sys/class/backlight/ | grep -m1 ddcci) set +10%"
+          ", F5, exec, brightnessctl -d $(ls /sys/class/backlight/ | grep -m1 ddcci) set 10%-"
+          ",XF86MonBrightnessUp, exec, brightnessctl -d $(ls /sys/class/backlight/ | grep -m1 ddcci) set +10%"
+          ",XF86MonBrightnessDown, exec, brightnessctl -d $(ls /sys/class/backlight/ | grep -m1 ddcci) set 10%-"
+          "CTRL ALT, left, workspace, -1"
+          "CTRL ALT, right, workspace, +1"
+          "ALT, Tab, cyclenext, hist"
+          "$mod, Tab, cyclenext, prev"
+        ]
+        ++ (
+          # workspaces
+          # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
+          builtins.concatLists (builtins.genList (i:
+            let ws = i + 1;
+            in [
+              "$mod, code:1${toString i}, workspace, ${toString ws}"
+              "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
+            ]
+          )
+            9)
+        );
+      bindm = [
+        # mouse movements
+        "$mod, mouse:272, movewindow"
+        "$mod, mouse:273, resizewindow"
+        "$mod ALT, mouse:272, resizewindow"
+      ];
+      bindc =[
+        "$mod, mouse:274, togglefloating"
+      ];
+      input = {
+        natural_scroll = true;
+        # other input settings...
+      };
+      # monitor = "DP-3,1920x1080@60,0x0,1";
+      # Autostart programs
+      exec-once = [ "protonvpn-app --start-minimized"
+                    "swww-daemon && waypaper --random"
+                    "while true; do sleep 60; waypaper --random; done"
+                    "systemctl --user start hyprpolkitagent"
+                  ];
+      misc = {
+        mouse_move_enables_dpms = true;
+        key_press_enables_dpms = true;
+      };
     };
   };
-
-  wayland.windowManager.hyprland.settings = {
-    "$mod" = "SUPER";
-    bind =
-      [
-        "$mod, F, exec, firefox"
-        "$mod, Q, exec, kitty"
-        "$mod, E, exec, emacs"
-        # ProtonVPN: Known Wayland issue - app may start minimized to tray. Click tray icon or use this keybinding.
-        "$mod, P, exec, bash -c 'if pgrep -f protonvpn-app >/dev/null; then gdbus call --session --dest proton.vpn.app.gtk --object-path /proton/vpn/app/gtk --method org.gtk.Application.Activate {} 2>/dev/null || true; else protonvpn-app; fi'"
-        "$mod, M, exec, walker"
-        "$mod, A, exec, anyrun"
-        "$mod, N, exec, nemo"
-        "$mod, Y, exec, kitty -e yazi"
-        "$mod, Escape, exit,"
-        "$mod, K, killactive,"
-        "$mod, left, movefocus, l"
-        "$mod, right, movefocus, r"
-        "$mod, up, movefocus, u"
-        "$mod, down, movefocus, d"
-        "$mod SHIFT, F, fullscreen, 1"
-        ", Print, exec, hyprshot -m region"
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-        ", XF86AudioNext, exec, playerctl next"
-        ", XF86AudioPause, exec, playerctl play-pause"
-        ", XF86AudioPlay, exec, playerctl play-pause"
-        ", XF86AudioPrev, exec, playerctl previous"
-        ", F1, exec, sleep 0.1 && hyprctl dispatch dpms off && hyprlock"
-        ", F6, exec, brightnessctl -d $(ls /sys/class/backlight/ | grep -m1 ddcci) set +10%"
-        ", F5, exec, brightnessctl -d $(ls /sys/class/backlight/ | grep -m1 ddcci) set 10%-"
-        ",XF86MonBrightnessUp, exec, brightnessctl -d $(ls /sys/class/backlight/ | grep -m1 ddcci) set +10%"
-        ",XF86MonBrightnessDown, exec, brightnessctl -d $(ls /sys/class/backlight/ | grep -m1 ddcci) set 10%-"
-        "CTRL ALT, left, workspace, -1"
-        "CTRL ALT, right, workspace, +1"
-        "ALT, Tab, cyclenext, hist"
-        "$mod, Tab, cyclenext, prev"
-      ]
-      ++ (
-        # workspaces
-        # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
-        builtins.concatLists (builtins.genList (i:
-          let ws = i + 1;
-          in [
-            "$mod, code:1${toString i}, workspace, ${toString ws}"
-            "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
-          ]
-        )
-          9)
-      );
-
-    bindm = [
-      # mouse movements
-      "$mod, mouse:272, movewindow"
-      "$mod, mouse:273, resizewindow"
-      "$mod ALT, mouse:272, resizewindow"
-    ];
-
-    bindc =[
-      "$mod, mouse:274, togglefloating"
-    ];
-
-    input = {
-      natural_scroll = true;
-      # other input settings...
-    };
-
-    monitor = "DP-3,1920x1080@60,0x0,1";
-    # Autostart programs
-    # ProtonVPN: Start without --start-minimized so window appears, then user can minimize to tray
-    exec-once = [ "bash -c 'while ! dbus-send --session --dest=org.freedesktop.DBus --type=method_call --print-reply /org/freedesktop/DBus org.freedesktop.DBus.ListNames 2>/dev/null | grep -q org.kde.StatusNotifierWatcher; do sleep 1; done; protonvpn-app'"
-                  "swww-daemon && waypaper --random"
-                  "while true; do sleep 60; waypaper --random; done"
-                ];
-
-    misc = {
-      mouse_move_enables_dpms = true;
-      key_press_enables_dpms = true;
-    };
-
-  };
-
-  # programs.hyprshot.enable = true;
 
   programs.hyprpanel = {
     package = inputs.hyprpanel.packages.${pkgs.stdenv.hostPlatform.system}.default;
@@ -156,7 +144,7 @@
         tooltip = "Firefox";
         command = "firefox";
       };
-      #menus.dashboard.stats.enable_gpu = true;
+      #menus.dashboard.stats.enable_gpu = true;  # Causes system freeze on NVIDIA
       theme = {
         bar.transparent = true;
         bar.outer_spacing = "0em";
@@ -172,6 +160,7 @@
   services.hyprpaper.enable = false;
 
   # Waypaper configuration (wallpaper manager using swww backend)
+  xdg.configFile."waypaper/config.ini".force = true;
   xdg.configFile."waypaper/config.ini".text = ''
     [Settings]
     language = en

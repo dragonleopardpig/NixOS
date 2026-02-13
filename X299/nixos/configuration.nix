@@ -1,51 +1,80 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running 'nixos-help').
+# /etc/nixos/configuration.nix
 
 { inputs, lib, config,  pkgs, ... }:
 
-let
-  plymouthIcon = pkgs.callPackage ./custom_plymouth_logo.nix {};
-  sddm-astronaut = pkgs.sddm-astronaut.override {
-    embeddedTheme = "cyberpunk";
-    themeConfig = {
-      # AccentColor = "#746385";
-      FormPosition = "left";
-      # ForceHideCompletePassword = true;
+{
+  imports = [];
+
+  # Disable swap
+  swapDevices = lib.mkForce [ ];
+
+  boot = {
+    kernelPackages = pkgs.linuxPackages_latest;
+    # kernelPackages = pkgs.linuxPackages_6_12;
+    kernelModules = ["i2c-dev" "ddcci_backlight"];
+    initrd.kernelModules = ["nvidia"];
+    extraModulePackages = [
+      config.boot.kernelPackages.nvidia_x11
+      config.boot.kernelPackages.ddcci-driver
+    ];
+    kernelParams = [
+      "quiet"
+      "splash"
+      "intremap=on"
+      "boot.shell_on_fail"
+      "udev.log_priority=3"
+      "rd.systemd.show_status=auto"
+      "systemd.swap=0"
+    ];
+    # silence first boot output
+    consoleLogLevel = 3;
+    initrd.verbose = false;
+    initrd.systemd.enable = true;
+
+    # plymouth, showing after LUKS unlock
+    plymouth.enable = true;
+    plymouth.font = "${pkgs.hack-font}/share/fonts/truetype/Hack-Regular.ttf";
+    plymouth.logo = let plymouthIcon = pkgs.callPackage ./custom_plymouth_logo.nix {}; in
+      "${plymouthIcon}/share/icons/hicolor/128x128/apps/nix-snowflake-rainbow.png";
+  };
+
+    # Boot console mode
+  boot.loader = {
+    systemd-boot.consoleMode = "max";
+    systemd-boot.enable = false;
+    grub.enable = true;
+    grub.device = "nodev";
+    grub.useOSProber = true;
+    grub.efiSupport = true;
+    efi.canTouchEfiVariables = true;
+    efi.efiSysMountPoint = "/boot";
+    grub2-theme = {
+      enable = true;
+      theme = "stylish";
+      footer = true;
     };
   };
-in
 
-{
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./nvidia.nix
-    ];
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.settings.trusted-users = [ "root" "thinky" ];
-
-  # Don't delete
-  # boot.initrd.luks.devices."luks-6888724b-a24c-4ba6-bd13-d78dd20da012".device = "/dev/disk/by-uuid/6888724b-a24c-4ba6-bd13-d78dd20da012";
-
-  # Bootloader.
-  swapDevices = lib.mkForce [ ];
-  boot.loader.systemd-boot.enable = false;
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "nodev";
-  boot.loader.grub.useOSProber = true;
-  boot.loader.grub.efiSupport = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot";
-
-  boot.kernelPackages = pkgs.linuxPackages_6_12;
-  boot.extraModulePackages = [config.boot.kernelPackages.ddcci-driver];
-  boot.kernelModules = ["i2c-dev" "ddcci_backlight"];
   services.udev.extraRules = ''
         KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
   '';
+
+  # Console font configuration
+  console.font = "${pkgs.terminus_font}/share/consolefonts/ter-i20n.psf.gz";
+  console.packages = with pkgs; [ terminus_font ];
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.trusted-users = [ "root" "thinky" ];
+  nix.gc = {
+    automatic = true;
+    dates = "daily";
+    options = "--delete-older-than 7d";
+  };
+
   hardware.i2c.enable = true;
+
+  # GVFS for Nemo trash, network mounts, etc.
+  services.gvfs.enable = true;
 
   # Create ddcci backlight device for external monitor brightness control
   # Auto-detects all i2c adapters (works with any GPU: NVIDIA, Intel, AMD)
@@ -66,36 +95,6 @@ in
       '';
     };
   };
-
-  boot.loader.grub2-theme = {
-    enable = true;
-    theme = "stylish";
-    footer = true;
-    customResolution = "1920x1080";  # Optional: Set a custom resolution
-  };
-
-  boot = {
-    # silence first boot output
-    consoleLogLevel = 3;
-    initrd.verbose = false;
-    initrd.systemd.enable = true;
-    kernelParams = [
-      "quiet"
-      "splash"
-      "intremap=on"
-      "boot.shell_on_fail"
-      "udev.log_priority=3"
-      "rd.systemd.show_status=auto"
-      "systemd.swap=0"
-    ];
-
-    # plymouth, showing after LUKS unlock
-    plymouth.enable = true;
-    plymouth.font = "${pkgs.hack-font}/share/fonts/truetype/Hack-Regular.ttf";
-    plymouth.logo = "${plymouthIcon}/share/icons/hicolor/128x128/apps/nix-snowflake-rainbow.png";
-  };
-
-  networking.hostName = "X299"; # Define your hostname.
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -183,8 +182,7 @@ in
   };
 
   systemd.user.services.orca.enable = false;
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true; # Optional, powers on adapter on boot
+
   services.upower.enable = true;
   services.gnome.gnome-keyring.enable = true;
 
@@ -207,7 +205,7 @@ in
   users.users.thinky = {
     isNormalUser = true;
     description = "thinky";
-    extraGroups = [ "networkmanager" "wheel" "i2c" "podman"];
+    extraGroups = [ "networkmanager" "wheel" "i2c"];
     subGidRanges = [
       {
         count = 65536;
@@ -325,7 +323,12 @@ in
     tela-circle-icon-theme
     fluent-icon-theme
     adwaita-icon-theme
-    sddm-astronaut
+    (pkgs.sddm-astronaut.override {
+      embeddedTheme = "pixel_sakura";
+      themeConfig = {
+        FormPosition = "left";
+      };
+    })
 
     # others
     git-credential-manager # type "unset SSH_ASKPASS" in command prompt
@@ -364,8 +367,8 @@ in
     rofi
     walker
     nemo-with-extensions
+    hyprpolkitagent
     libnotify
-
     jsonrpc-glib
     devenv
     direnv
@@ -401,7 +404,7 @@ in
     pkg-config
     libxml2
     glib
-    enchant2
+    enchant_2
     hunspell
     hunspellDicts.en_US
     # sioyek wrapped to use XWayland (native Wayland has issues with NVIDIA)
@@ -437,7 +440,20 @@ in
      }))
   ];
 
-  virtualisation.podman.enable = true;
+  services.blueman.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      General = {
+        Experimental = true;
+        FastConnectable = true;
+      };
+      Policy = {
+        AutoEnable = true;
+      };
+    };
+  };
 
   # Set the default editor to vim
   environment.variables.EDITOR = "xed";
@@ -453,7 +469,7 @@ in
     enableSSHSupport = true;
     # pinentryPackage = pkgs.pinentry-qt;
   };
-  
+
   i18n.inputMethod = {
     type = "fcitx5";
     enable = true;
@@ -467,18 +483,6 @@ in
     ];
   };
 
-  nix.gc = {
-    automatic = true;
-    dates = "daily";
-    options = "--delete-older-than 7d";
-  };
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It's perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   fonts.packages = with pkgs; [
     nerd-fonts.ubuntu
     nerd-fonts.ubuntu-sans
@@ -488,6 +492,6 @@ in
     noto-fonts-cjk-sans
   ];
 
-  system.stateVersion = "25.11"; # Did you read the comment?
+  system.stateVersion = "25.11";
 
 }

@@ -14,15 +14,20 @@
       url = "github:Jas-SinghFSU/HyprPanel";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = inputs@{ nixpkgs, grub2-themes, home-manager, ... }:
+  outputs = inputs@{ nixpkgs, grub2-themes, home-manager, disko, ... }:
     {
       nixosConfigurations.X299 = nixpkgs.lib.nixosSystem {
-        # system = "x86_64-linux";
         specialArgs = { inherit inputs; };
         modules = [
           ./configuration.nix
+          ./X299
+          disko.nixosModules.disko
           grub2-themes.nixosModules.default
           home-manager.nixosModules.home-manager
           {
@@ -38,6 +43,29 @@
           }
         ];
       };
+
+      # nixosConfigurations.M90aPro = nixpkgs.lib.nixosSystem {
+      #   specialArgs = { inherit inputs; };
+      #   modules = [
+      #     ./configuration.nix
+      #     ./M90aPro
+      #     disko.nixosModules.disko
+      #     grub2-themes.nixosModules.default
+      #     home-manager.nixosModules.home-manager
+      #     {
+      #       home-manager.useGlobalPkgs = true;
+      #       home-manager.useUserPackages = true;
+      #
+      #       home-manager.users.thinky = {
+      #         imports = [
+      #           ./home.nix
+      #         ];
+      #       };
+      #       home-manager.extraSpecialArgs = { inherit inputs; };
+      #     }
+      #   ];
+      # };
+
       homeConfigurations."thinky@X299" = home-manager.lib.homeManagerConfiguration {
         # you need this line
         extraSpecialArgs = { inherit inputs; };
