@@ -87,6 +87,7 @@
 	direnv
 	magik-mode
 	treemacs
+	airdermacs
 	))
 (package-install-selected-packages)
 
@@ -103,3 +104,15 @@
   :config
   (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
 
+;; * Aidermacs
+(use-package aidermacs
+  :bind (("C-c a" . aidermacs-transient-menu))
+  :config
+  (with-temp-buffer
+    (when (file-readable-p "~/.config/secrets/emacs-key")
+      (insert-file-contents "~/.config/secrets/emacs-key")
+      (setenv "ANTHROPIC_API_KEY" (string-trim (buffer-string)))))
+  :custom
+  (aidermacs-default-chat-mode 'architect)
+  (aidermacs-default-model "sonnet"))
+(setq aider-program "~/.local/bin/aider")

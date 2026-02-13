@@ -29,12 +29,14 @@
       (add-to-list 'exec-path expanded)
       (setenv "PATH" (concat expanded ":" (getenv "PATH"))))))
 
+(setq lsp-bridge-user-langserver-dir "~/.config/lsp-bridge/langserver")
 (require 'lsp-bridge)
 (with-eval-after-load 'envrc
   (global-lsp-bridge-mode))
 (setq lsp-bridge-enable-completion-in-string nil)
 (setq acm-enable-search-file-words nil)
 (setq lsp-bridge-enable-org-babel t)
+(setq acm-enable-yas nil)
 
 ;; * Yasnippet
 ;; Disable scimax's yasnippet config and use our own

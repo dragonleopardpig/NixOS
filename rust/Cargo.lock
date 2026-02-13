@@ -3126,6 +3126,13 @@ dependencies = [
 [[package]]
 name = "org_examples"
 version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "rand 0.8.5",
+ "reqwest",
+ "serde",
+ "tokio",
+]
 
 [[package]]
 name = "pango"
@@ -4584,6 +4591,7 @@ dependencies = [
  "bytes",
  "libc",
  "mio",
+ "parking_lot",
  "pin-project-lite",
  "signal-hook-registry",
  "socket2",

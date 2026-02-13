@@ -1191,10 +1191,10 @@ fn main() {
 This section demonstrates using ~:tangle~ to create actual Rust files that rust-analyzer can analyze.
 
 ** Basic Example with Library
-#+BEGIN_SRC rust :tangle ../org_examples/src/main.rs
+#+BEGIN_SRC rust
 use std::collections::HashMap;
 use std::fs;
-use 
+ 
 fn main() {
     // Create a HashMap with some data
     let mut scores = HashMap::new();
