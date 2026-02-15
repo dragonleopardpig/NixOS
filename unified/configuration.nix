@@ -65,6 +65,7 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nix.settings.trusted-users = [ "root" "thinky" ];
+  nix.settings.download-buffer-size = 134217728; # 128 MB
   nix.gc = {
     automatic = true;
     dates = "daily";
@@ -407,6 +408,7 @@
     enchant_2
     hunspell
     hunspellDicts.en_US
+    nodejs_24
     # sioyek wrapped to use XWayland (native Wayland has issues with NVIDIA)
     (pkgs.symlinkJoin {
       name = "sioyek-wrapped";
