@@ -109,10 +109,10 @@
   :bind (("C-c a" . aidermacs-transient-menu))
   :config
   (with-temp-buffer
-    (when (file-readable-p "~/.config/secrets/emacs-key")
-      (insert-file-contents "~/.config/secrets/emacs-key")
+    (when (file-readable-p "~/.config/secrets/claude-api-key")
+      (insert-file-contents "~/.config/secrets/claude-api-key")
       (setenv "ANTHROPIC_API_KEY" (string-trim (buffer-string)))))
   :custom
   (aidermacs-default-chat-mode 'architect)
-  (aidermacs-default-model "opus"))
+  (aidermacs-default-model"opus"))
 (setq aider-program "~/.local/bin/aider")

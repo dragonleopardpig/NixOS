@@ -341,6 +341,8 @@
       background_blur = 5;
     };
     extraConfig = ''
+    map ctrl+shift+equal change_font_size all +0.5                          
+    map ctrl+shift+minus change_font_size all -0.5
     map alt+w copy_to_clipboard
     map ctrl+y paste_from_clipboard
 
