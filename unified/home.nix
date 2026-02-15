@@ -71,10 +71,10 @@
           ", XF86AudioPlay, exec, playerctl play-pause"
           ", XF86AudioPrev, exec, playerctl previous"
           ", F1, exec, sleep 0.1 && hyprctl dispatch dpms off && hyprlock"
-          ", F6, exec, brightnessctl -d $(ls /sys/class/backlight/ | grep -m1 ddcci) set +10%"
-          ", F5, exec, brightnessctl -d $(ls /sys/class/backlight/ | grep -m1 ddcci) set 10%-"
-          ",XF86MonBrightnessUp, exec, brightnessctl -d $(ls /sys/class/backlight/ | grep -m1 ddcci) set +10%"
-          ",XF86MonBrightnessDown, exec, brightnessctl -d $(ls /sys/class/backlight/ | grep -m1 ddcci) set 10%-"
+          ", F6, exec, ~/.local/bin/brightness-ctl up"
+          ", F5, exec, ~/.local/bin/brightness-ctl down"
+          ",XF86MonBrightnessUp, exec, ~/.local/bin/brightness-ctl up"
+          ",XF86MonBrightnessDown, exec, ~/.local/bin/brightness-ctl down"
           "CTRL ALT, left, workspace, -1"
           "CTRL ALT, right, workspace, +1"
           "ALT, Tab, cyclenext, hist"
@@ -447,6 +447,28 @@
         bizarre_retry = 5;
       };
     };
+  };
+
+  # Unified brightness control script (works on both X299 and M90aPro)
+  # - M90aPro (laptop): uses intel_backlight
+  # - X299 (desktop): uses ddcci external monitor backlight
+  home.file.".local/bin/brightness-ctl" = {
+    executable = true;
+    text = ''
+      #!/bin/sh
+      # Pick the right backlight device: prefer intel_backlight (laptop), fall back to ddcci (desktop)
+      if [ -d /sys/class/backlight/intel_backlight ]; then
+        DEV=intel_backlight
+      else
+        DEV=$(ls /sys/class/backlight/ | grep -m1 ddcci)
+      fi
+
+      case "$1" in
+        up)   brightnessctl -d "$DEV" set +10% ;;
+        down) brightnessctl -d "$DEV" set 10%- ;;
+        *)    echo "Usage: brightness-ctl {up|down}" ;;
+      esac
+    '';
   };
 
   # Install firefox.

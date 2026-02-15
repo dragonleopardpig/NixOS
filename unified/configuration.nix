@@ -90,8 +90,11 @@
       ExecStart = pkgs.writeShellScript "ddcci-setup" ''
         for bus in /sys/bus/i2c/devices/i2c-*/; do
           busnum=$(basename "$bus")
-          # Try to create ddcci device on each i2c bus
-          echo "ddcci 0x37" > "$bus/new_device" 2>/dev/null || true
+          busnum=''${busnum#i2c-}
+          # Only create ddcci device if a DDC/CI-capable monitor actually responds
+          if ${pkgs.ddcutil}/bin/ddcutil --bus "$busnum" detect 2>/dev/null | grep -q "Display"; then
+            echo "ddcci 0x37" > "$bus/new_device" 2>/dev/null || true
+          fi
         done
       '';
     };
