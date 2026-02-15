@@ -23,9 +23,9 @@
 
     # Use the NVidia open source kernel module (not to be confused with the
     # independent third-party "nouveau" open source driver).
-    # Support is limited to the Turing and later architectures. Full list of 
-    # supported GPUs is at: 
-    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus 
+    # Support is limited to the Turing and later architectures. Full list of
+    # supported GPUs is at:
+    # https://github.com/NVIDIA/open-gpu-kernel-modules#compatible-gpus
     # Only available from driver 515.43.04+
     # Currently alpha-quality/buggy, so false is currently the recommended setting.
     open = false;
@@ -33,15 +33,6 @@
     # Enable the Nvidia settings menu,
 	# accessible via `nvidia-settings`.
     nvidiaSettings = true;
-    
-  };
 
-  #  hardware.nvidia.prime = {
-  #   # ... other prime options ...
-  #   # 00:02.0 VGA compatible controller: Intel Corporation Arrow Lake-S [Intel Graphics] (rev 06)
-  #   # 02:00.0 3D controller: NVIDIA Corporation AD107M [GeForce RTX 4050 Max-Q / Mobile] (rev a1)
-  #   sync.enable = true;
-  #   intelBusId = "PCI:0:2:0"; # Example for Intel GPU at 00:02.0
-  #   nvidiaBusId = "PCI:2:0:0"; # Example for NVIDIA GPU at 02:00.0
-  # };
+  };
 }

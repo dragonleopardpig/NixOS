@@ -1,66 +1,22 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
-# and in the NixOS manual (accessible by running ‘nixos-help’).
+# /etc/nixos/configuration.nix
 
 { inputs, lib, config,  pkgs, ... }:
 
-let
-  plymouthIcon = pkgs.callPackage ./custom_plymouth_logo.nix {};
-  sddm-astronaut = pkgs.sddm-astronaut.override {
-    embeddedTheme = "cyberpunk";
-    themeConfig = {
-      # AccentColor = "#746385";
-      FormPosition = "left";
-      # ForceHideCompletePassword = true;
-    };
-  };
-in
-
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./nvidia.nix
-    ];
+  imports = [];
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.settings.trusted-users = [ "root" "thinky" ];
-  
-  # Don't delete
-  # boot.initrd.luks.devices."luks-6888724b-a24c-4ba6-bd13-d78dd20da012".device = "/dev/disk/by-uuid/6888724b-a24c-4ba6-bd13-d78dd20da012";
-  
-  # Bootloader.
+  # Disable swap
   swapDevices = lib.mkForce [ ];
-  boot.loader.systemd-boot.enable = false;
-  boot.loader.grub.enable = true;
-  boot.loader.grub.device = "nodev";
-  boot.loader.grub.useOSProber = true;
-  boot.loader.grub.efiSupport = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.efi.efiSysMountPoint = "/boot";
-
-  # Use latest kernel.
-  # boot.kernelPackages = pkgs.linuxPackages_latest;
-  boot.kernelPackages = pkgs.linuxPackages_6_12;
-  boot.extraModulePackages = [config.boot.kernelPackages.ddcci-driver];
-  boot.kernelModules = ["i2c-dev" "ddcci_backlight"];
-  services.udev.extraRules = ''
-        KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
-  '';
-  hardware.i2c.enable = true;
-
-  boot.loader.grub2-theme = {
-    enable = true;
-    theme = "stylish";
-    footer = true;
-    customResolution = "1920x1080";  # Optional: Set a custom resolution
-  };
 
   boot = {
-    # silence first boot output
-    consoleLogLevel = 3;
-    initrd.verbose = false;
-    initrd.systemd.enable = true;
+    kernelPackages = pkgs.linuxPackages_latest;
+    # kernelPackages = pkgs.linuxPackages_6_12;
+    kernelModules = ["i2c-dev" "ddcci_backlight"];
+    initrd.kernelModules = ["nvidia"];
+    extraModulePackages = [
+      config.boot.kernelPackages.nvidia_x11
+      config.boot.kernelPackages.ddcci-driver
+    ];
     kernelParams = [
       "quiet"
       "splash"
@@ -70,19 +26,75 @@ in
       "rd.systemd.show_status=auto"
       "systemd.swap=0"
     ];
+    # silence first boot output
+    consoleLogLevel = 3;
+    initrd.verbose = false;
+    initrd.systemd.enable = true;
 
     # plymouth, showing after LUKS unlock
     plymouth.enable = true;
     plymouth.font = "${pkgs.hack-font}/share/fonts/truetype/Hack-Regular.ttf";
-    plymouth.logo = "${plymouthIcon}/share/icons/hicolor/128x128/apps/nix-snowflake-rainbow.png";
+    plymouth.logo = let plymouthIcon = pkgs.callPackage ./custom_plymouth_logo.nix {}; in
+      "${plymouthIcon}/share/icons/hicolor/128x128/apps/nix-snowflake-rainbow.png";
   };
-  
-  networking.hostName = "X299"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+    # Boot console mode
+  boot.loader = {
+    systemd-boot.consoleMode = "max";
+    systemd-boot.enable = false;
+    grub.enable = true;
+    grub.device = "nodev";
+    grub.useOSProber = true;
+    grub.efiSupport = true;
+    efi.canTouchEfiVariables = true;
+    efi.efiSysMountPoint = "/boot";
+    grub2-theme = {
+      enable = true;
+      theme = "stylish";
+      footer = true;
+    };
+  };
+
+  services.udev.extraRules = ''
+        KERNEL=="i2c-[0-9]*", GROUP="i2c", MODE="0660"
+  '';
+
+  # Console font configuration
+  console.font = "${pkgs.terminus_font}/share/consolefonts/ter-i20n.psf.gz";
+  console.packages = with pkgs; [ terminus_font ];
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.trusted-users = [ "root" "thinky" ];
+  nix.gc = {
+    automatic = true;
+    dates = "daily";
+    options = "--delete-older-than 7d";
+  };
+
+  hardware.i2c.enable = true;
+
+  # GVFS for Nemo trash, network mounts, etc.
+  services.gvfs.enable = true;
+
+  # Create ddcci backlight device for external monitor brightness control
+  # Auto-detects all i2c adapters (works with any GPU: NVIDIA, Intel, AMD)
+  systemd.services.ddcci-setup = {
+    description = "Setup ddcci backlight devices for external monitors";
+    wantedBy = [ "multi-user.target" ];
+    after = [ "systemd-modules-load.service" ];
+    serviceConfig = {
+      Type = "oneshot";
+      RemainAfterExit = true;
+      ExecStartPre = "${pkgs.coreutils}/bin/sleep 5";
+      ExecStart = pkgs.writeShellScript "ddcci-setup" ''
+        for bus in /sys/bus/i2c/devices/i2c-*/; do
+          busnum=$(basename "$bus")
+          # Try to create ddcci device on each i2c bus
+          echo "ddcci 0x37" > "$bus/new_device" 2>/dev/null || true
+        done
+      '';
+    };
+  };
 
   # Enable networking
   networking.networkmanager.enable = true;
@@ -110,9 +122,8 @@ in
     enable = true;
     xkb.layout = "us";
     xkb.variant = "";
-    desktopManager.cinnamon.enable = true;
   };
-  
+
   services.displayManager.sddm = {
     enable = true;
     wayland.enable = true;
@@ -122,29 +133,28 @@ in
       kdePackages.qtmultimedia
       kdePackages.qtvirtualkeyboard
     ];
-    theme = "sddm-astronaut-theme"; 
+    theme = "sddm-astronaut-theme";
     settings = {
+      General = {
+        DefaultSession = "hyprland-uwsm.desktop";
+      };
       Theme = {
-        Current = "sddm-astronaut-theme"; # Or "sddm-astronaut"
-        # This line overrides the embedded theme with the one you want
-        # You can find available themes in /run/current-system/sw/share/sddm/themes/sddm-astronaut-theme/Themes/
-        # embeddedTheme = "cyberpunk"; 
+        Current = "sddm-astronaut-theme";
       };
     };
   };
-  
-  # environment.sessionVariables.NIXOS_OZONE_WL = "1"; # This variable fixes electron apps in wayland
+
   programs.uwsm = {
     enable = true;
     waylandCompositors = {
       hyprland = {
         prettyName = "Hyprland";
         comment = "Hyprland compositor managed by UWSM";
-        binPath = "/run/current-system/sw/bin/Hyprland";
+        binPath = "/run/current-system/sw/bin/start-hyprland";
       };
     };
   };
-  
+
   programs.hyprland = {
     enable = true;
     withUWSM = true; # recommended for most users
@@ -155,15 +165,9 @@ in
     portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
 
   };
-  
-  # Enable the Cinnamon Desktop Environment.
-  # services.xserver.displayManager.lightdm.enable = true;
-  # services.xserver.displayManager.lightdm.background = ./assets/Nixos_2560x1440.jpg;
-  # services.xserver.desktopManager.gnome.enable = true;
-  # services.xserver.desktopManager.cinnamon.enable = true;
 
   programs.dconf.enable = true;
-  
+
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
@@ -175,30 +179,18 @@ in
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-  # services.xserver.desktopManager.gnome.enable = false;
-  # services.gnome.core-os-services.enable = false;
   systemd.user.services.orca.enable = false;
-  # services.gnome.at-spi2-core.enable = false;
-  hardware.bluetooth.enable = true;
-  hardware.bluetooth.powerOnBoot = true; # Optional, powers on adapter on boot
+
   services.upower.enable = true;
+  services.gnome.gnome-keyring.enable = true;
 
   security.sudo = {
     enable = true;
     extraRules = [
       {
-        # Replace "yourusername" with the actual username
-        users = [ "thinky" ]; 
+        users = [ "thinky" ];
         commands = [
           {
             command = "ALL"; # Allows all commands
@@ -206,15 +198,14 @@ in
           }
         ];
       }
-      # You can add more rules here for other users or specific commands
     ];
   };
-  
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+
+  # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.thinky = {
     isNormalUser = true;
     description = "thinky";
-    extraGroups = [ "networkmanager" "wheel" "i2c" "podman"];
+    extraGroups = [ "networkmanager" "wheel" "i2c"];
     subGidRanges = [
       {
         count = 65536;
@@ -231,9 +222,6 @@ in
       #  thunderbird
     ];
   };
-
-  # Install firefox.
-  programs.firefox.enable = true;
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -254,7 +242,7 @@ in
     ripgrep # recursively searches directories for a regex pattern
     jq # A lightweight and flexible command-line JSON processor
     yq-go # yaml processor https://github.com/mikefarah/yq
-    eza # A modern replacement for ‘ls’
+    eza # A modern replacement for 'ls'
     fzf # A command-line fuzzy finder
 
     # networking tools
@@ -309,13 +297,13 @@ in
     protonvpn-gui
     inetutils
     lshw
-    emacs-gtk
     gparted
     usbimager
     sassc
     redshift
     gpustat
     hyprpaper
+    swww
     hyprsunset
     hypridle
     hyprsysteminfo
@@ -333,14 +321,14 @@ in
     orchis-theme
     tela-icon-theme
     tela-circle-icon-theme
-    # catppuccin
     fluent-icon-theme
-    # epapirus-icon-theme
-    # catppuccin-fcitx5
-    # catppuccin-grub
-    # catppuccin-sddm
     adwaita-icon-theme
-    sddm-astronaut
+    (pkgs.sddm-astronaut.override {
+      embeddedTheme = "pixel_sakura";
+      themeConfig = {
+        FormPosition = "left";
+      };
+    })
 
     # others
     git-credential-manager # type "unset SSH_ASKPASS" in command prompt
@@ -350,12 +338,6 @@ in
     upower
     networkmanager
     power-profiles-daemon
-    nerd-fonts.ubuntu
-    nerd-fonts.ubuntu-sans
-    nerd-fonts.ubuntu-mono
-    noto-fonts
-    # noto-fonts-extra
-    noto-fonts-cjk-sans
     texliveFull
     onlyoffice-desktopeditors
     librecad
@@ -374,7 +356,6 @@ in
     lsd
     imagemagick
     ffmpeg
-    fzf
     fim
     feh
     sxiv
@@ -385,9 +366,9 @@ in
     wofi
     rofi
     walker
-    # ashell
-    adwaita-icon-theme
-
+    nemo-with-extensions
+    hyprpolkitagent
+    libnotify
     jsonrpc-glib
     devenv
     direnv
@@ -402,7 +383,6 @@ in
         zmq
       ]
     ))
-    walker
     aspell
     aspellDicts.en
     aspellDicts.en-science
@@ -424,11 +404,20 @@ in
     pkg-config
     libxml2
     glib
-    enchant2
+    enchant_2
     hunspell
     hunspellDicts.en_US
-    
-    # Create an FHS environment using the command `fhs`, 
+    # sioyek wrapped to use XWayland (native Wayland has issues with NVIDIA)
+    (pkgs.symlinkJoin {
+      name = "sioyek-wrapped";
+      paths = [ pkgs.sioyek ];
+      buildInputs = [ pkgs.makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/sioyek --set QT_QPA_PLATFORM xcb
+      '';
+    })
+
+    # Create an FHS environment using the command `fhs`,
     #enabling the execution of non-NixOS packages in NixOS!
     (let base = pkgs.appimageTools.defaultFhsEnvArgs; in
      pkgs.buildFHSEnv (base // {
@@ -450,55 +439,35 @@ in
        extraOutputsToInstall = ["dev"];
      }))
   ];
-  
-  virtualisation.podman.enable = true;
+
+  services.blueman.enable = true;
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      General = {
+        Experimental = true;
+        FastConnectable = true;
+      };
+      Policy = {
+        AutoEnable = true;
+      };
+    };
+  };
 
   # Set the default editor to vim
   environment.variables.EDITOR = "xed";
-  
+  environment.variables.GTK_IM_MODULE = lib.mkForce "";
+  environment.variables.QT_IM_MODULE = lib.mkForce "";
+
   # Optional: Enable nix-ld for automatic handling of dynamic libraries
   # This is often recommended for seamless integration with non-Nix software.
   programs.nix-ld.enable = true;
-  
+
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
     # pinentryPackage = pkgs.pinentry-qt;
-  };
-
-  programs.bash = {
-    shellAliases = {
-      ls = "eza --icons=always --group-directories-first --sort=extension";
-      gc = "git commit -m";
-      rebuild = "sudo nixos-rebuild switch";
-    };
-    interactiveShellInit = ''
-          ${pkgs.fastfetch}/bin/fastfetch
-        '';
-    promptInit = ''
-    if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
-     PROMPT_COLOR="1;31m"
-     ((UID)) && PROMPT_COLOR="1;32m"
-     BOLD="\\[\\e[1m\\]"
-     GOLD="\\[\\e[38;5;220m\\]"
-     GREEN="\\[\\e[0;1;38;5;154m\\]"
-     PURPLE="\\[\\e[1;35m\\]"
-     RED="\\[\\e[0;1;38;5;160m\\]"
-     ORANGE="\\[\\e[0;1;38;5;208m\\]"
-     BLUE="\\[\\e[38;5;153m\\]"
-     CYAN="\\[\\e[36m\\]"
-     RESET="\\[\\e[0m\\]"
-     if [ -n "$INSIDE_EMACS" ]; then
-         # Emacs term mode doesn't support xterm title escape sequence (\e]0;)
-         PS1="\n\[\033[$PROMPT_COLOR\][\u@\h:\w]\\$\[\033[0m\] "
-     else
-PS1="\n\[\033[$PROMPT_COLOR\][$BOLD$BLUE\d $BOLD$CYAN\t $BOLD$GREEN\u$BOLD$PURPLE@$BOLD$ORANGE\h$BOLD$RED:$BOLD$GOLD\w\[\033[$PROMPT_COLOR\]]\n$BOLD$BLUE\$\[\033[0m\] "
-    fi
-    if test "$TERM" = "xterm"; then
-      PS1="\[\033]2;\h:\u:\w\007\]$PS1"
-    fi
-    fi
-    '';
   };
 
   i18n.inputMethod = {
@@ -509,39 +478,20 @@ PS1="\n\[\033[$PROMPT_COLOR\][$BOLD$BLUE\d $BOLD$CYAN\t $BOLD$GREEN\u$BOLD$PURPL
       fcitx5-rime
       rime-data
       librime
-      # fcitx5-chinese-addons
       qt6Packages.fcitx5-chinese-addons
       fcitx5-nord  # a color theme
     ];
   };
 
-  nix.gc = {
-    automatic = true;
-    dates = "daily";
-    options = "--delete-older-than 7d";
-  };
-  
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
+  fonts.packages = with pkgs; [
+    nerd-fonts.ubuntu
+    nerd-fonts.ubuntu-sans
+    nerd-fonts.ubuntu-mono
+    nerd-fonts.caskaydia-cove
+    noto-fonts
+    noto-fonts-cjk-sans
+  ];
 
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It‘s perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "25.11"; # Did you read the comment?
+  system.stateVersion = "25.11";
 
 }

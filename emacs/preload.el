@@ -114,5 +114,5 @@
       (setenv "ANTHROPIC_API_KEY" (string-trim (buffer-string)))))
   :custom
   (aidermacs-default-chat-mode 'architect)
-  (aidermacs-default-model "sonnet"))
+  (aidermacs-default-model "opus"))
 (setq aider-program "~/.local/bin/aider")

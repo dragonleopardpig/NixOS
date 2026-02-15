@@ -43,93 +43,81 @@
       input = {
         follow_mouse = 1;
       };
+      "$mod" = "SUPER";
+      bind =
+        [
+          "$mod, F, exec, firefox"
+          "$mod, Q, exec, kitty"
+          "$mod, E, exec, emacs"
+          "$mod, P, exec, protonvpn-app"
+          "$mod, M, exec, walker"
+          "$mod, A, exec, anyrun"
+          "$mod, N, exec, nemo"
+          "$mod, Y, exec, kitty -e yazi"
+          "$mod, Escape, exit,"
+          "$mod, K, killactive,"
+          "$mod, left, movefocus, l"
+          "$mod, right, movefocus, r"
+          "$mod, up, movefocus, u"
+          "$mod, down, movefocus, d"
+          "$mod SHIFT, F, fullscreen, 1"
+          ", Print, exec, hyprshot -m region"
+          ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
+          ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
+          ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+          ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
+          ", XF86AudioNext, exec, playerctl next"
+          ", XF86AudioPause, exec, playerctl play-pause"
+          ", XF86AudioPlay, exec, playerctl play-pause"
+          ", XF86AudioPrev, exec, playerctl previous"
+          ", F1, exec, sleep 0.1 && hyprctl dispatch dpms off && hyprlock"
+          ", F6, exec, brightnessctl -d $(ls /sys/class/backlight/ | grep -m1 ddcci) set +10%"
+          ", F5, exec, brightnessctl -d $(ls /sys/class/backlight/ | grep -m1 ddcci) set 10%-"
+          ",XF86MonBrightnessUp, exec, brightnessctl -d $(ls /sys/class/backlight/ | grep -m1 ddcci) set +10%"
+          ",XF86MonBrightnessDown, exec, brightnessctl -d $(ls /sys/class/backlight/ | grep -m1 ddcci) set 10%-"
+          "CTRL ALT, left, workspace, -1"
+          "CTRL ALT, right, workspace, +1"
+          "ALT, Tab, cyclenext, hist"
+          "$mod, Tab, cyclenext, prev"
+        ]
+        ++ (
+          # workspaces
+          # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
+          builtins.concatLists (builtins.genList (i:
+            let ws = i + 1;
+            in [
+              "$mod, code:1${toString i}, workspace, ${toString ws}"
+              "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
+            ]
+          )
+            9)
+        );
+      bindm = [
+        # mouse movements
+        "$mod, mouse:272, movewindow"
+        "$mod, mouse:273, resizewindow"
+        "$mod ALT, mouse:272, resizewindow"
+      ];
+      bindc =[
+        "$mod, mouse:274, togglefloating"
+      ];
+      input = {
+        natural_scroll = true;
+        # other input settings...
+      };
+      # monitor = "DP-3,1920x1080@60,0x0,1";
+      # Autostart programs
+      exec-once = [ "protonvpn-app --start-minimized"
+                    "swww-daemon && waypaper --random"
+                    "while true; do sleep 60; waypaper --random; done"
+                    "systemctl --user start hyprpolkitagent"
+                  ];
+      misc = {
+        mouse_move_enables_dpms = true;
+        key_press_enables_dpms = true;
+      };
     };
   };
-
-  wayland.windowManager.hyprland.settings = {
-    "$mod" = "SUPER";
-    bind =
-      [
-        "$mod, F, exec, firefox"
-        "$mod, Q, exec, kitty"
-        "$mod, E, exec, emacs"
-        # ProtonVPN: Known Wayland issue - app may start minimized to tray. Click tray icon or use this keybinding.
-        "$mod, P, exec, bash -c 'if pgrep -f protonvpn-app >/dev/null; then gdbus call --session --dest proton.vpn.app.gtk --object-path /proton/vpn/app/gtk --method org.gtk.Application.Activate {} 2>/dev/null || true; else protonvpn-app; fi'"
-        "$mod, M, exec, walker"
-        "$mod, A, exec, anyrun"
-        "$mod, N, exec, nemo"
-        "$mod, Y, exec, kitty -e yazi"
-        "$mod, Escape, exit,"
-        "$mod, K, killactive,"
-        "$mod, left, movefocus, l"
-        "$mod, right, movefocus, r"
-        "$mod, up, movefocus, u"
-        "$mod, down, movefocus, d"
-        "$mod SHIFT, F, fullscreen, 1"
-        ", Print, exec, hyprshot -m region"
-        ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
-        ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
-        ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
-        ", XF86AudioMicMute, exec, wpctl set-mute @DEFAULT_AUDIO_SOURCE@ toggle"
-        ", XF86AudioNext, exec, playerctl next"
-        ", XF86AudioPause, exec, playerctl play-pause"
-        ", XF86AudioPlay, exec, playerctl play-pause"
-        ", XF86AudioPrev, exec, playerctl previous"
-        ", F1, exec, sleep 0.1 && hyprctl dispatch dpms off && hyprlock"
-        ", F6, exec, ddcutil setvcp 10 + 10"
-        ", F5, exec, ddcutil setvcp 10 - 10"
-        ",XF86MonBrightnessUp, exec, ddcutil setvcp 10 + 10"
-        ",XF86MonBrightnessDown, exec, ddcutil setvcp 10 - 10"
-        "CTRL ALT, left, workspace, -1"
-        "CTRL ALT, right, workspace, +1"
-        "ALT, Tab, cyclenext, hist"
-        "$mod, Tab, cyclenext, prev"
-      ]
-      ++ (
-        # workspaces
-        # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
-        builtins.concatLists (builtins.genList (i:
-          let ws = i + 1;
-          in [
-            "$mod, code:1${toString i}, workspace, ${toString ws}"
-            "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
-          ]
-        )
-          9)
-      );
-
-    bindm = [
-      # mouse movements
-      "$mod, mouse:272, movewindow"
-      "$mod, mouse:273, resizewindow"
-      "$mod ALT, mouse:272, resizewindow"
-    ];
-
-    bindc =[
-      "$mod, mouse:274, togglefloating"
-    ];
-
-    input = {
-      natural_scroll = true;
-      # other input settings...
-    };
-
-    monitor = "DP-3,1920x1080@60,0x0,1";
-    # Autostart programs
-    # ProtonVPN: Start without --start-minimized so window appears, then user can minimize to tray
-    exec-once = [ "bash -c 'while ! dbus-send --session --dest=org.freedesktop.DBus --type=method_call --print-reply /org/freedesktop/DBus org.freedesktop.DBus.ListNames 2>/dev/null | grep -q org.kde.StatusNotifierWatcher; do sleep 1; done; protonvpn-app'"
-                  "swww-daemon && waypaper --random"
-                  "while true; do sleep 60; waypaper --random; done"
-                ];
-
-    misc = {
-      mouse_move_enables_dpms = true;
-      key_press_enables_dpms = true;
-    };
-
-  };
-
-  # programs.hyprshot.enable = true;
 
   programs.hyprpanel = {
     package = inputs.hyprpanel.packages.${pkgs.stdenv.hostPlatform.system}.default;
@@ -151,7 +139,12 @@
       # The activation script below will read it and update config.json at runtime
       menus.clock.weather.key = "PLACEHOLDER_WILL_BE_REPLACED";
       menus.dashboard.directories.enabled = true;
-      #menus.dashboard.stats.enable_gpu = true;
+      menus.dashboard.shortcuts.left.shortcut1 = {
+        icon = "󰈹";
+        tooltip = "Firefox";
+        command = "firefox";
+      };
+      #menus.dashboard.stats.enable_gpu = true;  # Causes system freeze on NVIDIA
       theme = {
         bar.transparent = true;
         bar.outer_spacing = "0em";
@@ -165,23 +158,36 @@
   };
 
   services.hyprpaper.enable = false;
-  systemd.user.services.hyprpaper.Install.WantedBy = lib.mkForce [];
-  services.hyprpaper.settings = {
-    # Set a preload wallpaper
-    preload = [
-      "/home/thinky/Pictures/Wallpapers/Kath.png"
-      "/home/thinky/Pictures/Wallpapers/corndog.png"
-      "/home/thinky/Pictures/Wallpapers/Meptl.png"
-      "/home/thinky/Pictures/Wallpapers/Sollee.png"
-      "/home/thinky/Pictures/Wallpapers/srev.png"
-      "/home/thinky/Pictures/Wallpapers/VDawg.png"
-    ];
 
-    # Set the wallpaper for a specific display
-    wallpaper = [
-      "DP-3,/home/thinky/Pictures/Wallpapers/Kath.png"
-    ];
-  };
+  # Waypaper configuration (wallpaper manager using swww backend)
+  xdg.configFile."waypaper/config.ini".force = true;
+  xdg.configFile."waypaper/config.ini".text = ''
+    [Settings]
+    language = en
+    folder = ~/Pictures/Wallpapers
+    monitors = All
+    wallpaper = ~/Pictures/Wallpapers/Sollee.png
+    show_path_in_tooltip = True
+    backend = swww
+    fill = fill
+    sort = name
+    color = #ffffff
+    subfolders = False
+    all_subfolders = False
+    show_hidden = False
+    show_gifs_only = False
+    post_command =
+    number_of_columns = 3
+    swww_transition_type = any
+    swww_transition_step = 90
+    swww_transition_angle = 0
+    swww_transition_duration = 2
+    swww_transition_fps = 60
+    mpvpaper_sound = False
+    mpvpaper_options =
+    use_xdg_state = False
+    zen_mode = False
+  '';
 
   services.hypridle.enable = true;
   services.hypridle.settings = {
@@ -289,6 +295,15 @@
     };
   };
 
+  # Set Nemo as default file manager
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "inode/directory" = [ "nemo.desktop" ];
+      "application/pdf" = [ "sioyek.desktop" ];
+    };
+  };
+
   # alacritty - a cross-platform, GPU-accelerated terminal emulator
   programs.alacritty = {
     enable = true;
@@ -349,32 +364,8 @@
       gc = "git commit -m";
       rebuild = "sudo nixos-rebuild switch";
     };
-    interactiveShellInit = ''
-          ${pkgs.fastfetch}/bin/fastfetch
-        '';
-    promptInit = ''
-    if [ "$TERM" != "dumb" ] || [ -n "$INSIDE_EMACS" ]; then
-     PROMPT_COLOR="1;31m"
-     ((UID)) && PROMPT_COLOR="1;32m"
-     BOLD="\\[\\e[1m\\]"
-     GOLD="\\[\\e[38;5;220m\\]"
-     GREEN="\\[\\e[0;1;38;5;154m\\]"
-     PURPLE="\\[\\e[1;35m\\]"
-     RED="\\[\\e[0;1;38;5;160m\\]"
-     ORANGE="\\[\\e[0;1;38;5;208m\\]"
-     BLUE="\\[\\e[38;5;153m\\]"
-     CYAN="\\[\\e[36m\\]"
-     RESET="\\[\\e[0m\\]"
-     if [ -n "$INSIDE_EMACS" ]; then
-         # Emacs term mode doesn't support xterm title escape sequence (\e]0;)
-         PS1="\n\[\033[$PROMPT_COLOR\][\u@\h:\w]\\$\[\033[0m\] "
-     else
-PS1="\n\[\033[$PROMPT_COLOR\][$BOLD$BLUE\d $BOLD$CYAN\t $BOLD$GREEN\u$BOLD$PURPLE@$BOLD$ORANGE\h$BOLD$RED:$BOLD$GOLD\w\[\033[$PROMPT_COLOR\]]\n$BOLD$BLUE\$\[\033[0m\] "
-    fi
-    if test "$TERM" = "xterm"; then
-      PS1="\[\033]2;\h:\u:\w\007\]$PS1"
-    fi
-    fi
+    initExtra = ''
+      fastfetch
     '';
   };
 
@@ -457,6 +448,9 @@ PS1="\n\[\033[$PROMPT_COLOR\][$BOLD$BLUE\d $BOLD$CYAN\t $BOLD$GREEN\u$BOLD$PURPL
     };
   };
 
+  # Install firefox.
+  programs.firefox.enable = true;
+  
   # This value determines the home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new home Manager release introduces backwards
