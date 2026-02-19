@@ -34,8 +34,7 @@
     # plymouth, showing after LUKS unlock
     plymouth.enable = true;
     plymouth.font = "${pkgs.hack-font}/share/fonts/truetype/Hack-Regular.ttf";
-    plymouth.logo = let plymouthIcon = pkgs.callPackage ./custom_plymouth_logo.nix {}; in
-      "${plymouthIcon}/share/icons/hicolor/128x128/apps/nix-snowflake-rainbow.png";
+    plymouth.logo = "${./assets/nix-snowflake-rainbow.png}";
   };
 
     # Boot console mode
@@ -233,9 +232,6 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-    fastfetch
-    nnn # terminal file manager
-
     # archives
     zip
     xz
@@ -243,11 +239,7 @@
     p7zip
 
     # utils
-    ripgrep # recursively searches directories for a regex pattern
-    jq # A lightweight and flexible command-line JSON processor
     yq-go # yaml processor https://github.com/mikefarah/yq
-    eza # A modern replacement for 'ls'
-    fzf # A command-line fuzzy finder
 
     # networking tools
     mtr # A network diagnostic tool
@@ -280,7 +272,6 @@
     hugo # static site generator
     glow # markdown previewer in terminal
 
-    btop  # replacement of htop/nmon
     iotop # io monitoring
     iftop # network monitoring
 
@@ -296,7 +287,6 @@
     pciutils # lspci
     usbutils # lsusb
     wget
-    git # git config --global core.askpass ""
     remmina
     protonvpn-gui
     inetutils
@@ -309,16 +299,14 @@
     hyprpaper
     swww
     hyprsunset
-    hypridle
     hyprsysteminfo
-    hyprshot
     waypaper
     satty
     slurp
     grim
-    flameshot
     xdg-desktop-portal
     xdg-desktop-portal-hyprland
+    xdg-desktop-portal-gtk
 
     # themes
     variety
@@ -351,32 +339,23 @@
     pinta
     mission-center
     resources
-    pandoc
     filezilla
-    htop
     traceroute
-    starship
-    bat
-    lsd
     imagemagick
     ffmpeg
     fim
-    feh
     sxiv
     tiv
     chafa
     viu
     distrobox
     wofi
-    rofi
     walker
     nemo-with-extensions
     hyprpolkitagent
     libnotify
     jsonrpc-glib
     devenv
-    direnv
-    nix-direnv
     claude-code
     claude-monitor
     ((emacsPackagesFor emacs-pgtk).emacsWithPackages (
@@ -412,6 +391,7 @@
     hunspell
     hunspellDicts.en_US
     nodejs_24
+    spacedrive
     # sioyek wrapped to use XWayland (native Wayland has issues with NVIDIA)
     (pkgs.symlinkJoin {
       name = "sioyek-wrapped";

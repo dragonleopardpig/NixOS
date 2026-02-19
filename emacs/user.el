@@ -147,6 +147,18 @@
 ;; * Latex and preview pane
 (latex-preview-pane-enable)
 (setq org-preview-latex-default-process 'dvisvgm)
+;; ** Use current theme colors for LaTeX previews
+(setq org-format-latex-options
+      (plist-put org-format-latex-options :foreground 'default))
+(setq org-format-latex-options
+      (plist-put org-format-latex-options :background 'default))
+;; Auto-clear LaTeX previews on theme switch so they regenerate with new colors
+(add-hook 'enable-theme-functions
+          (lambda (_theme)
+            (dolist (buf (buffer-list))
+              (with-current-buffer buf
+                (when (derived-mode-p 'org-mode)
+                  (org-clear-latex-preview))))))
 ;; ** Scale Latex Preview Size
 (defun my/text-scale-adjust-latex-previews ()
   "Adjust the size of latex preview fragments when changing the

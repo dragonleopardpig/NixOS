@@ -7,6 +7,24 @@
 
   xdg.configFile."uwsm/env".source = "${config.home.sessionVariablesPackage}/etc/profile.d/hm-session-vars.sh";
 
+  gtk = {
+    enable = true;
+    theme = { name = "Orchis-Dark"; package = pkgs.orchis-theme; };
+    iconTheme = { name = "Tela-circle"; package = pkgs.tela-circle-icon-theme; };
+    cursorTheme = { name = "Adwaita"; package = pkgs.adwaita-icon-theme; };
+  };
+
+  qt = {
+    enable = true;
+    platformTheme.name = "kvantum";
+    style.name = "kvantum";
+  };
+
+  xdg.configFile."Kvantum/kvantum.kvconfig".text = ''
+    [General]
+    theme=KvArcDark
+  '';
+
   wayland.windowManager.hyprland = {
     enable = true;
     systemd = {
@@ -50,9 +68,10 @@
           "$mod, Q, exec, kitty"
           "$mod, E, exec, emacs"
           "$mod, P, exec, protonvpn-app"
-          "$mod, M, exec, walker"
+          "$mod, W, exec, walker"
           "$mod, A, exec, anyrun"
           "$mod, N, exec, nemo"
+          "$mod, S, exec, sioyek"
           "$mod, Y, exec, kitty -e yazi"
           "$mod, Escape, exit,"
           "$mod, K, killactive,"
@@ -61,7 +80,7 @@
           "$mod, up, movefocus, u"
           "$mod, down, movefocus, d"
           "$mod SHIFT, F, fullscreen, 1"
-          ", Print, exec, hyprshot -m region"
+          '', Print, exec, grim -g "$(slurp)" - | swappy -f -''
           ", XF86AudioRaiseVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+"
           ", XF86AudioLowerVolume, exec, wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-"
           ", XF86AudioMute, exec, wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
@@ -79,6 +98,11 @@
           "CTRL ALT, right, workspace, +1"
           "ALT, Tab, cyclenext, hist"
           "$mod, Tab, cyclenext, prev"
+          # Pyprland
+          "$mod, T, exec, pypr toggle term"
+          "$mod, V, exec, pypr toggle volume"
+          "$mod, Z, exec, pypr zoom"
+          ", Pause, exec, pypr expose"
         ]
         ++ (
           # workspaces
@@ -107,7 +131,8 @@
       };
       # monitor = "DP-3,1920x1080@60,0x0,1";
       # Autostart programs
-      exec-once = [ "protonvpn-app --start-minimized"
+      exec-once = [ "uwsm app -- pypr"
+                    "protonvpn-app"
                     "swww-daemon && waypaper --random"
                     "while true; do sleep 60; waypaper --random; done"
                     "systemctl --user start hyprpolkitagent"
@@ -158,6 +183,34 @@
   };
 
   services.hyprpaper.enable = false;
+
+  # Pyprland configuration
+  xdg.configFile."hypr/pyprland.toml".text = ''
+    [pyprland]
+    plugins = [
+      "scratchpads",
+      "magnify",
+      "expose",
+    ]
+
+    [scratchpads.term]
+    command = "kitty --class kitty-dropterm"
+    animation = "fromTop"
+    size = "75% 60%"
+
+    [scratchpads.volume]
+    command = "pavucontrol"
+    animation = "fromRight"
+    size = "40% 90%"
+    lazy = true
+  '';
+
+  # Swappy screenshot editor config
+  xdg.configFile."swappy/config".text = ''
+    [Default]
+    save_dir=$HOME/Pictures/Screenshots
+    save_filename_format=screenshot-%Y%m%d-%H%M%S.png
+  '';
 
   # Waypaper configuration (wallpaper manager using swww backend)
   xdg.configFile."waypaper/config.ini".force = true;
@@ -216,8 +269,9 @@
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
-    # here is some command line tools I use frequently
-    # feel free to add your own or remove some of them
+    swappy
+    pyprland
+    pavucontrol
   ];
 
   # basic configuration of git, please change to your own
@@ -301,6 +355,7 @@
     defaultApplications = {
       "inode/directory" = [ "nemo.desktop" ];
       "application/pdf" = [ "sioyek.desktop" ];
+      "image/svg+xml" = [ "pinta.desktop"];
     };
   };
 
@@ -357,14 +412,13 @@
     # TODO add your custom bashrc here
     bashrcExtra = ''
       export PATH="$PATH:$HOME/bin:$HOME/.local/bin:$HOME/go/bin"
-      eval "$(direnv hook bash)"
     '';
 
     # set some aliases, feel free to add more or remove some
     shellAliases = {
       ls = "eza --icons=always --group-directories-first --sort=extension";
       gc = "git commit -m";
-      rebuild = "sudo nixos-rebuild switch";
+      rebuild = "~/Downloads/NixOS/unified/rebuild.sh";
     };
     initExtra = ''
       fastfetch
@@ -473,8 +527,144 @@
     '';
   };
 
+  # Daily wallpaper downloader script (Bing + NASA APOD)
+  home.file.".local/bin/wallpaper-of-the-day" = {
+    executable = true;
+    text = ''
+      #!/bin/sh
+      set -eu
+
+      WALLPAPER_DIR="$HOME/Pictures/Wallpapers"
+      TODAY=$(date +%Y-%m-%d)
+      mkdir -p "$WALLPAPER_DIR"
+
+      # --- Bing Wallpaper of the Day ---
+      echo "Fetching Bing wallpaper..."
+      BING_JSON=$(curl -s "https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=en-US")
+      BING_DATE=$(echo "$BING_JSON" | jq -r '.images[0].startdate' | sed 's/\(....\)\(..\)\(..\)/\1-\2-\3/')
+      BING_PATH=$(echo "$BING_JSON" | jq -r '.images[0].url')
+      BING_FILE="$WALLPAPER_DIR/bing-$BING_DATE.jpg"
+      if [ ! -f "$BING_FILE" ]; then
+        if [ -n "$BING_PATH" ] && [ "$BING_PATH" != "null" ]; then
+          # Try UHD first, fall back to the default URL
+          BING_UHD=$(echo "$BING_PATH" | sed 's/1920x1080/UHD/g')
+          if ! curl -sf "https://www.bing.com$BING_UHD" -o "$BING_FILE"; then
+            curl -sf "https://www.bing.com$BING_PATH" -o "$BING_FILE"
+          fi
+          echo "Saved: $BING_FILE"
+        else
+          echo "Warning: Could not parse Bing image URL"
+        fi
+      else
+        echo "Bing wallpaper already exists: $BING_FILE"
+      fi
+
+      # --- NASA Astronomy Picture of the Day ---
+      echo "Fetching NASA APOD..."
+      # Use DEMO_KEY by default; set NASA_API_KEY env var for your own key
+      NASA_KEY="''${NASA_API_KEY:-DEMO_KEY}"
+      NASA_JSON=$(curl -s "https://api.nasa.gov/planetary/apod?api_key=$NASA_KEY")
+      NASA_DATE=$(echo "$NASA_JSON" | jq -r '.date')
+      MEDIA_TYPE=$(echo "$NASA_JSON" | jq -r '.media_type')
+      NASA_FILE="$WALLPAPER_DIR/nasa-apod-$NASA_DATE.jpg"
+      if [ ! -f "$NASA_FILE" ]; then
+        if [ "$MEDIA_TYPE" = "image" ]; then
+          # Prefer hdurl, fall back to url
+          NASA_URL=$(echo "$NASA_JSON" | jq -r '.hdurl // .url')
+          if [ -n "$NASA_URL" ] && [ "$NASA_URL" != "null" ]; then
+            curl -sf "$NASA_URL" -o "$NASA_FILE"
+            echo "Saved: $NASA_FILE"
+          else
+            echo "Warning: Could not parse NASA APOD image URL"
+          fi
+        else
+          echo "NASA APOD is not an image today (media_type=$MEDIA_TYPE), skipping"
+        fi
+      else
+        echo "NASA APOD already exists: $NASA_FILE"
+      fi
+    '';
+  };
+
+  # Systemd user service + timer for daily wallpaper downloads
+  systemd.user.services.wallpaper-of-the-day = {
+    Unit = {
+      Description = "Download daily wallpapers from Bing and NASA APOD";
+      After = [ "network-online.target" ];
+      Wants = [ "network-online.target" ];
+    };
+    Service = {
+      Type = "oneshot";
+      ExecStart = "%h/.local/bin/wallpaper-of-the-day";
+    };
+  };
+
+  systemd.user.timers.wallpaper-of-the-day = {
+    Unit = {
+      Description = "Daily wallpaper download timer";
+    };
+    Timer = {
+      OnCalendar = "daily";
+      Persistent = true;
+      RandomizedDelaySec = "5m";
+    };
+    Install = {
+      WantedBy = [ "timers.target" ];
+    };
+  };
+
   # Install firefox.
   programs.firefox.enable = true;
+
+  # --- Moved from environment.systemPackages for richer HM config ---
+
+  programs.btop = {
+    enable = true;
+    settings = {
+      theme_background = false;
+    };
+  };
+
+  programs.fzf = {
+    enable = true;
+    enableBashIntegration = true;
+    defaultOptions = [ "--height 40%" "--border" ];
+  };
+
+  programs.bat.enable = true;
+
+  programs.eza = {
+    enable = true;
+    enableBashIntegration = false; # custom alias in programs.bash
+  };
+
+  programs.ripgrep = {
+    enable = true;
+    arguments = [ "--smart-case" "--hidden" "--glob=!.git" ];
+  };
+
+  programs.direnv = {
+    enable = true;
+    enableBashIntegration = true;
+    nix-direnv.enable = true;
+  };
+
+  programs.htop.enable = true;
+  programs.fastfetch.enable = true;
+  programs.jq.enable = true;
+  programs.pandoc.enable = true;
+  programs.feh.enable = true;
+  programs.nnn.enable = true;
+  programs.rofi.enable = true;
+
+  imports = [
+    inputs.walker.homeManagerModules.default
+  ];
+
+  programs.walker = {
+    enable = true;
+    runAsService = true;
+  };
   
   # This value determines the home Manager release that your
   # configuration is compatible with. This helps avoid breakage

@@ -11,7 +11,6 @@ unified/
 ├── flake.nix                # Main flake defining both hosts
 ├── configuration.nix         # SHARED system configuration (identical for both)
 ├── home.nix                 # SHARED home-manager configuration (identical for both)
-├── custom_plymouth_logo.nix # Plymouth boot logo
 └── hosts/
     ├── X299/
     │   ├── default.nix              # Sets hostname to "X299"
