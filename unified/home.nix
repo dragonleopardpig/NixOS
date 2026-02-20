@@ -103,6 +103,7 @@
           "$mod, V, exec, pypr toggle volume"
           "$mod, Z, exec, pypr zoom"
           ", Pause, exec, pypr expose"
+          ''$mod SHIFT, Escape, exec, pkill -SIGINT -f wf-recorder && sleep 1 && bash -c 'p=$(cat /tmp/last_recording_path 2>/dev/null); notify-send "Recording stopped" "Saved to: $p" -i video-x-generic -a "Screen Recorder" -t 10000 --action="scriptAction:-xdg-open $(dirname "$p")=Open Directory" --action="scriptAction:-xdg-open $p=Play"' ''
         ]
         ++ (
           # workspaces
@@ -169,6 +170,26 @@
         tooltip = "Firefox";
         command = "firefox";
       };
+      menus.dashboard.shortcuts.left.shortcut2 = {
+        icon = "";
+        tooltip = "Terminal";
+        command = "kitty";
+      };
+      menus.dashboard.shortcuts.left.shortcut3 = {
+        icon = "";
+        tooltip = "Emacs";
+        command = "emacs";
+      };
+      menus.dashboard.shortcuts.right.shortcut3 = {
+        icon = "󰄀";
+        tooltip = "Screenshot";
+        command = "bash -c 'grim -g \"$(slurp)\" - | swappy -f -'";
+      };
+      menus.dashboard.shortcuts.left.shortcut4 = {
+        icon = "";
+        tooltip = "Search Apps";
+        command = "walker";
+      };
       #menus.dashboard.stats.enable_gpu = true;  # Causes system freeze on NVIDIA
       theme = {
         bar.transparent = true;
@@ -197,6 +218,12 @@
     command = "kitty --class kitty-dropterm"
     animation = "fromTop"
     size = "75% 60%"
+
+    [scratchpads.notepad]
+    command = "xed"
+    animation = "fromRight"
+    size = "50% 70%"
+    lazy = true
 
     [scratchpads.volume]
     command = "pavucontrol"
@@ -272,6 +299,10 @@
     swappy
     pyprland
     pavucontrol
+    xed-editor
+    sioyek
+    wf-recorder
+    mpv
   ];
 
   # basic configuration of git, please change to your own
@@ -356,6 +387,8 @@
       "inode/directory" = [ "nemo.desktop" ];
       "application/pdf" = [ "sioyek.desktop" ];
       "image/svg+xml" = [ "pinta.desktop"];
+      "text/plain" = [ "xed.desktop" ];
+      "text/markdown" = [ "xed.desktop" ];
     };
   };
 
@@ -508,6 +541,8 @@
   # Unified brightness control script (works on both X299 and M90aPro)
   # - M90aPro (laptop): uses intel_backlight
   # - X299 (desktop): uses ddcci external monitor backlight
+  home.file.".face.icon".source = ./assets/face.png;
+
   home.file.".local/bin/brightness-ctl" = {
     executable = true;
     text = ''

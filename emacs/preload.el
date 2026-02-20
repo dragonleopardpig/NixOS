@@ -6,10 +6,10 @@
 ;; (add-hook 'org-mode-hook 'scimax-autoformat-mode)
 
 ;; * Prevent undo tree files from polluting your git repo
-(setq undo-tree-history-directory-alist '(("." . "~/tmp/emacs/undo")))
+(setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/undo")))
 ;; Put backup files neatly away
-(let ((backup-dir "~/tmp/emacs/backups")
-      (auto-saves-dir "~/tmp/emacs/auto-saves/"))
+(let ((backup-dir "~/.emacs.d/backups")
+      (auto-saves-dir "~/.emacs.d/auto-saves"))
   (dolist (dir (list backup-dir auto-saves-dir))
     (when (not (file-directory-p dir))
       (make-directory dir t)))
